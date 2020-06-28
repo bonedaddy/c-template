@@ -10,3 +10,12 @@ A template repository to use as a base for new C programs. Includes utility func
 * Safe Math (WIP)
 * Safe Memory
     * Wraps pointer objects to prevent double free 
+
+# build
+
+```shell
+$> mkdir build && cd build
+$> cmake -D CMAKE_C_COMPILER=gcc ..
+$> cmake -D CMAKE_C_COMPILER=gcc -build  .
+$> make
+```
