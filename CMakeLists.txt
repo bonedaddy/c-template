@@ -12,12 +12,13 @@ project(c-template LANGUAGES C)
 list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 
 
+# TODO: the following causes this to fail
 # set release type
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-endif()
+#if(NOT CMAKE_BUILD_TYPE)
+#    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+# endif()
 # print build type
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+# message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # print flags used
 message(STATUS "C flags, Debug Configuration: ${CMAKE_C_FLAGS_DEBUG}")
