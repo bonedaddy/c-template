@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../include/utils/safe_mem.h"
+#ifdef _HAVE_SAFE_MEM_H
+#include "../../include/utils/safe_mem.h"
 
 /*
     free_memory_object can be used to safely free up allocated memory.

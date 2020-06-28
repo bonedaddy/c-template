@@ -4,7 +4,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <assert.h>
-#include "../include/utils/array_len.h"
+#include "../../include/utils/array_len.h"
 
 void test_array_len(void **state) {
     int empty[0];

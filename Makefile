@@ -23,7 +23,7 @@ gen-coverage:
 
 .PHONY: test-random
 test-random:
-	gcc -fprofile-arcs -ftest-coverage ./src/utils/random_test.c ./src/utils/random.c -lcmocka
+	gcc -fprofile-arcs -ftest-coverage ./src/utils/random_test.c ./src/utils/random.c -lcmocka -Isrc
 	./a.out
 
 .PHONY: test-array

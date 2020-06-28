@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
-#include "../include/utils/safe_math.h"
+#include "../../include/utils/safe_math.h"
 
 int main(void) {
     {

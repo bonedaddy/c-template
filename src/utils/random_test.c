@@ -6,8 +6,8 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <assert.h>
-#include "../include/utils/random.h"
-#include "../include/utils/array_len.h"
+#include "../../include/utils/random.h"
+#include "../../include/utils/array_len.h"
 
 void test_get_random_string_length(void **state) {
     char *word = get_random_string(10);
