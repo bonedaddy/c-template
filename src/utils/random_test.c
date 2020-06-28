@@ -6,14 +6,18 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <assert.h>
-#include "../include/utils/random.h"
-#include "../include/utils/array_len.h"
+#include "../../include/utils/random.h"
+#include "../../include/utils/array_len.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
 void test_get_random_string_length(void **state) {
     char *word = get_random_string(10);
     assert(sizeof(word) == 8);
 }
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
 void test_get_random_number_range(void **state) {
     int number = get_random_number(0, 25);
     assert(number >= 0 && number <= 25);

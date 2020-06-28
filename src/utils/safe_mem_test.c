@@ -5,13 +5,14 @@
 #include <cmocka.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "./include/utils/safe_mem.h"
+#include "../../include/utils/safe_mem.h"
 
 typedef struct test_data {
     char c[100];
     bool b[100];
 } test_data;
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_new_memory_object_null(void **state) {
     memory_object mobj = new_memory_object(NULL);
     assert_false(mobj.freed);
@@ -22,6 +23,7 @@ void test_new_memory_object_null(void **state) {
     assert_null(mobj.data);
 }
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_new_memory_object_test_data(void **state) {
     test_data *td = (test_data *)malloc(sizeof(test_data));
     td->c[0] = '\n';

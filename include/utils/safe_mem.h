@@ -5,6 +5,7 @@
     memory_object is a wrapper around a void pointer type
     that pevents double-free vulnerabilities on that void pointer type
 */
+
 typedef struct memory_object {
     void *data;
     bool freed;

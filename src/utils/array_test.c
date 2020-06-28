@@ -4,8 +4,11 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <assert.h>
-#include "../include/utils/array_len.h"
+#include "../../include/utils/array_len.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wpedantic"
 void test_array_len(void **state) {
     int empty[0];
     int one[1] = {0};
@@ -13,6 +16,9 @@ void test_array_len(void **state) {
     assert(array_len(one) == 1);
 }
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wpedantic"
 void test_array_size(void **state) {
     int empty[0];
     int two[2] = {0, 1};

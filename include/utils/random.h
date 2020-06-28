@@ -1,3 +1,4 @@
+
 int get_random_number(int lower, int upper);
 char *get_random_string(int stringLength);
 
