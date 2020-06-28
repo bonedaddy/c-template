@@ -1,6 +1,6 @@
 #include <limits.h>
 #include <stdbool.h>
-#include "utils/safe_math.h"
+#include "../include/utils/safe_math.h"
 
 int safe_add_int(int x, int y, bool *passed) {
     if (x > INT_MAX - y) {

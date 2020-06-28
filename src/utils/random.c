@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
-#include "utils/random.h"
+#include "../include/utils/random.h"
 
 char *get_random_string(int stringLength) {
     // create an array of chars of length stringLength

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
-#include "utils/safe_mem.c"
+#include "./utils/safe_mem.c"
 
 int main(void) {
     memory_object obj = new_memory_object(NULL);
