@@ -9,7 +9,7 @@
 */
 
 typedef struct memory_object {
-    _Atomic void *data;
+    void *data;
     bool freed;
     pthread_mutex_t *mutex;
     atomic_bool locked;
