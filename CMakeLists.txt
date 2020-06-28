@@ -69,3 +69,11 @@ target_link_libraries(safe-math-test cmocka)
 target_link_libraries(safe-math-test safemathstatic)
 target_link_libraries(safe-mem-test cmocka)
 target_link_libraries(safe-mem-test safememstatic)
+
+
+# enable testing
+enable_testing()
+add_test(NAME ArrayLenTest COMMAND array-len-test)
+add_test(NAME RandomTest COMMAND random-test)
+add_test(NAME SafeMathTest COMMAND safe-math-test)
+add_test(NAME SafeMemTest COMMAND safe-mem-test)
