@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#ifdef _HAVE_SAFE_MEM_H
 #include "../../include/utils/safe_mem.h"
 
 /*
