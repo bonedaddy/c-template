@@ -1,2 +1,10 @@
 
 build/
+a.out
+*.gch
+*.gcda
+*.gcno
+*.gcov
+test.info
+
+out/
