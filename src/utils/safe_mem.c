@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdatomic.h>
+#include <pthread.h>
 #include "../../include/utils/safe_mem.h"
 
 /*
@@ -23,6 +25,29 @@ int free_memory_object(memory_object *obj) {
     return 0;
 }
 
+void *get_data_memory_object(memory_object *obj) {
+    // try locking otherwise return null pointer
+    int status = pthread_mutex_trylock(obj->mutex);
+    if (!status) {
+        return NULL;
+    }
+    void *pdata = atomic_load(&obj->data);
+    atomic_store(&obj->locked, true);
+    return pdata;
+}
+
+int put_data_memory_object(memory_object *obj, void *data) {
+    // if this check fails, it means get_data_memory_object wasnt called
+    // and thus is an error, so return -1
+    if (!atomic_load(&obj->locked)) {
+        return -1;
+    }
+    atomic_store(&obj->data, data);
+    atomic_store(&obj->locked, false);
+    pthread_mutex_unlock(obj->mutex);
+    return 0;
+}
+
 /*
     new_memory_object is used to return an initialized memory_object
     with the data member set to the void pointer
@@ -31,5 +56,7 @@ memory_object new_memory_object(void *input) {
     memory_object mobj;
     mobj.freed = false;
     mobj.data = input;
+    mobj.mutex = NULL;
+    pthread_mutex_init(mobj.mutex, NULL);
     return mobj;
 }
