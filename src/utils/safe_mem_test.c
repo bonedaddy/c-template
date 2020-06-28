@@ -5,7 +5,7 @@
 #include <cmocka.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "../include/utils/safe_mem.h"
+#include "./include/utils/safe_mem.h"
 
 typedef struct test_data {
     char c[100];

@@ -23,15 +23,15 @@ gen-coverage:
 
 .PHONY: test-random
 test-random:
-	gcc -I ./src/include -I ./src/utils -fprofile-arcs -ftest-coverage ./src/utils/random_test.c -lcmocka
+	gcc -fprofile-arcs -ftest-coverage ./src/utils/random_test.c ./src/utils/random.c -lcmocka
 	./a.out
 
 .PHONY: test-array
 test-array:
-	gcc -I ./src/include -I ./src/utils -fprofile-arcs -ftest-coverage ./src/utils/array_len_test.c -lcmocka
+	gcc -fprofile-arcs -ftest-coverage ./src/utils/array_test.c -lcmocka
 	./a.out
 
 .PHONY: test-safe_mem
 test-safe_mem:
-	gcc -I ./src/include -I ./src/utils -fprofile-arcs -ftest-coverage ./src/utils/safe_mem_test.c -lcmocka 
+	gcc -fprofile-arcs -ftest-coverage ./src/utils/safe_mem_test.c ./src/utils/safe_mem.c -lcmocka -Isrc
 	./a.out
