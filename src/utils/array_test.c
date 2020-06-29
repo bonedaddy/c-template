@@ -10,19 +10,19 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wpedantic"
 void test_array_len(void **state) {
-    int empty[0];
     int one[1] = {0};
-    assert(array_len(empty) == 0);
+    int two[2] = {0, 1};
     assert(array_len(one) == 1);
+    assert(array_len(two) == 2);
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wpedantic"
 void test_array_size(void **state) {
-    int empty[0];
+    int one[1] = {0};
     int two[2] = {0, 1};
-    assert(array_size(empty) == 0);
+    assert(array_size(one) == sizeof(int));
     assert(array_size(two) == sizeof(int)*2);
 }
 
