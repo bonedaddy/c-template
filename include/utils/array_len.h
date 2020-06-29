@@ -1,4 +1,4 @@
 // returns the number of elements in an array
-#define array_len(x) (array_size(x) > 0) ? sizeof(x) / sizeof(x[0]) : 0
+#define array_len(x) ((array_size(x) > 0) ? sizeof(x) / sizeof(x[0]) : 0)
 // returns the size of the array in bytes
-#define array_size(x) sizeof(x)
+#define array_size(x) (sizeof(x))
