@@ -69,7 +69,7 @@ target_link_libraries(safe-math-test cmocka)
 target_link_libraries(safe-math-test safemathstatic)
 target_link_libraries(safe-mem-test cmocka)
 target_link_libraries(safe-mem-test safememstatic)
-
+target_link_libraries(safe-mem-test pthread)
 
 # enable testing
 enable_testing()
