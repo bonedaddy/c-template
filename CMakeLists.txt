@@ -42,14 +42,21 @@ add_library(safemathstatic
         ./include/utils/safe_math.h
         ./src/utils/safe_math.c
 )
+add_library(commandershared
+    SHARED
+        ./deps/commander/commander.h
+        ./deps/commander/commander.c
+)
+
 
 # set library compile options
 target_compile_options(safememstatic PRIVATE ${flags})
 target_compile_options(randomshared PRIVATE ${flags})
 target_compile_options(safemathstatic PRIVATE ${flags})
-
+target_compile_options(commandershared PRIVATE ${flags})
 
 # defines executables to build
+add_executable(cli-test ./src/cli.c)
 add_executable(logger-test ./src/utils/logger.c)
 add_executable(array-len-test ./src/utils/array_test.c)
 add_executable(random-test ./src/utils/random_test.c)
@@ -57,6 +64,7 @@ add_executable(safe-math-test ./src/utils/safe_math_test.c)
 add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
 
 # set executable compiler options
+target_compile_options(cli-test PRIVATE ${flags})
 target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
 target_compile_options(random-test PRIVATE ${flags})
@@ -65,6 +73,7 @@ target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
 
+target_link_libraries(cli-test commandershared)
 target_link_libraries(logger-test cmocka)
 target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
