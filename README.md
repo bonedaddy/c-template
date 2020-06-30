@@ -9,6 +9,11 @@ A template repository to help make C development easier and safer. Includes a re
 * Safe Math (WIP)
 * Safe Memory
     * Wraps pointer objects to prevent double free 
+* Logging
+
+# Logging
+
+A wrapper around [`zlog`](https://github.com/HardySimpson/zlog)
 
 # build
 

@@ -50,18 +50,23 @@ target_compile_options(safemathstatic PRIVATE ${flags})
 
 
 # defines executables to build
+add_executable(logger-test ./src/utils/logger.c)
 add_executable(array-len-test ./src/utils/array_test.c)
 add_executable(random-test ./src/utils/random_test.c)
 add_executable(safe-math-test ./src/utils/safe_math_test.c)
 add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
 
 # set executable compiler options
+target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
 target_compile_options(random-test PRIVATE ${flags})
 target_compile_options(safe-math-test PRIVATE ${flags})
 target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
+
+target_link_libraries(logger-test cmocka)
+target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
 target_link_libraries(random-test cmocka)
 target_link_libraries(random-test randomshared)
