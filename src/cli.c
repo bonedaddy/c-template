@@ -9,7 +9,8 @@
 
 void print_help() {
   printf("CLI HELP MENU\n-------------\n\n");
-  printf("new-zlog-config <path-to-config> (generate a new zlog config file)\n");
+  printf("new-zlog-config <path-to-config> (generate a new zlog config file - default to zlog.conf)\n");
+  printf("help\t\t\t\t (print command help)\n");
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
