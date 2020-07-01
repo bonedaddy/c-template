@@ -10,19 +10,13 @@
 #define MAX_COMMAND_ARGS 32
 #endif
 
-/*
-  command is the main object type
-*/
+// command is the main object type
 struct command;
 
-/*
-  declares the command handler callback which takes in an instance of command
-*/
+// declares the command handler callback which takes in an instance of command
 typedef void (* command_handler_callback)(int argc, char *argv[]);
 
-/*
-  command_handler is an individual command
-*/
+// command_handler is an individual command
 typedef struct {
   char *name;
   char *argv[MAX_COMMAND_ARGS];
@@ -30,38 +24,44 @@ typedef struct {
   command_handler_callback callback;
 } command_handler;
 
-// 
+// command_object is an implementation of command
 typedef struct command {
   char *argv[MAX_COMMAND_ARGS];
   command_handler *command;
   int argc;
 } command_object;
-void print_help();
-// used to check if the provided string is a flag
-bool is_flag_argument(char *arg);
+
+
 // returns a prepared command_object to execute user input
 command_object *new_command_object();
 // a command to generate a new zlog configuration
 command_handler *new_zlog_config_command(command_object *self);
 // displays the help command
 command_handler *new_help_command(command_object *self);
+// prints command help
+void print_help();
+// used to check if the provided string is a flag
+bool is_flag_argument(char *arg);
 // wrapper function to use as the calback
-void new_logger_config_wrapper(int argc, char *argv[]);
+void new_logger_config_callback(int argc, char *argv[]);
 // wrapper function to use as the callbacK
-void new_help_command_wrapper(int argc, char *argv[]);
+void print_help_callback(int argc, char *argv[]);
 
-// NOTE: you will want to add additional statements for any other commands that are being included
+
 void print_help() {
   printf("CLI HELP MENU\n-------------\n\n");
   printf("new-zlog-config <path-to-config> (generate a new zlog config file)\n");
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-void new_help_command_wrapper(int argc, char *argv[]) {
+// print_help callback function
+void print_help_callback(int argc, char *argv[]) {
   print_help();
 }
 
-void new_logger_config_wrapper(int argc, char *argv[]) {
+
+// wraps new_logger_config for 
+void new_logger_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
     config_path = malloc(sizeof(argv[0]));
@@ -83,8 +83,9 @@ void new_logger_config_wrapper(int argc, char *argv[]) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 command_handler *new_help_command(command_object *self) {
     // allocate size of command_handler and the new-log-config `char *`
-  command_handler *handler = malloc(sizeof(command_handler) + sizeof("new-zlog-config"));
-  handler->callback = new_help_command_wrapper;
+  command_handler *handler = malloc(sizeof(command_handler) + sizeof("help"));
+  handler->callback = print_help_callback;
+  handler->name = "help";
   return handler;
 }
 
@@ -92,7 +93,7 @@ command_handler *new_help_command(command_object *self) {
 command_handler *new_zlog_config_command(command_object *self) {
   // allocate size of command_handler and the new-log-config `char *`
   command_handler *handler = malloc(sizeof(command_handler) + sizeof("new-zlog-config"));
-  handler->callback = new_logger_config_wrapper;
+  handler->callback = new_logger_config_callback;
   handler->name = "new-zlog-config";
   return handler;
 }
@@ -120,7 +121,7 @@ command_object *new_command_object(int argc, char *argv[]) {
   // allocate memory equal to the size of command_object  combined with the size of all provided arguments
   // and typecast it to command_object *
   command_object *pcobj = (command_object *)malloc(sizeof(command_object) + sizeof(*argv));
-  // parse cli arguments provided by user 
+  // parse cli arguments provided by user  and assign to pcobj
   for (int i = 0; i < argc; i++) {
     pcobj->argv[i] = argv[i];
     pcobj->argc = argc;
@@ -129,6 +130,7 @@ command_object *new_command_object(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
     // handle new-zlog-config
     // next argument should be the path to the config file
+    // if there is not provided argument we default to zlog.conf
     if (strcmp(argv[i], "new-zlog-config") == 0) {
       int idx = i + 1;
       char *config_path;
