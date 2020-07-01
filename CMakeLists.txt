@@ -72,7 +72,7 @@ target_compile_options(safe-math-test PRIVATE ${flags})
 target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
-
+target_link_libraries(cli-test argtable3)
 target_link_libraries(cli-test commandershared)
 target_link_libraries(logger-test cmocka)
 target_link_libraries(logger-test zlog)

@@ -1,60 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <argtable3.h>
 #include <string.h>
-#include "../include/utils/commands.h"
+#include "../include/utils/array_len.h"
 
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void verbose(command_t *self) {
-  printf("verbose: enabled\n");
-}
+#define MAX_ARGS 32
 
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void required(command_t *self) {
-  printf("required: %s\n", self->arg);
-}
+typedef struct command_object {
+  char *argv[MAX_ARGS];
+  int argc;
+} command_object;
 
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void optional(command_t *self) {
-  printf("optional: %s\n", self->arg);
-}
+bool is_argument(char *arg);
+command_object *new_command_object();
 
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void new_zlog_config_command(command_t *self) {
-    char *configPath;
-    // if we havve more than 0 arguments check for `--config` or `--cfg`
-    if (self->argc > 0) {
-      for (long unsigned int i = 0; i <= array_len(self->argv); i++) {
-        // if --config or --cfg is provided, then use the value of that as the zlog config file location
-        if (strcmp(self->argv[i], "--config") == 0  || strcmp(self->argv[i], "--cfg") == 0) {
-          printf("found arg: %s\n", self->argv[i]);
-          configPath = (char *)malloc(sizeof(configPath));
-          strcpy(configPath, self->argv[i]);
-        }
+
+bool is_argument(char *arg) {
+    if (strlen(arg) >= 2) {
+      char *key = arg;
+      char c[2] = {key[0], key[1]};
+      char *part = c;
+      if (strcmp(part, "--") == 0) {
+        return true;
       }
     }
-    // if configPath variable is empty, it means no valid config path was provided
-    // thus we will default to zlog.conf
-    if (strcmp(configPath, "") == 0) {
-      configPath = "zlog.conf";
+  return false;
+}
+// parses argc and argv to generate the root command object
+command_object *new_command_object(int argc, char *argv[]) {
+  if (argc > MAX_ARGS) {
+    return NULL;
+  }
+  command_object *pcobj = malloc(sizeof(command_object) + sizeof*(argv));
+  for (int i = 0; i < argc; i++) {
+    // we only accept whole commands or arguments with `--argName`
+    if (strlen(argv[i]) >= 2) {
+      // check to see if it is a command name or argument
+      if (is_argument(argv[i])) {
+        printf("found argument: %s\n", argv[i]);
+      }
     }
-    printf("%s\n", configPath);
+    pcobj->argv[i] = argv[i];
+  }
+  return pcobj;
 }
-
-#pragma GCC diagnostic ignored "-Wpragmas"
-// should save returned variable in command_object
-command_object *setup_command_object(char *name, char *version) {
-    command_object *cmdobj = (command_object *)malloc(sizeof(command_object));
-    command_init(&cmdobj->cmd, name, version);
-    command_option(&cmdobj->cmd, "nlcfg", "new-logger-config", "create zlog configuration file", new_zlog_config_command);
-    command_option(&cmdobj->cmd, "-v", "--verbose", "enable verbose stuff", verbose);
-    command_option(&cmdobj->cmd, "-r", "--required <arg>", "required arg", required);
-    command_option(&cmdobj->cmd, "-o", "--optional [arg]", "optional arg", optional);
-    return cmdobj;
-}
-
-int main(int argc, char **argv) {
-    command_object *cmdobj = setup_command_object("test-command", "0.0.1");
-    command_parse(&cmdobj->cmd, argc, argv);
-    command_free(&cmdobj->cmd);
-    return 0;
+int main(int argc, char *argv[]) {
+  command_object *pcmd = new_command_object(argc, argv);
+  if (argc > 1) {
+    for (int i = 1; i < argc; i++) {
+      printf("%s\n", pcmd->argv[i]);
+    }
+  }
 }
