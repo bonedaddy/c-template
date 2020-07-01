@@ -9,7 +9,8 @@ include(cmake/safe_mem_lib.cmake)
 include(cmake/safe_mem_test.cmake)
 include(cmake/safe_math_lib.cmake)
 include(cmake/safe_math_test.cmake)
-include(cmake/command_line.cmake)
+include(cmake/command_line_lib.cmake)
+include(cmake/command_line_test.cmake)
 include(cmake/cli.cmake)
 include(cmake/random_lib.cmake)
 include(cmake/random_test.cmake)
@@ -47,7 +48,10 @@ define_safe_math_lib()
 # comment following line to disable test builds
 define_safe_math_test()
 
-define_command_line()
+# build command line lib
+define_command_line_lib()
+# uncomment following line to disable test builds
+define_command_line_test()
 
 # build random generation library
 define_random_lib()
