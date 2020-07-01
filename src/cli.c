@@ -15,13 +15,10 @@ void print_help() {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-// print_help callback function
 void print_help_callback(int argc, char *argv[]) {
   print_help();
 }
 
-
-// wraps new_logger_config for zlo
 void new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
@@ -58,6 +55,7 @@ command_handler *new_zlog_config_command(command_object *self) {
   handler->name = "new-zlog-config";
   return handler;
 }
+
 // checks whether or not the provide arg is a command line flag
 // it does this by getting the first 2 char's and comparing that to `--`
 #pragma GCC diagnostic ignored "-Wunused-function"
@@ -104,15 +102,21 @@ command_object *new_command_object(int argc, char *argv[]) {
       pcobj->argv[0] = config_path;
       pcobj->argc = 1;
       printf("config path %s\n", pcobj->argv[0]);
+      // temporary variable to hold command handler
       command_handler *zlg = new_zlog_config_command(pcobj);
+      // allocate a chunk of memory to use as a permanent variable for command handler
       command_handler *zlog_command = malloc(sizeof(zlg));
+      // move from temp variable to permanent variable
       zlog_command = zlg;
       pcobj->command = zlog_command;
     }
     // handle help command (triggered via `help` or no arguments)
     if (strcmp(argv[i], "help") == 0 || argc == 1) {
+      // temporary variable to hold command handler
       command_handler *hlp = new_help_command(pcobj);
+      // allocate a chunk of memory to use as a permanent variable for command handler
       command_handler *help_command = malloc(sizeof(hlp));
+      // move from temp variable to permanent variable
       help_command = hlp;
       pcobj->command = help_command;
     }
