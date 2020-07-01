@@ -24,7 +24,6 @@ typedef void (* command_handler_callback)(int argc, char *argv[]);
 typedef struct {
   char *name;
   char *argv[MAX_COMMAND_ARGS];
-  //void (*callback)(char *argv[])();
   command_handler_callback callback;
 } command_handler;
 

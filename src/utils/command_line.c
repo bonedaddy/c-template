@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../../include/utils/cli.h"
+#include "../../include/utils/command_line.h"
 #include "../../include/utils/array_len.h"
 #include "../../include/utils/logger.h"
 #include "../../include/utils/safe_mem.h"

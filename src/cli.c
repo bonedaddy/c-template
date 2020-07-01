@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include "../include/utils/cli.h"
+#include "../include/utils/command_line.h"
 #include "../include/utils/safe_mem.h"
 
 

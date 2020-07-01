@@ -2,6 +2,20 @@
 
 A template repository to help make C development easier and safer. Includes a ready-to-go CMake integration, with linking to cmocka. Additionally includes a few WIP utility functions to assist development
 
+# first steps
+
+To change the name of the CLI which is default to `c-template-REPLACEME` to your own application cli name run:
+
+```shell
+$> sed -i 's/c-template-REPLACEME/yourNameHEre/g' CMakeLists.txt
+```
+
+Then to adjust the project to your own run
+
+```shell
+$> sed -i 's/c-template/yourNameHEre/g' CMakeLists.txt
+```
+
 # Utility Functions
 
 * Array length checking
