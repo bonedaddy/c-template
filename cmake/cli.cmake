@@ -1,7 +1,7 @@
 macro(define_c_template_REPLACEME)
     add_executable(c-template-cli-REPLACEME ./src/cli.c)
     target_link_libraries(c-template-cli-REPLACEME commandlineshared)
-    target_link_libraries(c-template-cli-REPLACEME safememstatic)
+    target_link_libraries(c-template-cli-REPLACEME safememshared)
     target_link_libraries(c-template-cli-REPLACEME loggershared)
     target_link_libraries(c-template-cli-REPLACEME zlog)
     target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
