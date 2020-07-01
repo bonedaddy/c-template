@@ -26,12 +26,11 @@ logger *new_logger(char *config_path, char *category) {
 }
 
 int new_logger_config(char *config_path) {
-    printf("%s\n", config_path);
     const char *default_config =    "[formats]\n"
                                     "simples = \"%m%n\"\n"
                                     "[rules]\n"
                                     "simple_debug.DEBUG >stdout; simple\n";
-    FILE *file_handler = fopen("logger.conf", "w");
+    FILE *file_handler = fopen(config_path, "w");
     fputs(default_config, file_handler);
     return fclose(file_handler);
 }
