@@ -1,4 +1,7 @@
 /*
+    
+    attribution note: modified version of commander see `deps/commander` for the license for that package
+    
     cli.h is a basic command line client header file
     You can extend it with additional commands according to your needs.
     Extending with a new command consists of two things:
