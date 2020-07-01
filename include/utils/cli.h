@@ -37,15 +37,5 @@ typedef struct command {
 
 // returns a prepared command_object to execute user input
 command_object *new_command_object(int argc, char *argv[]);
-// a command to generate a new zlog configuration
-command_handler *new_zlog_config_command(command_object *self);
-// displays the help command
-command_handler *new_help_command(command_object *self);
-// prints command help
-void print_help();
 // used to check if the provided string is a flag
 bool is_flag_argument(char *arg);
-// wrapper function to use as the calback
-void new_zlog_config_callback(int argc, char *argv[]);
-// wrapper function to use as the callbacK
-void print_help_callback(int argc, char *argv[]);
