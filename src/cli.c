@@ -4,14 +4,27 @@
 #include <argtable3.h>
 #include <string.h>
 #include "../include/utils/array_len.h"
+#include "../include/utils/logger.h"
 
-#define MAX_ARGS 32
+#ifndef MAX_COMMAND_ARGS
+#define MAX_COMMAND_ARGS 32
+#endif
 
 
-typedef void command_object_callback;
+struct command;
 
-typedef struct command_object {
-  char *argv[MAX_ARGS];
+typedef void (* command_handler_callback)(struct command *self);
+
+// a callback function
+typedef struct {
+  char *name;
+  //void (*callback)(char *argv[])();
+  command_handler_callback callback;
+} command_handler;
+
+typedef struct command {
+  char *argv[MAX_COMMAND_ARGS];
+  command_handler *commands[MAX_COMMAND_ARGS];
   int argc;
 } command_object;
 
@@ -20,14 +33,26 @@ bool is_flag_argument(char *arg);
 // returns a prepared command_object to execute user input
 command_object *new_command_object();
 // a command to generate a new zlog configuration
-command_object_callback new_zlog_config_command();
+command_handler *new_zlog_config_command();
+void new_logger_config_wrapper();
 
+void new_logger_config_wrapper() {
+  printf("new_logger_config_wrapper called\n");
+}
+
+#pragma GCC diagnostic ignored "-Wunused-function"
+command_handler *new_zlog_config_command() {
+  // allocate size of command_handler and the new-log-config `char *`
+  command_handler *handler = malloc(sizeof(command_handler) + sizeof("new-log-config"));
+  handler->callback = new_logger_config_wrapper;
+  handler->name = "new-log-config";
+  return handler;
+}
 // checks whether or not the provide arg is a command line flag
 // it does this by getting the first 2 char's and comparing that to `--`
 bool is_flag_argument(char *arg) {
     if (strlen(arg) > 2) {
-      char *key = arg;
-      char c[2] = {key[0], key[1]};
+      char c[2] = {arg[0], arg[1]};
       char *part = c;
       if (strcmp(part, "--") == 0) {
         return true;
@@ -39,7 +64,7 @@ bool is_flag_argument(char *arg) {
 // parses argc and argv to generate the root command object
 command_object *new_command_object(int argc, char *argv[]) {
   // if too many arguments have been provided return a null pointer
-  if (argc > MAX_ARGS) {
+  if (argc > MAX_COMMAND_ARGS) {
     printf("too many command line arguments provided\n");
     return NULL;
   }
@@ -51,7 +76,8 @@ command_object *new_command_object(int argc, char *argv[]) {
     if (strlen(argv[i]) >= 2) {
       // check to see if arg is a command line flag
       if (is_flag_argument(argv[i])) {
-        printf("found argument: %s\n", argv[i]);
+        // TODO(bonedaddy): handle
+        printf("found flag: %s\n", argv[i]);
       }
     }
     pcobj->argv[i] = argv[i];
@@ -60,6 +86,10 @@ command_object *new_command_object(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
+  command_handler *cmd = new_zlog_config_command();
+  if (cmd != NULL) {
+    cmd->callback();
+  }
   command_object *pcmd = new_command_object(argc, argv);
   if (pcmd == NULL) {
     printf("failed to get command_object");
