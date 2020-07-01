@@ -32,10 +32,11 @@ command_object *new_command_object(int argc, char *argv[]) {
   // allocate memory equal to the size of command_object  combined with the size of all provided arguments
   // and typecast it to command_object *
   command_object *pcobj = (command_object *)malloc(sizeof(command_object) + sizeof(*argv));
+  // set arg count
+  pcobj->argc = argc;
   // parse cli arguments provided by user  and assign to pcobj
   for (int i = 0; i < argc; i++) {
     pcobj->argv[i] = argv[i];
-    pcobj->argc = argc;
   }
   return pcobj;
 }
