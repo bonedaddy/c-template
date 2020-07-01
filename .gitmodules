@@ -1,3 +1,0 @@
-[submodule "include/utils/hashmap"]
-	path = include/utils/hashmap
-	url = https://github.com/sheredom/hashmap.h.git
