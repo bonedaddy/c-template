@@ -48,6 +48,12 @@ add_library(commandershared
         ./deps/commander/commander.c
 )
 
+add_library(loggershared
+    SHARED
+        ./include/utils/logger.h
+        ./src/utils/logger.c
+)
+
 
 # set library compile options
 target_compile_options(safememstatic PRIVATE ${flags})
@@ -72,7 +78,9 @@ target_compile_options(safe-math-test PRIVATE ${flags})
 target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
-target_link_libraries(cli-test argtable3)
+target_link_libraries(cli-test loggershared)
+target_link_libraries(cli-test zlog)
+# target_link_libraries(cli-test argtable3)
 target_link_libraries(cli-test commandershared)
 target_link_libraries(logger-test cmocka)
 target_link_libraries(logger-test zlog)
