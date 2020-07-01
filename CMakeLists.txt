@@ -1,26 +1,14 @@
+#####################
+# BEGIN CMAKE SETUP #
+#####################
+
 # sets minimum version
 cmake_minimum_required(VERSION 3.0)
 
-# project name and language
-project(c-template LANGUAGES C)
-
-# include macros 
-include(cmake/safe_mem_lib.cmake)
-include(cmake/safe_mem_test.cmake)
-include(cmake/safe_math_lib.cmake)
-include(cmake/safe_math_test.cmake)
-include(cmake/command_line_lib.cmake)
-include(cmake/command_line_test.cmake)
-include(cmake/cli.cmake)
-include(cmake/random_lib.cmake)
-include(cmake/random_test.cmake)
-include(cmake/logger_lib.cmake)
-include(cmake/logger_test.cmake)
-include(cmake/array_len_test.cmake)
-
-# setup build flags (-g builds with debug information)
+project(c-template-REPLACEME LANGUAGES C)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # -g indicates to include debug symbols
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g)
 endif()
 
@@ -29,42 +17,74 @@ if(NOT CMAKE_BUILD_TYPE)
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 endif()
 
+###################
+# END CMAKE SETUP #
+###################
+
+########################
+# BEGIN MACRO INCLUDES #
+########################
+
+include(cmake/safe_mem_lib.cmake)
+include(cmake/safe_mem_test.cmake)
+
+include(cmake/safe_math_lib.cmake)
+include(cmake/safe_math_test.cmake)
+
+include(cmake/command_line_lib.cmake)
+include(cmake/command_line_test.cmake)
+
+include(cmake/cli.cmake)
+
+include(cmake/random_lib.cmake)
+include(cmake/random_test.cmake)
+
+include(cmake/logger_lib.cmake)
+include(cmake/logger_test.cmake)
+
+include(cmake/array_len_test.cmake)
+
+######################
+# END MACRO INCLUDES #
+######################
+
+
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Build flags: ${flags}")
 
-# build project cli
+###############################
+# BEGIN MACRO FUNCTION INVOKE #
+###############################
+
+# to disable test builds comment out `*_test()` lines
+
 define_cli()
 
-# build safe memory library
 define_safe_mem_lib()
-# comment following line to disable test builds
 define_safe_mem_test()
 
-# build safe math library
 define_safe_math_lib()
-# comment following line to disable test builds
 define_safe_math_test()
 
-# build command line lib
 define_command_line_lib()
-# uncomment following line to disable test builds
 define_command_line_test()
 
-# build random generation library
 define_random_lib()
-# comment following line to disable test builds
 define_random_test()
 
-# build logger library
 define_logger_lib()
-# comment following line to disable test builds
 define_logger_test()
 
-# test array header functionality
-# comment following line to disable test builds
 define_array_len_test()
 
-# enable testing
+#############################
+# END MACRO FUNCTION INVOKE #
+#############################
+
+################
+# ENABLE CTEST #
+################
+
 enable_testing()
 
 
