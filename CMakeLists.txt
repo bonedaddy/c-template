@@ -4,18 +4,17 @@ cmake_minimum_required(VERSION 3.0)
 # project name and language
 project(c-template LANGUAGES C)
 
-# include macros
+# include macros 
 include(cmake/safe_mem_lib.cmake)
 include(cmake/safe_mem_test.cmake)
 include(cmake/safe_math_lib.cmake)
 include(cmake/safe_math_test.cmake)
-include(cmake/logger_lib.cmake)
 include(cmake/command_line.cmake)
 include(cmake/cli.cmake)
 include(cmake/random_lib.cmake)
 include(cmake/random_test.cmake)
 include(cmake/logger_lib.cmake)
-include(cmake/logger_test.cmake)
+include(cmake/array_len_test.cmake)
 
 # setup build flags
 list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
@@ -35,29 +34,34 @@ message(STATUS "C flags, Release configuration with Debug info: ${CMAKE_C_FLAGS_
 message(STATUS "C flags, minimal Release configuration: ${CMAKE_C_FLAGS_MINSIZEREL}")
 
 
-# defines executables to build
-add_executable(array-len-test ./src/utils/array_test.c)
+# build project cli
+define_cli()
 
-
-# set executable compiler options
-target_compile_options(array-len-test PRIVATE ${flags})
-
-# links libraries
-target_link_libraries(array-len-test cmocka)
-
-# execute macros
+# build safe memory library
 define_safe_mem_lib()
+# comment following line to disable test builds
 define_safe_mem_test()
+
+# build safe math library
 define_safe_math_lib()
+# comment following line to disable test builds
 define_safe_math_test()
+
 define_command_line()
-define_c_template_REPLACEME()
+
+# build random generation library
 define_random_lib()
+# comment following line to disable test builds
 define_random_test()
+
+# build logger library
 define_logger_lib()
-define_logger_test()
+
+# test array header functionality
+# comment following line to disable test builds
+define_array_len_test()
 
 # enable testing
 enable_testing()
-add_test(NAME ArrayLenTest COMMAND array-len-test)
+
 
