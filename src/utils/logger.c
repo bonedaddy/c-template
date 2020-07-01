@@ -7,7 +7,7 @@ logger *new_logger(char *config_path, char *category) {
     int return_code = zlog_init(config_path);
     if (return_code) {
         printf("failed to initialize zlog\n");
-        zlog_fini();
+        close_logger();
         return NULL;
     }
     // open the log category which is a particular
@@ -15,6 +15,7 @@ logger *new_logger(char *config_path, char *category) {
     zlog_category_t *zl = zlog_get_category(category);
     if (!zl) {
         printf("failed to open zlog category");
+        close_logger();
         return NULL;
     }
     // allocate memory size of `logger`, and the size of the returned cagetory
@@ -47,7 +48,7 @@ int main(void) {
         return -1;
     }
     zlog_info(loggr->z, "hello zlog");
-    zlog_fini();
+    close_logger();
     return 0; 
 
 } 
