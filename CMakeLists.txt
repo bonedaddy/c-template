@@ -78,6 +78,7 @@ target_compile_options(safe-math-test PRIVATE ${flags})
 target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
+target_link_libraries(cli-test safememstatic)
 target_link_libraries(cli-test loggershared)
 target_link_libraries(cli-test zlog)
 # target_link_libraries(cli-test argtable3)
