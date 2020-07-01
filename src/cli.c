@@ -3,50 +3,9 @@
 #include <stdbool.h>
 #include <argtable3.h>
 #include <string.h>
+#include "../include/cli.h"
 #include "../include/utils/array_len.h"
 #include "../include/utils/logger.h"
-
-#ifndef MAX_COMMAND_ARGS
-#define MAX_COMMAND_ARGS 32
-#endif
-
-// command is the main object type
-struct command;
-
-// declares the command handler callback which takes in an instance of command
-typedef void (* command_handler_callback)(int argc, char *argv[]);
-
-// command_handler is an individual command
-typedef struct {
-  char *name;
-  char *argv[MAX_COMMAND_ARGS];
-  //void (*callback)(char *argv[])();
-  command_handler_callback callback;
-} command_handler;
-
-// command_object is an implementation of command
-typedef struct command {
-  char *argv[MAX_COMMAND_ARGS];
-  command_handler *command;
-  int argc;
-} command_object;
-
-
-// returns a prepared command_object to execute user input
-command_object *new_command_object();
-// a command to generate a new zlog configuration
-command_handler *new_zlog_config_command(command_object *self);
-// displays the help command
-command_handler *new_help_command(command_object *self);
-// prints command help
-void print_help();
-// used to check if the provided string is a flag
-bool is_flag_argument(char *arg);
-// wrapper function to use as the calback
-void new_logger_config_callback(int argc, char *argv[]);
-// wrapper function to use as the callbacK
-void print_help_callback(int argc, char *argv[]);
-
 
 void print_help() {
   printf("CLI HELP MENU\n-------------\n\n");
@@ -60,8 +19,8 @@ void print_help_callback(int argc, char *argv[]) {
 }
 
 
-// wraps new_logger_config for 
-void new_logger_config_callback(int argc, char *argv[]) {
+// wraps new_logger_config for zlo
+void new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
     config_path = malloc(sizeof(argv[0]));
@@ -93,7 +52,7 @@ command_handler *new_help_command(command_object *self) {
 command_handler *new_zlog_config_command(command_object *self) {
   // allocate size of command_handler and the new-log-config `char *`
   command_handler *handler = malloc(sizeof(command_handler) + sizeof("new-zlog-config"));
-  handler->callback = new_logger_config_callback;
+  handler->callback = new_zlog_config_callback;
   handler->name = "new-zlog-config";
   return handler;
 }
