@@ -31,19 +31,11 @@ After that you'll want to decide what macros to include. The default `CMakeLists
 ## normal (release)
 
 ```shell
-$> mkdir build && cd build
-$> cmake -D CMAKE_C_COMPILER=gcc ..
-$> cmake -D CMAKE_C_COMPILER=gcc -build  .
 $> make
-$> ctest # runs tests
 ```
 
 ## debug
 
 ```shell
-$> mkdir build && cd build
-$> cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug ..
-$> cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -build  .
-$> make
-$> ctest # runs tests
+$> make build-all-debug
 ```
