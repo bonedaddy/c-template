@@ -4,9 +4,10 @@ cmake_minimum_required(VERSION 3.0)
 # project name and language
 project(c-template LANGUAGES C)
 
-# this doesnt appear to be needed unless
-# we want to have user not be required to install cmake
-# include(cmake/FetchCMocka.cmake)
+# include macros
+include(cmake/safe_mem.cmake)
+include(cmake/safe_math.cmake)
+include(cmake/command_line.cmake)
 
 # setup build flags
 list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
@@ -26,26 +27,13 @@ message(STATUS "C flags, Release configuration with Debug info: ${CMAKE_C_FLAGS_
 message(STATUS "C flags, minimal Release configuration: ${CMAKE_C_FLAGS_MINSIZEREL}")
 
 # add custom libraries
-add_library(safememstatic
-    STATIC
-        ./include/utils/safe_mem.h
-        ./src/utils/safe_mem.c
-)
 add_library(randomshared
     SHARED
         ./include/utils/random.h
         ./src/utils/random.c
 )
-add_library(safemathstatic
-    STATIC
-        ./include/utils/safe_math.h
-        ./src/utils/safe_math.c
-)
-add_library(commandlineshared
-    SHARED
-        ./include/utils/command_line.h
-        ./src/utils/command_line.c
-)
+
+
 add_library(loggershared
     SHARED
         ./include/utils/logger.h
@@ -53,36 +41,22 @@ add_library(loggershared
 )
 
 # set library compile options
-target_compile_options(safememstatic PRIVATE ${flags})
 target_compile_options(randomshared PRIVATE ${flags})
-target_compile_options(safemathstatic PRIVATE ${flags})
-target_compile_options(commandlineshared PRIVATE ${flags})
 
 # defines executables to build
-add_executable(command-line-test ./src/utils/command_line_test.c)
 add_executable(c-template-cli-REPLACEME ./src/cli.c)
 add_executable(logger-test ./src/utils/logger.c)
 add_executable(array-len-test ./src/utils/array_test.c)
 add_executable(random-test ./src/utils/random_test.c)
-add_executable(safe-math-test ./src/utils/safe_math_test.c)
-add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
 
 # set executable compiler options
-target_compile_options(command-line-test PRIVATE ${flags})
 target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
 target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
 target_compile_options(random-test PRIVATE ${flags})
-target_compile_options(safe-math-test PRIVATE ${flags})
-target_compile_options(safe-mem-test PRIVATE ${flags})
+
 
 # links libraries
-target_link_libraries(command-line-test cmocka)
-target_link_libraries(command-line-test commandlineshared)
-target_link_libraries(command-line-test safememstatic)
-target_link_libraries(command-line-test loggershared)
-target_link_libraries(command-line-test zlog)
-
 target_link_libraries(c-template-cli-REPLACEME commandlineshared)
 target_link_libraries(c-template-cli-REPLACEME safememstatic)
 target_link_libraries(c-template-cli-REPLACEME loggershared)
@@ -92,16 +66,14 @@ target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
 target_link_libraries(random-test cmocka)
 target_link_libraries(random-test randomshared)
-target_link_libraries(safe-math-test cmocka)
-target_link_libraries(safe-math-test safemathstatic)
-target_link_libraries(safe-mem-test cmocka)
-target_link_libraries(safe-mem-test safememstatic)
 
+# execute macros
+define_safe_mem()
+define_safe_math()
+define_command_line()
 
 # enable testing
 enable_testing()
-add_test(NAME CommandLineTest COMMAND command-line-test)
+
 add_test(NAME ArrayLenTest COMMAND array-len-test)
 add_test(NAME RandomTest COMMAND random-test)
-add_test(NAME SafeMathTest COMMAND safe-math-test)
-add_test(NAME SafeMemTest COMMAND safe-mem-test)
