@@ -8,6 +8,7 @@ project(c-template LANGUAGES C)
 include(cmake/safe_mem.cmake)
 include(cmake/safe_math.cmake)
 include(cmake/command_line.cmake)
+include(cmake/cli.cmake)
 
 # setup build flags
 list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
@@ -44,23 +45,17 @@ add_library(loggershared
 target_compile_options(randomshared PRIVATE ${flags})
 
 # defines executables to build
-add_executable(c-template-cli-REPLACEME ./src/cli.c)
 add_executable(logger-test ./src/utils/logger.c)
 add_executable(array-len-test ./src/utils/array_test.c)
 add_executable(random-test ./src/utils/random_test.c)
 
 # set executable compiler options
-target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
 target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
 target_compile_options(random-test PRIVATE ${flags})
 
 
 # links libraries
-target_link_libraries(c-template-cli-REPLACEME commandlineshared)
-target_link_libraries(c-template-cli-REPLACEME safememstatic)
-target_link_libraries(c-template-cli-REPLACEME loggershared)
-target_link_libraries(c-template-cli-REPLACEME zlog)
 target_link_libraries(logger-test cmocka)
 target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
@@ -71,9 +66,9 @@ target_link_libraries(random-test randomshared)
 define_safe_mem()
 define_safe_math()
 define_command_line()
+define_c_template_REPLACEME()
 
 # enable testing
 enable_testing()
-
 add_test(NAME ArrayLenTest COMMAND array-len-test)
 add_test(NAME RandomTest COMMAND random-test)
