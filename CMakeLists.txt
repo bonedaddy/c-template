@@ -18,22 +18,19 @@ include(cmake/logger_lib.cmake)
 include(cmake/logger_test.cmake)
 include(cmake/array_len_test.cmake)
 
-# setup build flags
-list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
+# setup build flags (-g builds with debug information)
 
-# TODO: the following causes this to fail
-# set release type
-#if(NOT CMAKE_BUILD_TYPE)
-#    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-# endif()
-# print build type
-# message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g)
+endif()
 
-# print flags used
-message(STATUS "C flags, Debug Configuration: ${CMAKE_C_FLAGS_DEBUG}")
-message(STATUS "C flags, Release Configuration: ${CMAKE_C_FLAGS_RELEASE}")
-message(STATUS "C flags, Release configuration with Debug info: ${CMAKE_C_FLAGS_RELWITHDEBINFO}")
-message(STATUS "C flags, minimal Release configuration: ${CMAKE_C_FLAGS_MINSIZEREL}")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
+endif()
+
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Build flags: ${flags}")
 
 # build project cli
 define_cli()
