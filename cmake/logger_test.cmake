@@ -1,0 +1,7 @@
+macro(define_logger_test)
+    add_executable(logger-test ./src/utils/logger.c)
+    target_compile_options(logger-test PRIVATE ${flags})
+    target_link_libraries(logger-test loggerlib)
+    target_link_libraries(logger-test cmocka)
+    target_link_libraries(logger-test zlog)
+endmacro()
