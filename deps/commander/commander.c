@@ -198,7 +198,7 @@ command_option(command_t *self, const char *small, const char *large, const char
 
 static void
 command_parse_args(command_t *self, int argc, char **argv) {
-  int literal = 0;
+  // int literal;
   int i, j;
 
   for (i = 1; i < argc; ++i) {
@@ -236,16 +236,17 @@ command_parse_args(command_t *self, int argc, char **argv) {
 
     // --
     if ('-' == arg[0] && '-' == arg[1] && 0 == arg[2]) {
-      literal = 1;
+    //  literal = 1;
       goto match;
     }
 
+    // NOTE(bonedaddy): disabling this check
     // unrecognized
-    if ('-' == arg[0] && !literal) {
-      fprintf(stderr, "unrecognized flag %s\n", arg);
-      command_free(self);
-      exit(1);
-    }
+    // if ('-' == arg[0] && !literal) {
+    //  fprintf(stderr, "unrecognized flag %s\n", arg);
+    //      command_free(self);
+    //  exit(1);
+    // }
 
     int n = self->argc++;
     if (n == COMMANDER_MAX_ARGS) {

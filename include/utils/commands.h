@@ -6,8 +6,8 @@ typedef struct command_object {
     command_t cmd;
 } command_object;
 
-// command to create a new config file
-static void new_config_command(command_t *self);
+// command to create a new zlog config file
+static void new_zlog_config_command(command_t *self);
 static void verbose(command_t *self);
 static void required(command_t *self);
 static void optional(command_t *self);
