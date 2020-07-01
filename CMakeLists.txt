@@ -11,7 +11,6 @@ project(c-template LANGUAGES C)
 # setup build flags
 list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 
-
 # TODO: the following causes this to fail
 # set release type
 #if(NOT CMAKE_BUILD_TYPE)
@@ -42,26 +41,54 @@ add_library(safemathstatic
         ./include/utils/safe_math.h
         ./src/utils/safe_math.c
 )
+add_library(commandlineshared
+    SHARED
+        ./include/utils/command_line.h
+        ./src/utils/command_line.c
+)
+add_library(loggershared
+    SHARED
+        ./include/utils/logger.h
+        ./src/utils/logger.c
+)
 
 # set library compile options
 target_compile_options(safememstatic PRIVATE ${flags})
 target_compile_options(randomshared PRIVATE ${flags})
 target_compile_options(safemathstatic PRIVATE ${flags})
-
+target_compile_options(commandlineshared PRIVATE ${flags})
 
 # defines executables to build
+add_executable(command-line-test ./src/utils/command_line_test.c)
+add_executable(c-template-cli-REPLACEME ./src/cli.c)
+add_executable(logger-test ./src/utils/logger.c)
 add_executable(array-len-test ./src/utils/array_test.c)
 add_executable(random-test ./src/utils/random_test.c)
 add_executable(safe-math-test ./src/utils/safe_math_test.c)
 add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
 
 # set executable compiler options
+target_compile_options(command-line-test PRIVATE ${flags})
+target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
+target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
 target_compile_options(random-test PRIVATE ${flags})
 target_compile_options(safe-math-test PRIVATE ${flags})
 target_compile_options(safe-mem-test PRIVATE ${flags})
 
 # links libraries
+target_link_libraries(command-line-test cmocka)
+target_link_libraries(command-line-test commandlineshared)
+target_link_libraries(command-line-test safememstatic)
+target_link_libraries(command-line-test loggershared)
+target_link_libraries(command-line-test zlog)
+
+target_link_libraries(c-template-cli-REPLACEME commandlineshared)
+target_link_libraries(c-template-cli-REPLACEME safememstatic)
+target_link_libraries(c-template-cli-REPLACEME loggershared)
+target_link_libraries(c-template-cli-REPLACEME zlog)
+target_link_libraries(logger-test cmocka)
+target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
 target_link_libraries(random-test cmocka)
 target_link_libraries(random-test randomshared)
@@ -73,6 +100,7 @@ target_link_libraries(safe-mem-test safememstatic)
 
 # enable testing
 enable_testing()
+add_test(NAME CommandLineTest COMMAND command-line-test)
 add_test(NAME ArrayLenTest COMMAND array-len-test)
 add_test(NAME RandomTest COMMAND random-test)
 add_test(NAME SafeMathTest COMMAND safe-math-test)
