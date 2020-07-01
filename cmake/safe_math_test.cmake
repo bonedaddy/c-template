@@ -1,0 +1,8 @@
+macro(define_safe_math_test)
+    add_executable(safe-math-test ./src/utils/safe_math_test.c)
+    target_compile_options(safe-math-test PRIVATE ${flags})
+    target_link_libraries(safe-math-test cmocka)
+    target_link_libraries(safe-math-test safemathlib)
+    target_compile_options(safe-mem-test PRIVATE ${flags})
+    add_test(NAME SafeMathTest COMMAND safe-math-test)
+endmacro()

@@ -9,6 +9,8 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+// for some reason the compiler things is_flag is used
 void test_is_flag_argument(void **state) {
     bool is_flag = is_flag_argument("--config");
     assert(is_flag == true);

@@ -7,7 +7,7 @@ logger *new_logger(char *config_path, char *category) {
     int return_code = zlog_init(config_path);
     if (return_code) {
         printf("failed to initialize zlog\n");
-        zlog_fini();
+        close_logger();
         return NULL;
     }
     // open the log category which is a particular
@@ -15,6 +15,7 @@ logger *new_logger(char *config_path, char *category) {
     zlog_category_t *zl = zlog_get_category(category);
     if (!zl) {
         printf("failed to open zlog category");
+        close_logger();
         return NULL;
     }
     // allocate memory size of `logger`, and the size of the returned cagetory
@@ -29,7 +30,7 @@ int new_logger_config(char *config_path) {
     const char *default_config =    "[formats]\n"
                                     "simples = \"%m%n\"\n"
                                     "[rules]\n"
-                                    "simple_debug.DEBUG >stdout; simple\n";
+                                    "simple_debug.DEBUG >stdout;\n";
     FILE *file_handler = fopen(config_path, "w");
     fputs(default_config, file_handler);
     return fclose(file_handler);
@@ -41,13 +42,13 @@ void close_logger(void) {
 
 int main(void) {
     new_logger_config("logger.conf");
-    logger *loggr = new_logger("test_hello.conf", "my_cat");
+    logger *loggr = new_logger("logger.conf", "simple_debug");
     if (loggr == NULL) {
         printf("failed to get new logger");
         return -1;
     }
     zlog_info(loggr->z, "hello zlog");
-    zlog_fini();
+    close_logger();
     return 0; 
 
 } 

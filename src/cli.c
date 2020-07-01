@@ -70,6 +70,8 @@ void print_help_callback(int argc, char *argv[]) {
   print_help();
 }
 
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+// ignore the uninitialized warning about config_path
 void new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
