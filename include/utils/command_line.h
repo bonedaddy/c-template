@@ -9,6 +9,7 @@
       * Defining a function to return a command_handler of your new command
       * Update new_command_object to match the given input against your new command_handl;er
 */
+#include <stdbool.h>
 
 #ifndef MAX_COMMAND_ARGS
 #define MAX_COMMAND_ARGS 32
@@ -18,7 +19,7 @@
 struct command;
 
 // declares the command handler callback which takes in an instance of command
-typedef void (* command_handler_callback)(int argc, char *argv[]);
+typedef void (*command_handler_callback)(int argc, char *argv[]);
 
 // command_handler is an individual command
 typedef struct {
@@ -34,7 +35,7 @@ typedef struct command {
   int argc;
 } command_object;
 
-// returns a prepared command_object to execute user input
-command_object *new_command_object(int argc, char *argv[]);
-// used to check if the provided string is a flag
 bool is_flag_argument(char *arg);
+// parses argc and argv to generate the root command object
+command_object *new_command_object(int argc, char *argv[]);
+
