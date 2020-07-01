@@ -41,11 +41,6 @@ add_library(safemathstatic
         ./include/utils/safe_math.h
         ./src/utils/safe_math.c
 )
-add_library(commandershared
-    SHARED
-        ./deps/commander/commander.h
-        ./deps/commander/commander.c
-)
 add_library(commandlineshared
     SHARED
         ./include/utils/command_line.h
@@ -61,7 +56,6 @@ add_library(loggershared
 target_compile_options(safememstatic PRIVATE ${flags})
 target_compile_options(randomshared PRIVATE ${flags})
 target_compile_options(safemathstatic PRIVATE ${flags})
-target_compile_options(commandershared PRIVATE ${flags})
 target_compile_options(commandlineshared PRIVATE ${flags})
 
 # defines executables to build
@@ -74,7 +68,7 @@ add_executable(safe-math-test ./src/utils/safe_math_test.c)
 add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
 
 # set executable compiler options
-# target_compile_options(command-line-test PRIVATE ${flags})
+target_compile_options(command-line-test PRIVATE ${flags})
 target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
 target_compile_options(logger-test PRIVATE ${flags})
 target_compile_options(array-len-test PRIVATE ${flags})
@@ -88,11 +82,11 @@ target_link_libraries(command-line-test commandlineshared)
 target_link_libraries(command-line-test safememstatic)
 target_link_libraries(command-line-test loggershared)
 target_link_libraries(command-line-test zlog)
+
 target_link_libraries(c-template-cli-REPLACEME commandlineshared)
 target_link_libraries(c-template-cli-REPLACEME safememstatic)
 target_link_libraries(c-template-cli-REPLACEME loggershared)
 target_link_libraries(c-template-cli-REPLACEME zlog)
-target_link_libraries(c-template-cli-REPLACEME commandershared)
 target_link_libraries(logger-test cmocka)
 target_link_libraries(logger-test zlog)
 target_link_libraries(array-len-test cmocka)
