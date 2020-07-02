@@ -25,6 +25,8 @@ endif()
 # BEGIN MACRO INCLUDES #
 ########################
 
+include(cmake/setup_valgrind.cmake)
+
 include(cmake/safe_mem_lib.cmake)
 include(cmake/safe_mem_test.cmake)
 
@@ -57,6 +59,8 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_setup_valgrind()
 
 define_cli()
 
