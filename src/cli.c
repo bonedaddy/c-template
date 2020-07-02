@@ -7,7 +7,7 @@
 
 // prints command help
 void print_help();
-void match_command(command_object *pcobj, int argc, char *argv[]);
+char *prepare_inputs(command_object *pcobj, int argc, char *argv[]);
 // a command to generate a new zlog configuration
 command_handler *new_zlog_config_command(command_object *self);
 // displays the help command
@@ -24,7 +24,7 @@ void print_help() {
   printf("help\t\t\t\t (print command help)\n");
 }
 
-void match_command(command_object *pcobj, int argc, char *argv[]) {
+char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
   // iterate over arguments to match against a command
   for (int i = 0; i < argc; i++) {
     // handle new-zlog-config
@@ -43,28 +43,19 @@ void match_command(command_object *pcobj, int argc, char *argv[]) {
       // NOTE(bonedaddy): looks like this isn't being properly set and passed through to callback
       pcobj->argv[0] = config_path;
       pcobj->argc = 1;
-      printf("config path %s\n", pcobj->argv[0]);
-      // temporary variable to hold command handler
-      command_handler *zlg = new_zlog_config_command(pcobj);
-      // allocate a chunk of memory to use as a permanent variable for command handler
-      command_handler *zlog_command = malloc(sizeof(zlg));
-      // move from temp variable to permanent variable
-      zlog_command = zlg;
-      pcobj->command = zlog_command;
+      char *return_arg = malloc(sizeof("new-zlog-config"));
+      return_arg = "new-zlog-config";
+      return return_arg;
     }
-    // handle help command (triggered via `help` or no arguments)
-    if (strcmp(argv[i], "help") == 0 || argc == 1) {
-      // temporary variable to hold command handler
-      command_handler *hlp = new_help_command(pcobj);
-      // allocate a chunk of memory to use as a permanent variable for command handler
-      command_handler *help_command = malloc(sizeof(hlp));
-      // move from temp variable to permanent variable
-      help_command = hlp;
-      pcobj->command = help_command;
+    if (strcmp(argv[i], "help") == 0) {
+      char *return_arg = malloc(sizeof("help"));
+      return_arg = "help";
+      return return_arg;
     }
     /*    ADD YOUR NEW COMMAND CHECKS HERE
     */
   }
+  return NULL;
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -111,26 +102,34 @@ command_handler *new_zlog_config_command(command_object *self) {
   return handler;
 }
 
+void compare(command_object *self, char *run);
+
+
+void compare(command_object *self, char *run) {
+  for (int i = 0; i < self->command_count; i++) {
+    if (strcmp(self->commands[i].name, run) == 0) {
+      self->commands[i].callback(self->argc, self->argv);
+    }
+  }
+}
+
 
 int main(int argc, char *argv[]) {
   command_object *pcmd = new_command_object(argc, argv);
   if (pcmd == NULL) {
     printf("failed to get command_object");
-    return - 1;
+    return -1;
   }
-  // match the command object
-  match_command(pcmd, argc, argv);
-  int response = run_and_free_command_handler(pcmd);
-  if (response != 0) {
-    printf("failed to run and free command_handler\n");
-    return response;
-  } 
-  // create a safe memory wrapper around the command object
-  memory_object memobj = new_memory_object(pcmd);
-  response = free_memory_object_data(&memobj);
-  if (response != 0) {
-    printf("failed to free memory object\n");
-    return response;
+  int resp = load_command(pcmd, *new_help_command(pcmd));
+  if (resp != 0) {
+    printf("failed to load help command");
+    return -1;
   }
-  return 0;
+  resp = load_command(pcmd, *new_zlog_config_command(pcmd));
+  if (resp != 0) {
+    printf("failed to load help command");
+    return -1;
+  }
+  char *name = prepare_inputs(pcmd, argc, argv);
+  compare(pcmd, name);
 }

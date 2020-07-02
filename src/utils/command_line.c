@@ -43,6 +43,19 @@ command_object *new_command_object(int argc, char *argv[]) {
   return pcobj;
 }
 
+int load_command(command_object *pcobj, command_handler command) {
+  if (pcobj->command_count >= MAX_COMMANDS) {
+    printf("maximum number of commands");
+    return -1;
+  }
+  int n = pcobj->command_count++;
+  command_handler *cmd = &pcobj->commands[n];
+  cmd->callback = command.callback;
+  cmd->name = malloc(strlen(command.name) + 1);
+  cmd->name = command.name;
+  return 0;
+}
+
 // call this whenever you are done with a given command_handler
 // generally done after it is invoked
 int free_command_handler(command_object *pcobj) {
