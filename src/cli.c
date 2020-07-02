@@ -7,8 +7,6 @@
 
 // prints command help
 void print_help();
-// executes the given command
-int execute(command_object *self, char *run);
 // parses the given command line arguments to prepare for running and returns the name of the command to run
 char *prepare_inputs(command_object *pcobj, int argc, char *argv[]);
 // a command to generate a new zlog configuration
@@ -40,19 +38,19 @@ char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
         config_path = malloc(sizeof("zlog.conf"));
         config_path = "zlog.conf";
       } else {
-        config_path = malloc(sizeof(argv[idx]));
+        // config_path = malloc(sizeof(argv[idx]));
         config_path = argv[idx];
       }
       // NOTE(bonedaddy): looks like this isn't being properly set and passed through to callback
       pcobj->argv[0] = config_path;
       pcobj->argc = 1;
-      char *return_arg = malloc(sizeof("new-zlog-config"));
-      return_arg = "new-zlog-config";
+      // char *return_arg = malloc(sizeof("new-zlog-config"));
+      char *return_arg = "new-zlog-config";
       return return_arg;
     }
     if (strcmp(argv[i], "help") == 0) {
-      char *return_arg = malloc(sizeof("help"));
-      return_arg = "help";
+      // char *return_arg = malloc(sizeof("help"));
+      char *return_arg = "help";
       return return_arg;
     }
     /*    ADD YOUR NEW COMMAND CHECKS HERE
@@ -104,18 +102,6 @@ command_handler *new_zlog_config_command(command_object *self) {
   handler->name = "new-zlog-config";
   return handler;
 }
-
-int execute(command_object *self, char *run) {
-  for (int i = 0; i < self->command_count; i++) {
-    if (strcmp(self->commands[i].name, run) == 0) {
-      self->commands[i].callback(self->argc, self->argv);
-      return 0;
-    }
-  }
-  printf("failed to execute command\n");
-  return -1;
-}
-
 
 int main(int argc, char *argv[]) {
   command_object *pcmd = new_command_object(argc, argv);

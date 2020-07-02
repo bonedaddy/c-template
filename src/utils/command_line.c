@@ -51,7 +51,17 @@ int load_command(command_object *pcobj, command_handler command) {
   int n = pcobj->command_count++;
   command_handler *cmd = &pcobj->commands[n];
   cmd->callback = command.callback;
-  cmd->name = malloc(strlen(command.name) + 1);
   cmd->name = command.name;
   return 0;
+}
+
+int execute(command_object *self, char *run) {
+  for (int i = 0; i < self->command_count; i++) {
+    if (strcmp(self->commands[i].name, run) == 0) {
+      self->commands[i].callback(self->argc, self->argv);
+      return 0;
+    }
+  }
+  printf("failed to execute command\n");
+  return -1;
 }

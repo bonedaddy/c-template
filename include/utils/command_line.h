@@ -40,6 +40,8 @@ typedef struct command {
 } command_object;
 
 bool is_flag_argument(char *arg);
+// executes command_to_run if found
+int execute(command_object *self, char *command_to_run);
 int load_command(command_object *pcobj, command_handler command);
 // parses argc and argv to generate the root command object
 command_object *new_command_object(int argc, char *argv[]);
