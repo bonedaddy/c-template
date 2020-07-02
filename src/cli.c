@@ -143,5 +143,6 @@ int main(int argc, char *argv[]) {
     printf("command run failed\n");
     return resp;
   }
+  free(pcmd);
   return 0;
 }

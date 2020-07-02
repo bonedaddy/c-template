@@ -28,16 +28,15 @@ typedef void (*command_handler_callback)(int argc, char *argv[]);
 // command_handler is an individual command
 typedef struct {
   char *name;
-  char *argv[MAX_COMMAND_ARGS];
   command_handler_callback callback;
 } command_handler;
 
 // command_object is an implementation of command
 typedef struct command {
   int command_count;
+  int argc;
   char *argv[MAX_COMMAND_ARGS];
   command_handler commands[MAX_COMMANDS];
-  int argc;
 } command_object;
 
 bool is_flag_argument(char *arg);
