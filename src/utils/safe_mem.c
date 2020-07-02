@@ -3,12 +3,12 @@
 #include "../../include/utils/safe_mem.h"
 
 /*
-    free_memory_object can be used to safely free up allocated memory.
+    free_memory_object_data can be used to safely free up allocated memory.
     the first time you call free_memory_object the memory is freed and 
         the void pointer is set to a null pointer
     the second time you call free_memory_object a -1 is returned
 */
-int free_memory_object(memory_object *obj) {
+int free_memory_object_data(memory_object *obj) {
     // check to see if we have freed the memory before
     if (obj->freed) {
         // return -1 indicating error

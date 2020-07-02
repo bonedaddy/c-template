@@ -34,8 +34,10 @@ void match_command(command_object *pcobj, int argc, char *argv[]) {
       int idx = i + 1;
       char *config_path;
       if (argc < (idx+1)) {
+        config_path = malloc(sizeof("zlog.conf"));
         config_path = "zlog.conf";
       } else {
+        config_path = malloc(sizeof(argv[idx]));
         config_path = argv[idx];
       }
       // NOTE(bonedaddy): looks like this isn't being properly set and passed through to callback
@@ -118,10 +120,14 @@ int main(int argc, char *argv[]) {
   }
   // match the command object
   match_command(pcmd, argc, argv);
+  int response = run_and_free_command_handler(pcmd);
+  if (response != 0) {
+    printf("failed to run and free command_handler\n");
+    return response;
+  } 
   // create a safe memory wrapper around the command object
   memory_object memobj = new_memory_object(pcmd);
-  pcmd->command->callback(pcmd->argc, pcmd->argv);
-  int response = free_memory_object(&memobj);
+  response = free_memory_object_data(&memobj);
   if (response != 0) {
     printf("failed to free memory object\n");
     return response;

@@ -14,6 +14,7 @@
 void test_get_random_string_length(void **state) {
     char *word = get_random_string(10);
     assert(sizeof(word) == 8);
+    free(word);
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"

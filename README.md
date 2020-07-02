@@ -39,3 +39,16 @@ $> make
 ```shell
 $> make build-all-debug
 ```
+
+# testing
+
+You can run all tests using `ctest`:
+```shell
+$> ctest
+```
+
+If you use the `cmake/setup_valgrind` macro you can run memory tests with:
+
+```shell
+$> ctest -T memcheck
+```
