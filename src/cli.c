@@ -7,6 +7,9 @@
 
 // prints command help
 void print_help();
+// executes the given command
+int execute(command_object *self, char *run);
+// parses the given command line arguments to prepare for running and returns the name of the command to run
 char *prepare_inputs(command_object *pcobj, int argc, char *argv[]);
 // a command to generate a new zlog configuration
 command_handler *new_zlog_config_command(command_object *self);
@@ -102,15 +105,15 @@ command_handler *new_zlog_config_command(command_object *self) {
   return handler;
 }
 
-void compare(command_object *self, char *run);
-
-
-void compare(command_object *self, char *run) {
+int execute(command_object *self, char *run) {
   for (int i = 0; i < self->command_count; i++) {
     if (strcmp(self->commands[i].name, run) == 0) {
       self->commands[i].callback(self->argc, self->argv);
+      return 0;
     }
   }
+  printf("failed to execute command\n");
+  return -1;
 }
 
 
@@ -131,5 +134,14 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   char *name = prepare_inputs(pcmd, argc, argv);
-  compare(pcmd, name);
+  if (name == NULL) {
+    printf("invalid command please see help menu for a list of valid commands\n");
+    return -1;
+  }
+  resp = execute(pcmd, name);
+  if (resp != 0) {
+    printf("command run failed\n");
+    return resp;
+  }
+  return 0;
 }
