@@ -12,5 +12,7 @@ typedef struct memory_object {
 } memory_object;
 
 
-int free_memory_object(memory_object *obj);
+// frees the data field of memory_object but does not free memory allocated for the memory_object itself
+int free_memory_object_data(memory_object *obj);
+// returns a new memory_object with data field set to input
 memory_object new_memory_object(void *input);

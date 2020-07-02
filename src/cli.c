@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
   } 
   // create a safe memory wrapper around the command object
   memory_object memobj = new_memory_object(pcmd);
-  response = free_memory_object(&memobj);
+  response = free_memory_object_data(&memobj);
   if (response != 0) {
     printf("failed to free memory object\n");
     return response;

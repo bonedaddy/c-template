@@ -54,6 +54,7 @@ int main(void) {
     }
     zlog_info(loggr->z, "hello zlog");
     close_logger();
+    free(loggr);
     return 0; 
 
 } 
