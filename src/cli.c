@@ -13,17 +13,16 @@ command_handler *new_zlog_config_command(command_object *self);
 // displays the help command
 command_handler *new_help_command(command_object *self);
 // wrapper function to use as the calback
-int new_zlog_config_callback(int argc, char *argv[]);
+void new_zlog_config_callback(int argc, char *argv[]);
 // wrapper function to use as the callbacK
-int print_help_callback(int argc, char *argv[]);
+void print_help_callback(int argc, char *argv[]);
 // prints command help
-int print_help();
+void print_help();
 
-int print_help() {
+void print_help() {
   printf("CLI HELP MENU\n-------------\n\n");
   printf("new-zlog-config <path-to-config> (generate a new zlog config file - default to zlog.conf)\n");
   printf("help\t\t\t\t (print command help)\n");
-  return 0;
 }
 
 char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
@@ -61,17 +60,15 @@ char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-int print_help_callback(int argc, char *argv[]) {
-  int response = print_help();
-  return response;
+void print_help_callback(int argc, char *argv[]) {
+  print_help();
 }
 
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 // ignore the uninitialized warning about config_path
-int new_zlog_config_callback(int argc, char *argv[]) {
+void new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
-    config_path = malloc(sizeof(argv[0]));
     config_path = argv[0];
   }
   if (config_path == NULL) {
@@ -85,7 +82,6 @@ int new_zlog_config_callback(int argc, char *argv[]) {
   } else {
     printf("zlog config saved to %s\n", config_path);
   }
-  return response;
 }
 
 
@@ -113,12 +109,12 @@ int main(int argc, char *argv[]) {
     printf("failed to get command_object");
     return -1;
   }
-  int resp = load_command(pcmd, *new_help_command(pcmd));
+  int resp = load_command(pcmd, new_help_command(pcmd));
   if (resp != 0) {
     printf("failed to load help command");
     return -1;
   }
-  resp = load_command(pcmd, *new_zlog_config_command(pcmd));
+  resp = load_command(pcmd, new_zlog_config_command(pcmd));
   if (resp != 0) {
     printf("failed to load help command");
     return -1;
@@ -133,6 +129,6 @@ int main(int argc, char *argv[]) {
     printf("command run failed\n");
   }
   // this is causing an error
-  // free_command_object(pcmd);
+  free_command_object(pcmd);
   return resp;
 }
