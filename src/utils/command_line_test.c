@@ -58,9 +58,26 @@ void test_load_command(void **state) {
     command_handler *cmd = new_test_command();
     int response = load_command(cmdobj, cmd);
     assert(response == 0);
+    assert(cmdobj->command_count == 1);
     int old_count = cmdobj->command_count;
     cmdobj->command_count = 33;
     response = load_command(cmdobj, new_test_command());
+    assert(response == -1);
+    free_command_object(cmdobj);
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void test_execute(void **state) {
+    int argc = 1;
+    char *argv[MAX_COMMAND_ARGS] = {"hello"};
+    command_object *cmdobj = new_command_object(argc, argv);
+    assert(cmdobj != NULL);
+    command_handler *cmd = new_test_command();
+    int response = load_command(cmdobj, cmd);
+    assert(response == 0);
+    response = execute(cmdobj, "hello-world");
+    assert(response == 0);
+    response = execute(cmdobj, "not-a-command");
     assert(response == -1);
     free_command_object(cmdobj);
 }
@@ -70,6 +87,7 @@ int main(void) {
         cmocka_unit_test(test_is_flag_argument),
         cmocka_unit_test(test_new_command_object),
         cmocka_unit_test(test_load_command),
+        cmocka_unit_test(test_execute),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
