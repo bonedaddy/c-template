@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   if (resp != 0) {
     printf("command run failed\n");
   }
-  // this is causing an error
   free_command_object(pcmd);
+  arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
   return resp;
 }
