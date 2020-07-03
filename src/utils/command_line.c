@@ -49,7 +49,7 @@ command_object *new_command_object(int argc, char *argv[]) {
 */
 int load_command(command_object *self, command_handler command) {
   if (self->command_count >= MAX_COMMANDS) {
-    printf("maximum number of commands");
+    printf("maximum number of commands\n");
     return -1;
   }
   int n = self->command_count++;
@@ -73,6 +73,7 @@ int execute(command_object *self, char *run) {
 }
 
 /*! @brief frees memory allocated for the command_object and sets pointer to null
+   * for some reason this is causing an address boundary error 
 */
 void free_command_object(command_object *self) {
   for (int i = 0; i < self->command_count; i++) {

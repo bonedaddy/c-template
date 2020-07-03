@@ -129,6 +129,7 @@ int main(int argc, char *argv[]) {
     printf("command run failed\n");
     return resp;
   }
-  free_command_object(pcmd);
+  // this is causing an error
+  // free_command_object(pcmd);
   return 0;
 }
