@@ -21,19 +21,6 @@ command_handler *new_test_command() {
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-// for some reason the compiler things is_flag is used
-void test_is_flag_argument(void **state) {
-    bool is_flag = is_flag_argument("--config");
-    assert(is_flag == true);
-    is_flag = is_flag_argument("l");
-    assert(is_flag == false);
-    is_flag = is_flag_argument("ll");
-    assert(is_flag == false);
-}
-
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wunused-variable"
 void test_new_command_object(void **state) {
     int argc = MAX_COMMAND_ARGS;
     // increase argc beyond the maximum limit
@@ -50,6 +37,8 @@ void test_new_command_object(void **state) {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+// for some reason gcc complains response isn't used
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 void test_load_command(void **state) {
     int argc = 1;
     char *argv[MAX_COMMAND_ARGS] = {"hello"};
@@ -67,6 +56,8 @@ void test_load_command(void **state) {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+// for some reason gcc complains response isn't used
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 void test_execute(void **state) {
     int argc = 1;
     char *argv[MAX_COMMAND_ARGS] = {"hello"};
@@ -84,7 +75,6 @@ void test_execute(void **state) {
 
 int main(void) {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_is_flag_argument),
         cmocka_unit_test(test_new_command_object),
         cmocka_unit_test(test_load_command),
         cmocka_unit_test(test_execute),

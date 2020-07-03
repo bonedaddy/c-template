@@ -8,22 +8,6 @@
 #include "../../include/utils/logger.h"
 #include "../../include/utils/safe_mem.h"
 
-
-/*! @brief checks whether or not the provided arg is a command line flag
-  * We determine this by getting the first 2 char from the array and comparing that to `--`
-*/
-#pragma GCC diagnostic ignored "-Wunused-function"
-bool is_flag_argument(char *arg) {
-    if (strlen(arg) > 2) {
-      char c[2] = {arg[0], arg[1]};
-      char *part = c;
-      if (strcmp(part, "--") == 0) {
-        return true;
-      }
-    }
-  return false;
-}
-
 /*! @brief intializes a new command_object to have commands loaded into
 */
 command_object *new_command_object(int argc, char *argv[]) {
@@ -43,7 +27,8 @@ command_object *new_command_object(int argc, char *argv[]) {
   pcobj->command_count = 0;
   // parse cli arguments provided by user  and assign to pcobj
   for (int i = 0; i < argc; i++) {
-    pcobj->argv[i] = argv[i];
+    pcobj->argv[i] = malloc(strlen(argv[i]) + 1);
+    strcpy(pcobj->argv[i], argv[i]);
   }
   return pcobj;
 }
@@ -82,3 +67,43 @@ void free_command_object(command_object *self) {
   }
   free(self);
 } 
+
+// validates argtable and parses command line arguments
+int parse_args(int argc, char *argv[], void *argtable[]) {
+    if (arg_nullcheck(argtable) != 0) {
+        return -1;
+    }
+    int nerrors = arg_parse(argc, argv, argtable);
+    // handle help before errors
+    if (help->count > 0) {
+        print_help(argv[0], argtable);
+        return -2;
+    }
+    if (nerrors > 0) {
+        arg_print_errors(stdout, end, "main");
+        return -1;
+    }
+    return 0;
+}
+
+void print_help(char *program_name, void *argtable[]) {
+    printf("Usage: %s", program_name);
+    arg_print_syntax(stdout, argtable, "\n");
+    arg_print_glossary(stdout, argtable, " %-25s %s\n");
+}
+
+// sets up default arguments, you will have to do this for user defined args
+void setup_args(const char *version_string) {
+    help = arg_litn(NULL, "help", 0, 1, "displays help menu");
+    version = arg_litn(NULL, "version", 0, 1, version_string);
+    file = arg_filen(NULL, "file", "<file>", 0, 10, "file(s) to load data from max of 10");
+    output = arg_filen(NULL, "output", "<file>", 0, 1, "file to output data too");
+    command_to_run = arg_strn("c", "command", "<command>", 0, 1, "command to run");
+    end = arg_end(20);
+} 
+
+char *get_run_command() {
+  char *run_command = malloc(strlen(*command_to_run->sval));
+  strcpy(run_command, (char *)*command_to_run->sval);
+  return run_command;
+}
