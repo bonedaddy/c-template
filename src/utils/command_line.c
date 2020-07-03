@@ -64,8 +64,8 @@ int load_command(command_object *self, command_handler command) {
 int execute(command_object *self, char *run) {
   for (int i = 0; i < self->command_count; i++) {
     if (strcmp(self->commands[i].name, run) == 0) {
-      self->commands[i].callback(self->argc, self->argv);
-      return 0;
+      int response = self->commands[i].callback(self->argc, self->argv);
+      return response;
     }
   }
   printf("failed to execute command\n");

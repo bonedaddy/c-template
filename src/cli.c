@@ -5,8 +5,7 @@
 #include "../include/utils/safe_mem.h"
 #include "../include/utils/logger.h"
 
-// prints command help
-void print_help();
+
 // parses the given command line arguments to prepare for running and returns the name of the command to run
 char *prepare_inputs(command_object *pcobj, int argc, char *argv[]);
 // a command to generate a new zlog configuration
@@ -14,15 +13,17 @@ command_handler *new_zlog_config_command(command_object *self);
 // displays the help command
 command_handler *new_help_command(command_object *self);
 // wrapper function to use as the calback
-void new_zlog_config_callback(int argc, char *argv[]);
+int new_zlog_config_callback(int argc, char *argv[]);
 // wrapper function to use as the callbacK
-void print_help_callback(int argc, char *argv[]);
+int print_help_callback(int argc, char *argv[]);
+// prints command help
+int print_help();
 
-
-void print_help() {
+int print_help() {
   printf("CLI HELP MENU\n-------------\n\n");
   printf("new-zlog-config <path-to-config> (generate a new zlog config file - default to zlog.conf)\n");
   printf("help\t\t\t\t (print command help)\n");
+  return 0;
 }
 
 char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
@@ -60,13 +61,14 @@ char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-void print_help_callback(int argc, char *argv[]) {
-  print_help();
+int print_help_callback(int argc, char *argv[]) {
+  int response = print_help();
+  return response;
 }
 
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 // ignore the uninitialized warning about config_path
-void new_zlog_config_callback(int argc, char *argv[]) {
+int new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
     config_path = malloc(sizeof(argv[0]));
@@ -80,8 +82,10 @@ void new_zlog_config_callback(int argc, char *argv[]) {
   int response = new_logger_config(config_path);
   if (response != 0) {
     printf("failed call new_logger_config");
+  } else {
+    printf("zlog config saved to %s\n", config_path);
   }
-  printf("zlog config saved to %s\n", config_path);
+  return response;
 }
 
 
@@ -127,9 +131,8 @@ int main(int argc, char *argv[]) {
   resp = execute(pcmd, name);
   if (resp != 0) {
     printf("command run failed\n");
-    return resp;
   }
   // this is causing an error
   // free_command_object(pcmd);
-  return 0;
+  return resp;
 }

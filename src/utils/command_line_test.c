@@ -7,8 +7,11 @@
 #include <assert.h>
 #include "command_line.c"
 
-void print_hello_world();
-void print_hello_world() { printf("hello world"); }
+int print_hello_world();
+int print_hello_world() { 
+    printf("hello world"); 
+    return 0;    
+}
 command_handler *new_test_command();
 command_handler *new_test_command() {
     command_handler *handler = malloc(sizeof(command_handler) + sizeof("hello-world"));

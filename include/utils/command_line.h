@@ -20,7 +20,7 @@
 struct command;
 
 // declares the command handler callback which takes in an instance of command
-typedef void (*command_handler_callback)(int argc, char *argv[]);
+typedef int (*command_handler_callback)(int argc, char *argv[]);
 
 /*! @struct an individual command to run
   * @brief callback is a function to be executed
