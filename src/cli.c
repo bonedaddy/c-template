@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     case -2: // this means --help was invoked
       return 0;
   }
-  // handle help
+  // handle help if no other cli arguments were given (aka binary invoked with ./some-binary)
   if (argc == 1) {
     print_help(argv[0], argtable);
     return 0;
