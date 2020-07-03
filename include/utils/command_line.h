@@ -6,6 +6,10 @@
   * this process consists of parsing `argc` and `argv` to determine which command to run, and prepares the input for execution
   * for a propery example see `cli.c`
 */
+
+// pragma once is an alternative to header guards which can be very verbose
+#pragma once
+
 #include <stdbool.h>
 
 #ifndef MAX_COMMANDS
