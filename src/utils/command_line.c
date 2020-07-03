@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <argtable3.h>
 #include "../../include/utils/command_line.h"
 #include "../../include/utils/array_len.h"
 #include "../../include/utils/logger.h"
@@ -80,4 +81,4 @@ void free_command_object(command_object *self) {
       free(self->commands[i]);
   }
   free(self);
-}
+} 

@@ -44,6 +44,9 @@ typedef struct command {
   command_handler *commands[MAX_COMMANDS];
 } command_object;
 
+/*! @brief determines whether or not the provided arg is a command instead of a flag
+*/
+bool is_command(char *arg);
 /*! @brief checks whether or not the provided arg is a command line flag
   * We determine this by getting the first 2 char from the array and comparing that to `--`
 */
