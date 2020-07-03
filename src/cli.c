@@ -87,7 +87,7 @@ void new_zlog_config_callback(int argc, char *argv[]) {
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 command_handler *new_help_command(command_object *self) {
-    // allocate size of command_handler and the new-log-config `char *`
+  // allocate size of command_handler and the new-log-config `char *`
   command_handler *handler = malloc(sizeof(command_handler) + sizeof("help"));
   handler->callback = print_help_callback;
   handler->name = "help";
@@ -129,6 +129,6 @@ int main(int argc, char *argv[]) {
     printf("command run failed\n");
     return resp;
   }
-  free(pcmd);
+  free_command_object(pcmd);
   return 0;
 }

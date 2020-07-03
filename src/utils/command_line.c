@@ -8,8 +8,9 @@
 #include "../../include/utils/safe_mem.h"
 
 
-// checks whether or not the provide arg is a command line flag
-// it does this by getting the first 2 char's and comparing that to `--`
+/*! @brief checks whether or not the provided arg is a command line flag
+  * We determine this by getting the first 2 char from the array and comparing that to `--`
+*/
 #pragma GCC diagnostic ignored "-Wunused-function"
 bool is_flag_argument(char *arg) {
     if (strlen(arg) > 2) {
@@ -22,7 +23,8 @@ bool is_flag_argument(char *arg) {
   return false;
 }
 
-// returns a prepared command_object to execute user input
+/*! @brief intializes a new command_object to have commands loaded into
+*/
 command_object *new_command_object(int argc, char *argv[]) {
   // if too many arguments have been provided return a null pointer
   if (argc > MAX_COMMAND_ARGS) {
@@ -43,18 +45,22 @@ command_object *new_command_object(int argc, char *argv[]) {
   return pcobj;
 }
 
-int load_command(command_object *pcobj, command_handler command) {
-  if (pcobj->command_count >= MAX_COMMANDS) {
+/*! @brief loads command handler and makes it executable
+*/
+int load_command(command_object *self, command_handler command) {
+  if (self->command_count >= MAX_COMMANDS) {
     printf("maximum number of commands");
     return -1;
   }
-  int n = pcobj->command_count++;
-  command_handler *cmd = &pcobj->commands[n];
+  int n = self->command_count++;
+  command_handler *cmd = &self->commands[n];
   cmd->callback = command.callback;
   cmd->name = command.name;
   return 0;
 }
 
+/*! @brief checks to see if we have a command named according to run and executes it
+*/
 int execute(command_object *self, char *run) {
   for (int i = 0; i < self->command_count; i++) {
     if (strcmp(self->commands[i].name, run) == 0) {
@@ -64,4 +70,15 @@ int execute(command_object *self, char *run) {
   }
   printf("failed to execute command\n");
   return -1;
+}
+
+/*! @brief frees memory allocated for the command_object and sets pointer to null
+*/
+void free_command_object(command_object *self) {
+  for (int i = 0; i < self->command_count; i++) {
+    command_handler *handler = &self->commands[i];
+    free(handler->name);
+  }
+  free(self);
+  self = NULL;
 }
