@@ -33,7 +33,9 @@ command_object *new_command_object(int argc, char *argv[]) {
   }
   // allocate memory equal to the size of command_object  combined with the size of all provided arguments
   // and typecast it to command_object *
-  command_object *pcobj = (command_object *)malloc(sizeof(command_object) + sizeof(*argv));
+  // command_object *pcobj = (command_object *)malloc(sizeof(command_object) + sizeof(*argv));
+  // this prevents valgrind from reporting an error
+  command_object *pcobj = calloc(sizeof(command_object), sizeof(*argv));
   // set arg count
   pcobj->argc = argc;
   // set command_count
@@ -47,15 +49,13 @@ command_object *new_command_object(int argc, char *argv[]) {
 
 /*! @brief loads command handler and makes it executable
 */
-int load_command(command_object *self, command_handler command) {
+int load_command(command_object *self, command_handler *command) {
   if (self->command_count >= MAX_COMMANDS) {
     printf("maximum number of commands\n");
     return -1;
   }
   int n = self->command_count++;
-  command_handler *cmd = &self->commands[n];
-  cmd->callback = command.callback;
-  cmd->name = command.name;
+  self->commands[n] = command;
   return 0;
 }
 
@@ -63,9 +63,9 @@ int load_command(command_object *self, command_handler command) {
 */
 int execute(command_object *self, char *run) {
   for (int i = 0; i < self->command_count; i++) {
-    if (strcmp(self->commands[i].name, run) == 0) {
-      int response = self->commands[i].callback(self->argc, self->argv);
-      return response;
+    if (strcmp(self->commands[i]->name, run) == 0) {
+      self->commands[i]->callback(self->argc, self->argv);
+      return 0;
     }
   }
   printf("failed to execute command\n");
@@ -77,9 +77,7 @@ int execute(command_object *self, char *run) {
 */
 void free_command_object(command_object *self) {
   for (int i = 0; i < self->command_count; i++) {
-    command_handler *handler = &self->commands[i];
-    free(handler->name);
+      free(self->commands[i]);
   }
   free(self);
-  self = NULL;
 }

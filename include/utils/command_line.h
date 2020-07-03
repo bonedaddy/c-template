@@ -24,7 +24,7 @@
 struct command;
 
 // declares the command handler callback which takes in an instance of command
-typedef int (*command_handler_callback)(int argc, char *argv[]);
+typedef void (*command_handler_callback)(int argc, char *argv[]);
 
 /*! @struct an individual command to run
   * @brief callback is a function to be executed
@@ -41,7 +41,7 @@ typedef struct command {
   int command_count;
   int argc;
   char *argv[MAX_COMMAND_ARGS];
-  command_handler commands[MAX_COMMANDS];
+  command_handler *commands[MAX_COMMANDS];
 } command_object;
 
 /*! @brief checks whether or not the provided arg is a command line flag
@@ -55,7 +55,7 @@ int execute(command_object *self, char *command_to_run);
 
 /*! @brief loads command handler and makes it executable
 */
-int load_command(command_object *self, command_handler command);
+int load_command(command_object *self, command_handler *command);
 
 /*! @brief intializes a new command_object to have commands loaded into
 */
