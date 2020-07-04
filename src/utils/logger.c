@@ -46,20 +46,25 @@ void close_logger(void) {
 }
 
 
-void info_log_fn(thread_logger *thl, char *message) {
+void info_log(thread_logger *thl, char *message) {
     thl->lock(&thl->mutex);
-    info_log(message);
+    // 2 = 1 for null terminator, 1 for space after ]
+    char *msg = calloc(sizeof(char), strlen(message) + strlen("[info]") + (size_t)2);
+    msg[0] = '[';
+    msg[1] = 'i';
+    msg[2] = 'n';
+    msg[3] = 'f';
+    msg[4] = 'o';
+    msg[5] = ']';
+    msg[6] = ' ';
+    strcat(msg, message);
+    print_colored(COLORS_GREEN, msg);
     thl->unlock(&thl->mutex);
+    free(msg);
 }
 
-void error_log_fn(thread_logger *thl, char *message) {
+void error_log(thread_logger *thl, char *message) {
     thl->lock(&thl->mutex);
-    error_log(message);
-    thl->unlock(&thl->mutex);
-}
-
-
-void error_log(char *message) {
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[error]") + (size_t)2);
     msg[0] = '[';
@@ -72,21 +77,7 @@ void error_log(char *message) {
     msg[7] = ' ';
     strcat(msg, message);
     print_colored(COLORS_RED, msg);
-    free(msg);
-}
-
-void info_log(char *message) {
-    // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = calloc(sizeof(char), strlen(message) + strlen("[info]") + (size_t)2);
-    msg[0] = '[';
-    msg[1] = 'i';
-    msg[2] = 'n';
-    msg[3] = 'f';
-    msg[4] = 'o';
-    msg[5] = ']';
-    msg[6] = ' ';
-    strcat(msg, message);
-    print_colored(COLORS_GREEN, msg);
+    thl->unlock(&thl->mutex);
     free(msg);
 }
 
@@ -94,10 +85,18 @@ thread_logger *new_thread_logger() {
     thread_logger *thl = malloc(sizeof(thread_logger));
     thl->lock = fn_mutex_lock;
     thl->unlock = fn_mutex_unlock;
-    thl->info_log = info_log_fn;
-    thl->error_log = error_log_fn;
+    thl->info_log = info_log;
+    thl->error_log = error_log;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
+}
+
+void fn_mutex_lock(pthread_mutex_t *mx) {
+    pthread_mutex_lock(mx);
+}
+
+void fn_mutex_unlock(pthread_mutex_t *mx) {
+    pthread_mutex_unlock(mx);
 }
 
 int main(void) {

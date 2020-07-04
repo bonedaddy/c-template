@@ -35,10 +35,8 @@ typedef struct logger {
     zlog_category_t *z;
 } logger;
 
-void error_log(char *message);
-void error_log_fn(thread_logger *thl, char *message);
-void info_log(char *message);
-void info_log_fn(thread_logger *thl, char *message);
+void error_log(thread_logger *thl, char *message);
+void info_log(thread_logger *thl, char *message);
 thread_logger *new_thread_logger();
 
 
@@ -46,13 +44,7 @@ thread_logger *new_thread_logger();
 void fn_mutex_lock(pthread_mutex_t *mx);
 void fn_mutex_unlock(pthread_mutex_t *mx);
 
-void fn_mutex_lock(pthread_mutex_t *mx) {
-    pthread_mutex_lock(mx);
-}
 
-void fn_mutex_unlock(pthread_mutex_t *mx) {
-    pthread_mutex_unlock(mx);
-}
 
 // initializes zlog
 logger *new_logger(char *config_path, char *category);
