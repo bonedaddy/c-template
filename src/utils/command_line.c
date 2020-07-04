@@ -52,10 +52,11 @@ int execute(command_object *self, char *run) {
   for (int i = 0; i < self->command_count; i++) {
     if (strcmp(self->commands[i]->name, run) == 0) {
       self->commands[i]->callback(self->argc, self->argv);
+      print_colored(COLORS_GREEN, "[info] command executed successfully\n");
       return 0;
     }
   }
-  print_colored(COLORS_RED, "failed to execute command\n");
+  print_colored(COLORS_RED, "[error] failed to execute command\n");
   return -1;
 }
 

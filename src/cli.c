@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <argtable3.h>
+#include "../include/utils/colors.h"
 #include "../include/utils/command_line.h"
 #include "../include/utils/safe_mem.h"
 #include "../include/utils/logger.h"
@@ -25,14 +26,14 @@ void new_zlog_config_callback(int argc, char *argv[]) {
   if (argc == 1) {
     config_path = argv[0];
   } else {
-    printf("no config path given defaulting to zlog.conf\n");
+    print_colored(COLORS_YELLOW, "[warn] no config path given defaulting to zlog.conf\n");
     config_path = "zlog.conf";
   }
   int response = new_logger_config(config_path);
   if (response != 0) {
-    printf("failed call new_logger_config");
+    print_colored(COLORS_RED, "[error] failed to call new_logger_config");
   } else {
-    printf("zlog config saved to %s\n", config_path);
+    printf("%s[info] zlog config saved to %s\n", ANSI_COLOR_GREEN, config_path);
   }
 }
 
@@ -93,7 +94,8 @@ int main(int argc, char *argv[]) {
   // END COMMAND INPUT PREPARATION
   resp = execute(pcmd, run_command);
   if (resp != 0) {
-    printf("command run failed\n");
+    // TODO(bonedaddy): figure out if we should log this
+    // printf("command run failed\n");
   }
   free_command_object(pcmd);
   arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
