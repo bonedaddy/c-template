@@ -21,8 +21,10 @@ typedef struct test {
 void test_print_color(void **state);
 void test_get_ansi_color_scheme(void **state);
 void validate_test_args(test testdata);
+// TODO(bonedaddy): test format_colored
 
 void validate_test_args(test testdata) {
+    //   printf("%s\n", format_colored(testdata.args.test_color, testdata.name));
     char *scheme = get_ansi_color_scheme(testdata.args.test_color);
     if (strcmp(scheme, testdata.args.want_ansi) == 0) {
 

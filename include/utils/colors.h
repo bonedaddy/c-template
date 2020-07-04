@@ -14,6 +14,9 @@ typedef enum {
   COLORS_RED, COLORS_GREEN, COLORS_YELLOW, COLORS_BLUE, COLORS_MAGENTA, COLORS_CYAN, COLORS_RESET
 } COLORS;
 
+/*! @brief returns a `char *` with the message formatted with ansi colors
+*/
+char *format_colored(COLORS color, char *message);
 /*! @brief returns an ansi color string to be used with printf
 */
 char *get_ansi_color_scheme(COLORS color);
