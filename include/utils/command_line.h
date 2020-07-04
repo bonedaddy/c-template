@@ -2,9 +2,10 @@
 /*! @file command_line.h
   * @brief provides a basic CLI building tool
   * attribution note: modified version of commander see `deps/commander` for the license for that package
-  * to properly use you must load command handlers after constructing the command_object, and prepare the command line inputs for execution
-  * this process consists of parsing `argc` and `argv` to determine which command to run, and prepares the input for execution
-  * for a propery example see `cli.c`
+  * uses argtable3 for command line configuration and allows loading a list of commands to execute
+  * using the `--conmmand` or `-c` CLI flag you can specify the command out of the list of commands that have been loaded
+  * before calling execute you'll want to load the appropriate `argc` and `argv` values for the callback of the command you want to make
+  * 
 */
 
 // pragma once is an alternative to header guards which can be very verbose
