@@ -1,0 +1,7 @@
+macro(define_colors_test)
+    add_executable(colors-test ./src/utils/colors_test.c)
+    target_compile_options(colors-test PRIVATE ${flags})
+    target_link_libraries(colors-test cmocka)
+    target_link_libraries(colors-test colorslib)
+    add_test(NAME ColorsTest COMMAND colors-test)
+endmacro()
