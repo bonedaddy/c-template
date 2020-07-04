@@ -61,7 +61,7 @@ void error_log_fn(thread_logger *thl, char *message) {
 
 void error_log(char *message) {
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = malloc(strlen(message) + strlen("[error]") + (size_t)2);
+    char *msg = calloc(sizeof(char), strlen(message) + strlen("[error]") + (size_t)2);
     msg[0] = '[';
     msg[1] = 'e';
     msg[2] = 'r';
@@ -77,7 +77,7 @@ void error_log(char *message) {
 
 void info_log(char *message) {
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = malloc(strlen(message) + strlen("[info]") + (size_t)2);
+    char *msg = calloc(sizeof(char), strlen(message) + strlen("[info]") + (size_t)2);
     msg[0] = '[';
     msg[1] = 'i';
     msg[2] = 'n';
@@ -104,7 +104,8 @@ int main(void) {
     thread_logger *thl = new_thread_logger();
     thl->info_log(thl, "hello world");
     thl->error_log(thl, "hello world");
-    new_logger_config("logger.conf");
+    free(thl);
+    /*new_logger_config("logger.conf");
     logger *loggr = new_logger("logger.conf", "file_debug");
     if (loggr == NULL) {
         printf("failed to get new logger");
@@ -113,6 +114,6 @@ int main(void) {
     zlog_info(loggr->z, "hello zlog");
     close_logger();
    // free(loggr);
-    return 0; 
+    return 0; */
 
 } 
