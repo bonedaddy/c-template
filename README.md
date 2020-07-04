@@ -13,6 +13,14 @@ $> sed -i 's/c-template-REPLACEME/yourProjectNameHere/g' cmake/*.cmake
 
 After that you'll want to decide what macros to include. The default `CMakeLists.txt` file is setup to build all included libraries, and their associated tests. This may not be needed for your environment.
 
+# dependencies
+
+* cmocka (testing)
+* valgrind (testing)
+* argtable3 (command_line & cli)
+* zlog (logger)
+* gcc (compilation)
+  * compiled with C17
 
 # Utility Functions
 

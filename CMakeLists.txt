@@ -25,6 +25,9 @@ endif()
 # BEGIN MACRO INCLUDES #
 ########################
 
+include(cmake/colors_lib.cmake)
+include(cmake/colors_test.cmake)
+
 include(cmake/setup_valgrind.cmake)
 
 include(cmake/safe_mem_lib.cmake)
@@ -59,6 +62,9 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_colors_lib()
+define_colors_test()
 
 define_setup_valgrind()
 

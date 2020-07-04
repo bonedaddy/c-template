@@ -1,68 +1,23 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <argtable3.h>
+#include "../include/utils/colors.h"
 #include "../include/utils/command_line.h"
 #include "../include/utils/safe_mem.h"
 #include "../include/utils/logger.h"
 
 
-// parses the given command line arguments to prepare for running and returns the name of the command to run
-char *prepare_inputs(command_object *pcobj, int argc, char *argv[]);
+#ifndef COMMAND_VERSION_STRING
+#define COMMAND_VERSION_STRING "0.0.1"
+#endif
+
 // a command to generate a new zlog configuration
 command_handler *new_zlog_config_command(command_object *self);
 // displays the help command
 command_handler *new_help_command(command_object *self);
 // wrapper function to use as the calback
 void new_zlog_config_callback(int argc, char *argv[]);
-// wrapper function to use as the callbacK
-void print_help_callback(int argc, char *argv[]);
-// prints command help
-void print_help();
-
-void print_help() {
-  printf("CLI HELP MENU\n-------------\n\n");
-  printf("new-zlog-config <path-to-config> (generate a new zlog config file - default to zlog.conf)\n");
-  printf("help\t\t\t\t (print command help)\n");
-}
-
-char *prepare_inputs(command_object *pcobj, int argc, char *argv[]) {
-  // iterate over arguments to match against a command
-  for (int i = 0; i < argc; i++) {
-    // handle new-zlog-config
-    // next argument should be the path to the config file
-    // if there is not provided argument we default to zlog.conf
-    if (strcmp(argv[i], "new-zlog-config") == 0) {
-      int idx = i + 1;
-      char *config_path;
-      if (argc < (idx+1)) {
-        config_path = malloc(sizeof("zlog.conf"));
-        config_path = "zlog.conf";
-      } else {
-        // config_path = malloc(sizeof(argv[idx]));
-        config_path = argv[idx];
-      }
-      // NOTE(bonedaddy): looks like this isn't being properly set and passed through to callback
-      pcobj->argv[0] = config_path;
-      pcobj->argc = 1;
-      // char *return_arg = malloc(sizeof("new-zlog-config"));
-      char *return_arg = "new-zlog-config";
-      return return_arg;
-    }
-    if (strcmp(argv[i], "help") == 0) {
-      // char *return_arg = malloc(sizeof("help"));
-      char *return_arg = "help";
-      return return_arg;
-    }
-    /*    ADD YOUR NEW COMMAND CHECKS HERE
-    */
-  }
-  return NULL;
-}
-
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void print_help_callback(int argc, char *argv[]) {
-  print_help();
-}
 
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 // ignore the uninitialized warning about config_path
@@ -70,28 +25,16 @@ void new_zlog_config_callback(int argc, char *argv[]) {
   char *config_path;
   if (argc == 1) {
     config_path = argv[0];
-  }
-  if (config_path == NULL) {
-    printf("no config path given defaulting to zlog.conf\n");
+  } else {
+    print_colored(COLORS_YELLOW, "[warn] no config path given defaulting to zlog.conf\n");
     config_path = "zlog.conf";
   }
-  printf("zlog config saving to %s\n", config_path);
   int response = new_logger_config(config_path);
   if (response != 0) {
-    printf("failed call new_logger_config");
+    print_colored(COLORS_RED, "[error] failed to call new_logger_config");
   } else {
-    printf("zlog config saved to %s\n", config_path);
+    printf("%s[info] zlog config saved to %s\n", ANSI_COLOR_GREEN, config_path);
   }
-}
-
-
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-command_handler *new_help_command(command_object *self) {
-  // allocate size of command_handler and the new-log-config `char *`
-  command_handler *handler = malloc(sizeof(command_handler) + sizeof("help"));
-  handler->callback = print_help_callback;
-  handler->name = "help";
-  return handler;
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -104,31 +47,57 @@ command_handler *new_zlog_config_command(command_object *self) {
 }
 
 int main(int argc, char *argv[]) {
+  setup_args(COMMAND_VERSION_STRING);
+  void *argtable[] = {help, version, file, output, command_to_run, end};
+  int response = parse_args(argc, argv, argtable);
+  switch (response) {
+    case 0:
+      break;
+    case -1:
+      printf("parse_args failed\n");
+      return response;
+    case -2: // this means --help was invoked
+      return 0;
+  }
+  // handle help if no other cli arguments were given (aka binary invoked with ./some-binary)
+  if (argc == 1) {
+    print_help(argv[0], argtable);
+    return 0;
+  }
+  // construct the command object
   command_object *pcmd = new_command_object(argc, argv);
   if (pcmd == NULL) {
     printf("failed to get command_object");
     return -1;
   }
-  int resp = load_command(pcmd, new_help_command(pcmd));
+  // load command handler
+  int resp = load_command(pcmd, new_zlog_config_command(pcmd));
   if (resp != 0) {
     printf("failed to load help command");
     return -1;
   }
-  resp = load_command(pcmd, new_zlog_config_command(pcmd));
+  // get the command we are running
+  char *run_command = get_run_command();
+  // START COMMAND INPUT PREPARATION 
+  // - here we parse the command being ran, and prepare inputs for passing into the callback function
+  if (strcmp(*command_to_run->sval, "new-zlog-config") == 0) {
+    // if no output file was given, set argc to 0 which will trigger default filename of zlog.confm
+    if (strlen((char *)*output->filename) == 0) {
+      pcmd->argc = 0;
+    } else {
+      pcmd->argc = 1;
+      pcmd->argv[0] = realloc(pcmd->argv[0], sizeof(pcmd->argv[0]) + sizeof(*command_to_run->sval));
+      // typecast as filename is  pointer to a constant char
+      pcmd->argv[0] = (char *)*output->filename;
+    }
+  }
+  // END COMMAND INPUT PREPARATION
+  resp = execute(pcmd, run_command);
   if (resp != 0) {
-    printf("failed to load help command");
-    return -1;
+    // TODO(bonedaddy): figure out if we should log this
+    // printf("command run failed\n");
   }
-  char *name = prepare_inputs(pcmd, argc, argv);
-  if (name == NULL) {
-    printf("invalid command please see help menu for a list of valid commands\n");
-    return -1;
-  }
-  resp = execute(pcmd, name);
-  if (resp != 0) {
-    printf("command run failed\n");
-  }
-  // this is causing an error
   free_command_object(pcmd);
+  arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
   return resp;
 }
