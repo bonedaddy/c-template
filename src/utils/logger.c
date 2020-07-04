@@ -45,7 +45,65 @@ void close_logger(void) {
     zlog_fini();
 }
 
+
+void info_log_fn(thread_logger *thl, char *message) {
+    thl->lock(&thl->mutex);
+    info_log(message);
+    thl->unlock(&thl->mutex);
+}
+
+void error_log_fn(thread_logger *thl, char *message) {
+    thl->lock(&thl->mutex);
+    error_log(message);
+    thl->unlock(&thl->mutex);
+}
+
+
+void error_log(char *message) {
+    // 2 = 1 for null terminator, 1 for space after ]
+    char *msg = malloc(strlen(message) + strlen("[error]") + (size_t)2);
+    msg[0] = '[';
+    msg[1] = 'e';
+    msg[2] = 'r';
+    msg[3] = 'r';
+    msg[4] = 'o';
+    msg[5] = 'r';
+    msg[6] = ']';
+    msg[7] = ' ';
+    strcat(msg, message);
+    print_colored(COLORS_RED, msg);
+    free(msg);
+}
+
+void info_log(char *message) {
+    // 2 = 1 for null terminator, 1 for space after ]
+    char *msg = malloc(strlen(message) + strlen("[info]") + (size_t)2);
+    msg[0] = '[';
+    msg[1] = 'i';
+    msg[2] = 'n';
+    msg[3] = 'f';
+    msg[4] = 'o';
+    msg[5] = ']';
+    msg[6] = ' ';
+    strcat(msg, message);
+    print_colored(COLORS_GREEN, msg);
+    free(msg);
+}
+
+thread_logger *new_thread_logger() {
+    thread_logger *thl = malloc(sizeof(thread_logger));
+    thl->lock = fn_mutex_lock;
+    thl->unlock = fn_mutex_unlock;
+    thl->info_log = info_log_fn;
+    thl->error_log = error_log_fn;
+    pthread_mutex_init(&thl->mutex, NULL);
+    return thl;
+}
+
 int main(void) {
+    thread_logger *thl = new_thread_logger();
+    thl->info_log(thl, "hello world");
+    thl->error_log(thl, "hello world");
     new_logger_config("logger.conf");
     logger *loggr = new_logger("logger.conf", "file_debug");
     if (loggr == NULL) {
@@ -54,7 +112,7 @@ int main(void) {
     }
     zlog_info(loggr->z, "hello zlog");
     close_logger();
-    free(loggr);
+   // free(loggr);
     return 0; 
 
 } 

@@ -31,5 +31,5 @@ char *format_colored(COLORS color, char *message) {
 }
 
 void print_colored(COLORS color, char *message) {
-  printf("%s%s", get_ansi_color_scheme(color), message);
+  printf("%s%s%s\n", get_ansi_color_scheme(color), message, ANSI_COLOR_RESET);
 }

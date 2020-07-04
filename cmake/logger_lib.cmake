@@ -5,4 +5,5 @@ macro(define_logger_lib)
         ./src/utils/logger.c
     )
     target_compile_options(loggerlib PRIVATE ${flags})
+    target_link_libraries(loggerlib colorslib)
 endmacro()

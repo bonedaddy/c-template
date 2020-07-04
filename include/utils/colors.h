@@ -4,6 +4,9 @@
   * Pass a `COLORS_x` enum value into `print_colored` and the color will be printed on stdout
   * Note that if you want to disable printing of that color you'll have to send the `COLORS_RESET` enum value through
 */
+
+#pragma once
+
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_YELLOW "\x1b[33m"
