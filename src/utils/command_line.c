@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <argtable3.h>
+#include "../../include/utils/colors.h"
 #include "../../include/utils/command_line.h"
 #include "../../include/utils/array_len.h"
 #include "../../include/utils/logger.h"
@@ -13,7 +14,7 @@
 command_object *new_command_object(int argc, char *argv[]) {
   // if too many arguments have been provided return a null pointer
   if (argc > MAX_COMMAND_ARGS) {
-    printf("too many command line arguments provided\n");
+    print_colored(COLORS_RED, "too many command line arguments provided\n");
     return NULL;
   }
   // allocate memory equal to the size of command_object  combined with the size of all provided arguments
@@ -37,7 +38,7 @@ command_object *new_command_object(int argc, char *argv[]) {
 */
 int load_command(command_object *self, command_handler *command) {
   if (self->command_count >= MAX_COMMANDS) {
-    printf("maximum number of commands\n");
+    print_colored(COLORS_RED, "maximum number of commands\n");
     return -1;
   }
   int n = self->command_count++;
@@ -54,7 +55,7 @@ int execute(command_object *self, char *run) {
       return 0;
     }
   }
-  printf("failed to execute command\n");
+  print_colored(COLORS_RED, "failed to execute command\n");
   return -1;
 }
 
