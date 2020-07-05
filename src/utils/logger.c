@@ -47,6 +47,22 @@ void close_logger(void) {
     zlog_fini();
 }
 
+void *log_fnp(void *data) {
+    thread_log_data *tld = (thread_log_data *)data;
+    log_fn(tld->thl, tld->message, tld->level);
+    pthread_detach(tld->thl->thread);
+    free(tld);
+    return NULL;
+}
+
+void p_log_fn(thread_logger *thl, char *message, LOG_LEVELS level) {
+    thread_log_data *data = malloc(sizeof(thread_log_data) + strlen(message) + sizeof(level));
+    data->message = message;
+    data->level = level;
+    data->thl = thl;
+    pthread_create(&thl->thread, NULL, log_fnp, data);
+}
+ 
 void log_fn(thread_logger *thl, char *message, LOG_LEVELS level) {
     switch (level) {
         case LOG_LEVELS_INFO:
@@ -138,13 +154,23 @@ void debug_log(thread_logger *thl, char *message) {
     free(msg);
 }
 
+
+
+void exit_thread_logger(thread_logger *thl) {
+    free(&thl->thread);
+    free(thl);
+}
+
 thread_logger *new_thread_logger(bool with_debug) {
     thread_logger *thl = malloc(sizeof(thread_logger));
     // thl->lock = fn_mutex_lock;
     thl->lock = pthread_mutex_lock;
     thl->unlock = pthread_mutex_unlock;
+    thl->plock = pthread_mutex_lock;
+    thl->punlock = pthread_mutex_unlock;
     thl->log_fn = log_fn;
     thl->debug = with_debug;
+    thl->exit = exit_thread_logger;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
 }

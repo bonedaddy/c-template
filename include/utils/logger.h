@@ -27,6 +27,8 @@ typedef int (*mutex_fn)(pthread_mutex_t *mx);
 */
 typedef void (*log_func)(struct thread_logger *thl, char *message, LOG_LEVELS level);
 
+typedef void (*exit_func)(struct thread_logger *thl);
+
 /*! @struct a thread safe logger
   * @brief guards all log calls with a mutex lock/unlock
   * TODO(bonedaddy): enable output to a file
@@ -37,13 +39,30 @@ typedef struct thread_logger {
     pthread_mutex_t mutex;
     mutex_fn lock;
     mutex_fn unlock;
+    mutex_fn plock;
+    mutex_fn punlock;
     log_func log_fn;
+    exit_func exit;
+    pthread_t thread;
 } thread_logger;
+
+/*! @struct log_func data struct for parallel logging
+  * @brief provides log_func data for the parallel log function
+  * parallel log function allows doing non-blocking log calls by processing the actual request in a separate thread
+*/
+typedef struct thread_log_data {
+  thread_logger *thl;
+  char *message;
+  LOG_LEVELS level;
+} thread_log_data;
 
 /*! @brief returns a new thread safe logger
   * if with_debug is false, then all debug_log calls will be ignored
 */
 thread_logger *new_thread_logger(bool with_debug);
+/*! @brief like log_fn but runs the log process in a pthread
+*/
+void p_log_fn(thread_logger *thl, char *message, LOG_LEVELS level);
 /*! @brief main function you should call, which will delegate to the appopriate *_log function
 */
 void log_fn(thread_logger *thl, char *message, LOG_LEVELS level);
@@ -61,6 +80,8 @@ void error_log(thread_logger *thl, char *message);
 /*! @brief logs an info styled message - called by log_fn
 */
 void info_log(thread_logger *thl, char *message);
+
+void exit_thread_logger(thread_logger *thl);
 
 /*! @brief logger is a wrapper around zlog
 */

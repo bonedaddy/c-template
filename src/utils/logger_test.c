@@ -17,12 +17,25 @@ void test_thread_logger(void **state) {
     thl->log_fn(thl, "this is a warn log", LOG_LEVELS_WARN);
     thl->log_fn(thl, "this is an error log", LOG_LEVELS_ERROR);
     thl->log_fn(thl, "this is a debug log", LOG_LEVELS_DEBUG);
-    free(thl);
+    exit_thread_logger(thl);
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void test_pthread_logger(void **state) {
+    // TODO(bonedaddy): should we test with debug disabled?
+    // TODO(bonedaddy): should we run tests using actual pthreads?
+    thread_logger *thl = new_thread_logger(true);
+    p_log_fn(thl, "this is a pthread info log", LOG_LEVELS_INFO);
+    p_log_fn(thl, "this is a pthread warn log", LOG_LEVELS_WARN);
+    p_log_fn(thl, "this is a pthread error log", LOG_LEVELS_ERROR);
+    p_log_fn(thl, "this is a pthread debug log", LOG_LEVELS_DEBUG);
+    exit_thread_logger(thl);
 }
 
 int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_thread_logger),
+        cmocka_unit_test(test_pthread_logger),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
     /* for zlog you can do the following
