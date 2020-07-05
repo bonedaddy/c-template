@@ -1,6 +1,6 @@
 /*! @file logger.h
   * @brief provides logging related functionality
-  * provides a thread safe logger capable of printing and writing colored logs
+  * provides a thread safe logger capable of printing colored logs and writing logs to disk
 */
 
 #pragma once
@@ -25,8 +25,6 @@ typedef int (*mutex_fn)(pthread_mutex_t *mx);
 /*! @brief signature used by the thread_logger for log_fn calls
 */
 typedef void (*log_fn)(struct thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level);
-
-typedef void (*write_fn)(char *message, LOG_LEVELS level);
 
 /*! @struct a thread safe logger
   * @brief guards all log calls with a mutex lock/unlock
