@@ -34,6 +34,19 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     return fhl;
 }
 
+int write_file_log(int file_descriptor, char *message) {
+    // 2 for \n
+    char *msg = malloc(strlen(message) + 2);
+    strcat(msg, message);
+    strcat(msg, "\n");
+    int response = write(file_descriptor, msg, strlen(msg));
+    if (response == -1) {
+        printf("failed to write file log message");
+        return response;
+    }
+    return 0;
+}
+
 void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
     switch (level) {
         case LOG_LEVELS_INFO:
@@ -64,7 +77,7 @@ void info_log(thread_logger *thl,  int file_descriptor, char *message) {
     msg[6] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
-        write_colored(COLORS_GREEN, file_descriptor, msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_GREEN, msg);
     thl->unlock(&thl->mutex);
@@ -84,7 +97,7 @@ void warn_log(thread_logger *thl, int file_descriptor, char *message) {
     msg[6] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
-        write_colored(COLORS_YELLOW, file_descriptor, msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_YELLOW, msg);
     thl->unlock(&thl->mutex);
@@ -105,7 +118,7 @@ void error_log(thread_logger *thl, int file_descriptor, char *message) {
     msg[7] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
-        write_colored(COLORS_RED, file_descriptor, msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_RED, msg);
     thl->unlock(&thl->mutex);
@@ -130,7 +143,7 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     msg[7] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
-        write_colored(COLORS_SOFT_RED, file_descriptor, msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_SOFT_RED, msg);
     thl->unlock(&thl->mutex);

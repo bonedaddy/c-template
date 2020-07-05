@@ -83,3 +83,6 @@ void error_log(thread_logger *thl,  int file_descriptor, char *message);
 /*! @brief logs an info styled message - called by log_fn
 */
 void info_log(thread_logger *thl,  int file_descriptor, char *message);
+/*! @brief used to write a log message to file
+*/
+int write_file_log(int file_descriptor, char *message);
