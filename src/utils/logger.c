@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include "../../include/utils/logger.h"
 
 logger *new_logger(char *config_path, char *category) {
@@ -147,23 +148,3 @@ thread_logger *new_thread_logger(bool with_debug) {
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
 }
-
-int main(void) {
-    thread_logger *thl = new_thread_logger(true);
-    thl->log_fn(thl, "hello world", LOG_LEVELS_INFO);
-    thl->log_fn(thl, "hello world", LOG_LEVELS_WARN);
-    thl->log_fn(thl, "hello world", LOG_LEVELS_ERROR);
-    thl->log_fn(thl, "hello world", LOG_LEVELS_DEBUG);
-    free(thl);
-    /*new_logger_config("logger.conf");
-    logger *loggr = new_logger("logger.conf", "file_debug");
-    if (loggr == NULL) {
-        printf("failed to get new logger");
-        return -1;
-    }
-    zlog_info(loggr->z, "hello zlog");
-    close_logger();
-   // free(loggr);
-    return 0; */
-
-} 
