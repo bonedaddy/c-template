@@ -24,7 +24,7 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     file_logger *fhl = malloc(sizeof(file_logger));
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
-    int file_descriptor = open(output_file, O_WRONLY | O_CREAT);
+    int file_descriptor = open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND);
     if (file_descriptor <= 0) {
         thl->log(thl, 0, "failed to run posix open function", LOG_LEVELS_ERROR);
         return NULL;
@@ -36,14 +36,17 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
 
 int write_file_log(int file_descriptor, char *message) {
     // 2 for \n
-    char *msg = malloc(strlen(message) + 2);
+    char *msg = calloc(sizeof(char), strlen(message) + 2);
     strcat(msg, message);
     strcat(msg, "\n");
+    //strcat(msg, message);
+    // strcat(msg, "\n");
     int response = write(file_descriptor, msg, strlen(msg));
     if (response == -1) {
         printf("failed to write file log message");
         return response;
     }
+    free(msg);
     return 0;
 }
 
@@ -97,7 +100,11 @@ void warn_log(thread_logger *thl, int file_descriptor, char *message) {
     msg[6] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
+        // TODO(bonedaddy): decide if we want to copy
+        // char *cpy = malloc(strlen(msg)+1);
+        // strcpy(cpy, msg);
         write_file_log(file_descriptor, msg);
+        // free(cpy);
     }
     print_colored(COLORS_YELLOW, msg);
     thl->unlock(&thl->mutex);
@@ -143,7 +150,9 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     msg[7] = ' ';
     strcat(msg, message);
     if (file_descriptor != 0) {
-        write_file_log(file_descriptor, msg);
+        //char *cpy = malloc(strlen(msg));
+        //strcpy(cpy, msg);
+        write_file_log(file_descriptor, /*cpy*/ msg);
     }
     print_colored(COLORS_SOFT_RED, msg);
     thl->unlock(&thl->mutex);

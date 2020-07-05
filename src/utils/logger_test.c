@@ -9,8 +9,7 @@
 #include <pthread.h>
 #include "../../include/utils/logger.h"
 
-
-void *test_log(void *data) {
+void *test_thread_log(void *data) {
     thread_logger *thl = (thread_logger *)data;
     thl->log(thl, 0, "this is an info log", LOG_LEVELS_INFO);
     thl->log(thl, 0, "this is a warn log", LOG_LEVELS_WARN);
@@ -20,6 +19,18 @@ void *test_log(void *data) {
     // pthread_exit(NULL);
     return NULL;
 }
+
+void *test_file_log(void *data) {
+    file_logger *fhl = (file_logger *)data;
+    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an info log", LOG_LEVELS_INFO);
+    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a warn log", LOG_LEVELS_WARN);
+    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an error log", LOG_LEVELS_ERROR);
+    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a debug log", LOG_LEVELS_DEBUG);
+    // commenting this out seems to get rid of memleaks reported by valgrind
+    // pthread_exit(NULL);
+    return NULL;
+}
+
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_thread_logger(void **state) {
@@ -32,7 +43,7 @@ void test_thread_logger(void **state) {
     pthread_attr_t attrs[4];
     for (int i = 0; i < 4; i++) {
         pthread_attr_init(&attrs[i]);
-        pthread_create(&threads[i], &attrs[i], test_log, thl);
+        pthread_create(&threads[i], &attrs[i], test_thread_log, thl);
     }
     for (int i = 0; i < 4; i++) {
         pthread_join(threads[i], NULL);
@@ -53,7 +64,7 @@ void test_file_logger(void **state) {
     pthread_attr_t attrs[4];
     for (int i = 0; i < 4; i++) {
         pthread_attr_init(&attrs[i]);
-        pthread_create(&threads[i], &attrs[i], test_log, fhl->thl);
+        pthread_create(&threads[i], &attrs[i], test_file_log, fhl);
     }
     for (int i = 0; i < 4; i++) {
         pthread_join(threads[i], NULL);
