@@ -38,7 +38,7 @@ void test_thread_logger(void **state) {
         pthread_join(threads[i], NULL);
         pthread_attr_destroy(&attrs[i]);
     }
-    free(thl);
+    clear_thread_logger(thl);
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -59,9 +59,7 @@ void test_file_logger(void **state) {
         pthread_join(threads[i], NULL);
         pthread_attr_destroy(&attrs[i]);
     }
-    close_file_logger(fhl);
-    free(fhl->thl);
-    free(fhl);
+    clear_file_logger(fhl);
 }
 
 int main(void) {

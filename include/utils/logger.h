@@ -60,9 +60,12 @@ thread_logger *new_thread_logger(bool with_debug);
   * Calls new_thread_logger internally
 */
 file_logger *new_file_logger(char *output_file, bool with_debug);
-/*! @brief closes the opened file
+/*! @brief free resources for the threaded logger
 */
-int close_file_logger(file_logger *fhl);
+void clear_thread_logger(thread_logger *thl);
+/*! @brief free resources for the file ogger
+*/
+void clear_file_logger(file_logger *fhl);
 /*! @brief main function you should call, which will delegate to the appopriate *_log function
 */
 void log_func(thread_logger *thl,  int file_descriptor, char *message, LOG_LEVELS level);

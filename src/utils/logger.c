@@ -140,3 +140,13 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
 int close_file_logger(file_logger *fhl) {
     return close(fhl->file_descriptor);
 }
+
+void clear_thread_logger(thread_logger *thl) {
+    free(thl);
+}
+
+void clear_file_logger(file_logger *fhl) {
+    close(fhl->file_descriptor);
+    clear_thread_logger(fhl->thl);
+    free(fhl);
+}
