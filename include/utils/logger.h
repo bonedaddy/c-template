@@ -14,9 +14,10 @@
 
 struct thread_logger;
 
+typedef enum { LOG_LEVELS_INFO, LOG_LEVELS_WARN, LOG_LEVELS_ERROR, LOG_LEVELS_DEBUG } LOG_LEVELS;
 typedef void (*mutex_lock)(pthread_mutex_t *mx);
 typedef void (*mutex_unlock)(pthread_mutex_t *mx);
-typedef void (*log_func)(struct thread_logger *thl, char *message);
+typedef void (*log_func)(struct thread_logger *thl, char *message, LOG_LEVELS level);
 
 /*! @struct a thread safe logger
   * @brief guards all log calls with a mutex lock/unlock
@@ -27,10 +28,7 @@ typedef struct thread_logger {
     pthread_mutex_t mutex;
     mutex_lock lock;
     mutex_unlock unlock;
-    log_func info_log;
-    log_func warn_log;
-    log_func error_log;
-    log_func debug_log;
+    log_func log_fn;
 } thread_logger;
 
 
@@ -43,6 +41,7 @@ void debug_log(thread_logger *thl, char *message);
 void warn_log(thread_logger *thl, char *message);
 void error_log(thread_logger *thl, char *message);
 void info_log(thread_logger *thl, char *message);
+void log_fn(thread_logger *thl, char *message, LOG_LEVELS level);
 thread_logger *new_thread_logger(bool with_debug);
 
 

@@ -4,24 +4,26 @@
 #include "../../include/utils/colors.h"
 
 char *get_ansi_color_scheme(COLORS color) {
-  if (color == COLORS_RED) {
-    return ANSI_COLOR_RED;
-  } else if (color == COLORS_SOFT_RED) {
-    return ANSI_COLOR_SOFT_RED;
-  } else if (color == COLORS_GREEN) {
-    return ANSI_COLOR_GREEN;
-  } else if (color == COLORS_YELLOW) {
-    return ANSI_COLOR_YELLOW;
-  }  else if (color == COLORS_BLUE) {
-    return ANSI_COLOR_BLUE;
-  } else if (color == COLORS_MAGENTA) {
-    return ANSI_COLOR_MAGENTA;
-  } else if (color == COLORS_CYAN) {
-    return ANSI_COLOR_CYAN;
-  } else if (color == COLORS_RESET) {
-    return ANSI_COLOR_RESET;
+  switch (color) {
+        case COLORS_RED:
+            return ANSI_COLOR_RED;
+        case COLORS_SOFT_RED:
+            return ANSI_COLOR_SOFT_RED;
+        case COLORS_GREEN:
+            return ANSI_COLOR_GREEN;
+        case COLORS_YELLOW:
+            return ANSI_COLOR_YELLOW;
+        case COLORS_BLUE:
+            return ANSI_COLOR_BLUE;
+        case COLORS_MAGENTA:
+            return ANSI_COLOR_MAGENTA;
+        case COLORS_CYAN:
+            return ANSI_COLOR_CYAN;
+        case COLORS_RESET:
+            return ANSI_COLOR_RESET;
+        default:
+            return NULL;
   }
-  return NULL;
 }
 
 char *format_colored(COLORS color, char *message) {
