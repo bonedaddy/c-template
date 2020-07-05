@@ -47,7 +47,7 @@ void close_logger(void) {
     zlog_fini();
 }
 
-void log_fn(thread_logger *thl, char *message, LOG_LEVELS level) {
+void log_func(thread_logger *thl, char *message, LOG_LEVELS level) {
     switch (level) {
         case LOG_LEVELS_INFO:
             info_log(thl, message);
@@ -143,7 +143,7 @@ thread_logger *new_thread_logger(bool with_debug) {
     // thl->lock = fn_mutex_lock;
     thl->lock = pthread_mutex_lock;
     thl->unlock = pthread_mutex_unlock;
-    thl->log_fn = log_fn;
+    thl->log = log_func;
     thl->debug = with_debug;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;

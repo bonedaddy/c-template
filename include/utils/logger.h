@@ -25,10 +25,12 @@ typedef int (*mutex_fn)(pthread_mutex_t *mx);
 
 /*! @brief signature used by the thread_logger for log_fn calls
 */
-typedef void (*log_func)(struct thread_logger *thl, char *message, LOG_LEVELS level);
+typedef void (*log_fn)(struct thread_logger *thl, char *message, LOG_LEVELS level);
 
 /*! @struct a thread safe logger
   * @brief guards all log calls with a mutex lock/unlock
+  * recommended usage is to call thread_logger:log(instance_of_thread_logger, char*_of_your_log_message, log_level)
+  * alternatively you can call the `*_log` functions directly
   * TODO(bonedaddy): enable output to a file
 */
 typedef struct thread_logger {
@@ -37,7 +39,7 @@ typedef struct thread_logger {
     pthread_mutex_t mutex;
     mutex_fn lock;
     mutex_fn unlock;
-    log_func log_fn;
+    log_fn log;
 } thread_logger;
 
 /*! @brief returns a new thread safe logger
@@ -46,7 +48,7 @@ typedef struct thread_logger {
 thread_logger *new_thread_logger(bool with_debug);
 /*! @brief main function you should call, which will delegate to the appopriate *_log function
 */
-void log_fn(thread_logger *thl, char *message, LOG_LEVELS level);
+void log_func(thread_logger *thl, char *message, LOG_LEVELS level);
 
 /*! @brief logs a debug styled message - called by log_fn
 */
