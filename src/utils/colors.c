@@ -44,7 +44,7 @@ int write_colored(COLORS color, int file_descriptor, char *message) {
     char *pcolor = get_ansi_color_scheme(color);
     char *reset = get_ansi_color_scheme(COLORS_RESET);
     // 2 for \n
-    char *write_message = malloc(strlen(pcolor) + strlen(reset) + strlen(message) + 2);
+    char *write_message = calloc(sizeof(char), strlen(pcolor) + strlen(reset) + strlen(message) + 2);
     strcat(write_message, pcolor);
     strcat(write_message, message);
     strcat(write_message, reset);
