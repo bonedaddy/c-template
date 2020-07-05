@@ -16,7 +16,8 @@ void *test_log(void *data) {
     thl->log(thl, "this is a warn log", LOG_LEVELS_WARN);
     thl->log(thl, "this is an error log", LOG_LEVELS_ERROR);
     thl->log(thl, "this is a debug log", LOG_LEVELS_DEBUG);
-    pthread_exit(NULL);
+    // commenting this out seems to get rid of memleaks reported by valgrind
+    // pthread_exit(NULL);
     return NULL;
 }
 
@@ -28,11 +29,14 @@ void test_thread_logger(void **state) {
     thl->log(thl, "this is an error log", LOG_LEVELS_ERROR);
     thl->log(thl, "this is a debug log", LOG_LEVELS_DEBUG);
     pthread_t threads[4];
+    pthread_attr_t attrs[4];
     for (int i = 0; i < 4; i++) {
-        pthread_create(&threads[i], NULL, test_log, thl);
+        pthread_attr_init(&attrs[i]);
+        pthread_create(&threads[i], &attrs[i], test_log, thl);
     }
     for (int i = 0; i < 4; i++) {
         pthread_join(threads[i], NULL);
+        pthread_attr_destroy(&attrs[i]);
     }
     free(thl);
 }
