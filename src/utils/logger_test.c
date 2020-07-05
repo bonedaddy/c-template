@@ -42,15 +42,4 @@ int main(void) {
         cmocka_unit_test(test_thread_logger),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
-    /* for zlog you can do the following
-    new_logger_config("logger.conf");
-    logger *loggr = new_logger("logger.conf", "file_debug");
-    if (loggr == NULL) {
-        printf("failed to get new logger");
-        return -1;
-    }
-    zlog_info(loggr->z, "hello zlog");
-    close_logger();
-   // free(loggr);
-    return 0; */
 }

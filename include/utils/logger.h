@@ -1,6 +1,6 @@
 /*! @file logger.h
   * @brief provides logging related functionality
-  * provides a thread safe logger capable of printing and writing colored logs, as well as a deprecated wrapper around zlog
+  * provides a thread safe logger capable of printing and writing colored logs
 */
 
 #pragma once
@@ -9,7 +9,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include "colors.h"
-#include "zlog.h"
 
 /*! @brief base struct used by the thread_logger
 */
@@ -63,21 +62,3 @@ void error_log(thread_logger *thl, char *message);
 /*! @brief logs an info styled message - called by log_fn
 */
 void info_log(thread_logger *thl, char *message);
-
-/*! @brief logger is a wrapper around zlog
-*/
-typedef struct logger {
-    zlog_category_t *z;
-} logger;
-
-/*! @brief initializes logger from the zlog config and category
-*/
-logger *new_logger(char *config_path, char *category);
-
-/*! @brief writes a default zlog config to config_path
-*/
-int new_logger_config(char *config_path);
-
-/*! @brief used to cleanup resources associated with zlog
-*/
-void close_logger(void);
