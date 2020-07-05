@@ -27,6 +27,8 @@ endif()
 
 include(cmake/glib.cmake)
 
+include(cmake/errors_lib.cmake)
+
 include(cmake/colors_lib.cmake)
 include(cmake/colors_test.cmake)
 
@@ -55,7 +57,6 @@ include(cmake/array_len_test.cmake)
 # END MACRO INCLUDES #
 ######################
 
-
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Build flags: ${flags}")
 
@@ -64,6 +65,8 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_errors_lib()
 
 define_colors_lib()
 define_colors_test()
