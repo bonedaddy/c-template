@@ -15,12 +15,6 @@ typedef struct {
     char *message;
 } cg_error;
 
-typedef struct {
-    _Atomic (cg_error) *cg;
-} cg_aerror;
-
-cg_aerror *new_cg_aerror(cg_error err);
-
 /*! @brief returns a cg_error struct containing message
 */
 cg_error *new_cg_error(char *message);
