@@ -49,7 +49,6 @@ typedef struct thread_logger {
 typedef struct file_logger {
   thread_logger *thl;
   int file_descriptor;
-  FILE *file;
 } file_logger;
 
 /*! @brief returns a new thread safe logger
