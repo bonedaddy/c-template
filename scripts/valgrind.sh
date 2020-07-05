@@ -19,7 +19,9 @@ valgrind --leak-check=full --tool=memcheck ./array-len-test
 valgrind --leak-check=full --tool=memcheck ./command-line-test
 
 # test logger (reports errors likely due to an issue with zlog itself)
-valgrind --leak-check=full --tool=memcheck ./logger-test
+# valgrind --leak-check=full --tool=memcheck ./logger-test
+# test logger
+valgrind --tool=helgrind --tool=memcheck --leak-check=full ./logger-test
 
 # test safemath
 valgrind --leak-check=full --tool=memcheck ./safe-math-test
