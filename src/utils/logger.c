@@ -159,10 +159,6 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     free(msg);
 }
 
-int close_file_logger(file_logger *fhl) {
-    return close(fhl->file_descriptor);
-}
-
 void clear_thread_logger(thread_logger *thl) {
     free(thl);
 }
