@@ -1,6 +1,6 @@
 # c-template
 
-A template repository to help make C development easier and safer. Includes a ready-to-go CMake integration, with linking to cmocka. Additionally includes a few WIP utility functions to assist development. It also includes a CLI builder tool, with a basic implementation to generat a zlog configuration file.
+A template repository to help make C development easier and safer. Includes a ready-to-go CMake integration, with linking to cmocka. It provides a thread-safe color capable logging system, a CLI builder using argtable3. It also provides a template for writing and running tests using CMake, and testing with valgrind. It's intended to give a starting repository for a go like development experience, fully integrated with compilation, testing, and analysis.
 
 # using in your own projects
 
@@ -18,7 +18,6 @@ After that you'll want to decide what macros to include. The default `CMakeLists
 * cmocka (testing)
 * valgrind (testing)
 * argtable3 (command_line & cli)
-* zlog (logger)
 * gcc (compilation)
   * compiled with C17
 
@@ -32,7 +31,7 @@ After that you'll want to decide what macros to include. The default `CMakeLists
 * Safe Memory
     * Wraps pointer objects to prevent double free 
 * Logging
-    * wrapper around [`zlog`](https://github.com/HardySimpson/zlog)
+    * Thread safe colored capable logger with file writing capabilities
 
 # build
 
