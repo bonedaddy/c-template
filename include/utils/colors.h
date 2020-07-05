@@ -42,4 +42,4 @@ void print_colored(COLORS color, char *message);
   * For "sync writes" and to always flush logs to disk immediately set do_flush to true
   * returns 0 if no error, returns 1 if error
 */
-int write_colored(FILE *fh, COLORS color, char *message, bool do_flush);
+int write_colored(COLORS color, int file_descriptor, char *message);

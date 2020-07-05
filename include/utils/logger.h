@@ -24,13 +24,14 @@ typedef int (*mutex_fn)(pthread_mutex_t *mx);
 
 /*! @brief signature used by the thread_logger for log_fn calls
 */
-typedef void (*log_fn)(struct thread_logger *thl, char *message, LOG_LEVELS level);
+typedef void (*log_fn)(struct thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level);
+
+typedef void (*write_fn)(char *message, LOG_LEVELS level);
 
 /*! @struct a thread safe logger
   * @brief guards all log calls with a mutex lock/unlock
   * recommended usage is to call thread_logger:log(instance_of_thread_logger, char*_of_your_log_message, log_level)
   * alternatively you can call the `*_log` functions directly
-  * TODO(bonedaddy): enable output to a file
 */
 typedef struct thread_logger {
     // todo(bonedaddy): make atomic
@@ -41,24 +42,41 @@ typedef struct thread_logger {
     log_fn log;
 } thread_logger;
 
+/*! @struct a thread-safe file logger
+  * @brief like thread_logger but also writes to a file
+  * TODO(bonedaddy): enable log rotation
+*/
+typedef struct file_logger {
+  thread_logger *thl;
+  int file_descriptor;
+  FILE *file;
+} file_logger;
+
 /*! @brief returns a new thread safe logger
   * if with_debug is false, then all debug_log calls will be ignored
 */
 thread_logger *new_thread_logger(bool with_debug);
+/*! @brief returns a new file_logger
+  * Calls new_thread_logger internally
+*/
+file_logger *new_file_logger(char *output_file, bool with_debug);
+/*! @brief closes the opened file
+*/
+int close_file_logger(file_logger *fhl);
 /*! @brief main function you should call, which will delegate to the appopriate *_log function
 */
-void log_func(thread_logger *thl, char *message, LOG_LEVELS level);
+void log_func(thread_logger *thl,  int file_descriptor, char *message, LOG_LEVELS level);
 
 /*! @brief logs a debug styled message - called by log_fn
 */
-void debug_log(thread_logger *thl, char *message);
+void debug_log(thread_logger *thl,  int file_descriptor, char *message);
 
 /*! @brief logs a warned styled message - called by log_fn
 */
-void warn_log(thread_logger *thl, char *message);
+void warn_log(thread_logger *thl,  int file_descriptor, char *message);
 /*! @brief logs an error styled message - called by log_fn
 */
-void error_log(thread_logger *thl, char *message);
+void error_log(thread_logger *thl,  int file_descriptor, char *message);
 /*! @brief logs an info styled message - called by log_fn
 */
-void info_log(thread_logger *thl, char *message);
+void info_log(thread_logger *thl,  int file_descriptor, char *message);
