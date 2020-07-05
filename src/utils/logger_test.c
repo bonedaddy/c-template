@@ -44,7 +44,7 @@ void test_thread_logger(void **state) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_file_logger(void **state) {
     file_logger *fhl = new_file_logger("file_logger_test.log", true);
-    printf("%i\n", fhl->file_descriptor);
+    assert(fhl != NULL);
     fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an info log", LOG_LEVELS_INFO);
     fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a warn log", LOG_LEVELS_WARN);
     fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an error log", LOG_LEVELS_ERROR);
