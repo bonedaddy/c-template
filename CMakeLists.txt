@@ -25,6 +25,8 @@ endif()
 # BEGIN MACRO INCLUDES #
 ########################
 
+include(cmake/glib.cmake)
+
 include(cmake/colors_lib.cmake)
 include(cmake/colors_test.cmake)
 
