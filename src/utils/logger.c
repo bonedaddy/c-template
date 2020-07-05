@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "../../include/utils/logger.h"
 
 logger *new_logger(char *config_path, char *category) {
@@ -45,6 +46,44 @@ void close_logger(void) {
     zlog_fini();
 }
 
+void debug_log(thread_logger *thl, char *message) {
+    // unless debug enabled dont show
+    if (thl->debug == false) {
+        return;
+    }
+    thl->lock(&thl->mutex);
+    // 2 = 1 for null terminator, 1 for space after ]
+    char *msg = calloc(sizeof(char), strlen(message) + strlen("[debug]") + (size_t) 2);
+    msg[0] = '[';
+    msg[1] = 'd';
+    msg[2] = 'e';
+    msg[3] = 'b';
+    msg[4] = 'u';
+    msg[5] = 'g';
+    msg[6] = ']';
+    msg[7] = ' ';
+    strcat(msg, message);
+    print_colored(COLORS_SOFT_RED, msg);
+    thl->unlock(&thl->mutex);
+    free(msg);
+}
+
+void warn_log(thread_logger *thl, char *message) {
+    thl->lock(&thl->mutex);
+    // 2 = 1 for null terminator, 1 for space after ]
+    char *msg = calloc(sizeof(char), strlen(message) + strlen("[warn]") + (size_t) 2);
+    msg[0] = '[';
+    msg[1] = 'w';
+    msg[2] = 'a';
+    msg[3] = 'r';
+    msg[4] = 'n';
+    msg[5] = ']';
+    msg[6] = ' ';
+    strcat(msg, message);
+    print_colored(COLORS_YELLOW, msg);
+    thl->unlock(&thl->mutex);
+    free(msg);
+}
 
 void info_log(thread_logger *thl, char *message) {
     thl->lock(&thl->mutex);
@@ -81,12 +120,15 @@ void error_log(thread_logger *thl, char *message) {
     free(msg);
 }
 
-thread_logger *new_thread_logger() {
+thread_logger *new_thread_logger(bool with_debug) {
     thread_logger *thl = malloc(sizeof(thread_logger));
     thl->lock = fn_mutex_lock;
     thl->unlock = fn_mutex_unlock;
     thl->info_log = info_log;
+    thl->warn_log = warn_log;
     thl->error_log = error_log;
+    thl->debug_log = debug_log;
+    thl->debug = with_debug;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
 }
@@ -100,9 +142,11 @@ void fn_mutex_unlock(pthread_mutex_t *mx) {
 }
 
 int main(void) {
-    thread_logger *thl = new_thread_logger();
+    thread_logger *thl = new_thread_logger(true);
     thl->info_log(thl, "hello world");
     thl->error_log(thl, "hello world");
+    thl->warn_log(thl, "hello world");
+    thl->debug_log(thl, "hello world");
     free(thl);
     /*new_logger_config("logger.conf");
     logger *loggr = new_logger("logger.conf", "file_debug");

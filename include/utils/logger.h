@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include "colors.h"
 #include <string.h>
+#include <stdbool.h>
 
 struct thread_logger;
 
@@ -22,11 +23,14 @@ typedef void (*log_func)(struct thread_logger *thl, char *message);
 */
 typedef struct thread_logger {
     // todo(bonedaddy): make atomic
+    bool debug;
     pthread_mutex_t mutex;
     mutex_lock lock;
     mutex_unlock unlock;
     log_func info_log;
+    log_func warn_log;
     log_func error_log;
+    log_func debug_log;
 } thread_logger;
 
 
@@ -35,9 +39,11 @@ typedef struct logger {
     zlog_category_t *z;
 } logger;
 
+void debug_log(thread_logger *thl, char *message);
+void warn_log(thread_logger *thl, char *message);
 void error_log(thread_logger *thl, char *message);
 void info_log(thread_logger *thl, char *message);
-thread_logger *new_thread_logger();
+thread_logger *new_thread_logger(bool with_debug);
 
 
 

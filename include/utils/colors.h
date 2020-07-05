@@ -6,17 +6,20 @@
 */
 
 #pragma once
-
-#define ANSI_COLOR_RED "\x1b[31m"
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_YELLOW "\x1b[33m"
-#define ANSI_COLOR_BLUE "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN "\x1b[36m"
-#define ANSI_COLOR_RESET "\x1b[0m"
+// to make non-bol change 0->1 (0;31m red) vs (1;31m bold red)
+// 
+// to use 256bit the following syntax
+#define ANSI_COLOR_RED "\x1b[1;31m"
+#define ANSI_COLOR_SOFT_RED "\x1b[1;38;5;210m"
+#define ANSI_COLOR_GREEN "\x1b[1;32m"
+#define ANSI_COLOR_YELLOW "\x1b[1;33m"
+#define ANSI_COLOR_BLUE "\x1b[1;34m"
+#define ANSI_COLOR_MAGENTA "\x1b[1;35m"
+#define ANSI_COLOR_CYAN "\x1b[1;36m"
+#define ANSI_COLOR_RESET "\x1b[1;0m"
 
 typedef enum {
-  COLORS_RED, COLORS_GREEN, COLORS_YELLOW, COLORS_BLUE, COLORS_MAGENTA, COLORS_CYAN, COLORS_RESET
+  COLORS_RED, COLORS_SOFT_RED, COLORS_GREEN, COLORS_YELLOW, COLORS_BLUE, COLORS_MAGENTA, COLORS_CYAN, COLORS_RESET
 } COLORS;
 
 /*! @brief returns a `char *` with the message formatted with ansi colors

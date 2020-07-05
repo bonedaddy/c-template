@@ -37,12 +37,19 @@ void validate_test_args(test testdata) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_get_ansi_color_scheme(void **state) {
 
-    test tests[7] = {
+    test tests[8] = {
         {
             .name = "red", 
             .args = {
                 .test_color = COLORS_RED,
                 .want_ansi = ANSI_COLOR_RED,
+            },
+        },
+        {
+            .name = "soft_red",
+            .args = {
+                .test_color = COLORS_SOFT_RED,
+                .want_ansi = ANSI_COLOR_SOFT_RED,
             },
         },
         {

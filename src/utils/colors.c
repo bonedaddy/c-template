@@ -6,6 +6,8 @@
 char *get_ansi_color_scheme(COLORS color) {
   if (color == COLORS_RED) {
     return ANSI_COLOR_RED;
+  } else if (color == COLORS_SOFT_RED) {
+    return ANSI_COLOR_SOFT_RED;
   } else if (color == COLORS_GREEN) {
     return ANSI_COLOR_GREEN;
   } else if (color == COLORS_YELLOW) {
