@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "../../include/utils/colors.h"
 
 char *get_ansi_color_scheme(COLORS color) {
@@ -39,32 +40,20 @@ void print_colored(COLORS color, char *message) {
   printf("%s%s%s\n", get_ansi_color_scheme(color), message, ANSI_COLOR_RESET);
 }
 
-int write_colored(FILE *fh, COLORS color, char *message, bool do_flush) {
+int write_colored(COLORS color, int file_descriptor, char *message) {
     char *pcolor = get_ansi_color_scheme(color);
     char *reset = get_ansi_color_scheme(COLORS_RESET);
     // 2 for \n
-    char *write_message = malloc(strlen(pcolor) + strlen(reset) + strlen(message) + 2);
+    char *write_message = calloc(sizeof(char), strlen(pcolor) + strlen(reset) + strlen(message) + 2);
     strcat(write_message, pcolor);
     strcat(write_message, message);
     strcat(write_message, reset);
     strcat(write_message, "\n");
-    int response = fputs(write_message, fh);
-    if (response != 1) {
-        printf("failed to call fputs: %i\n", response);
-        free(write_message);
-        return 1; // return 1 as we return 0 if there was no error
-    }
-    // FILE* likely buffers internally so this likely doesnt cause any issues
-    // if you want to be safe set do_flush to true, but this will increase disk activity
-    if (do_flush == false) {
-        free(write_message);
+    int response = write(file_descriptor, write_message, strlen(write_message));
+    free(write_message);
+    if (response == -1) {
+        printf("failed to write colored message\n");
         return response;
     }
-    // TODO(bonedaddy): should we buffer logs?
-    response = fflush(fh);
-    if (response != 0) {
-        printf("failed to call fflush\n");
-    }
-    free(write_message);
-    return response;
+    return 0;
 }
