@@ -139,20 +139,13 @@ void debug_log(thread_logger *thl, char *message) {
 
 thread_logger *new_thread_logger(bool with_debug) {
     thread_logger *thl = malloc(sizeof(thread_logger));
-    thl->lock = fn_mutex_lock;
-    thl->unlock = fn_mutex_unlock;
+    // thl->lock = fn_mutex_lock;
+    thl->lock = pthread_mutex_lock;
+    thl->unlock = pthread_mutex_unlock;
     thl->log_fn = log_fn;
     thl->debug = with_debug;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
-}
-
-void fn_mutex_lock(pthread_mutex_t *mx) {
-    pthread_mutex_lock(mx);
-}
-
-void fn_mutex_unlock(pthread_mutex_t *mx) {
-    pthread_mutex_unlock(mx);
 }
 
 int main(void) {

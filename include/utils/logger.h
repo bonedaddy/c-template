@@ -15,7 +15,7 @@
 struct thread_logger;
 
 typedef enum { LOG_LEVELS_INFO, LOG_LEVELS_WARN, LOG_LEVELS_ERROR, LOG_LEVELS_DEBUG } LOG_LEVELS;
-typedef void (*mutex_lock)(pthread_mutex_t *mx);
+typedef int (*mutex_fn)(pthread_mutex_t *mx);
 typedef void (*mutex_unlock)(pthread_mutex_t *mx);
 typedef void (*log_func)(struct thread_logger *thl, char *message, LOG_LEVELS level);
 
@@ -26,8 +26,8 @@ typedef struct thread_logger {
     // todo(bonedaddy): make atomic
     bool debug;
     pthread_mutex_t mutex;
-    mutex_lock lock;
-    mutex_unlock unlock;
+    mutex_fn lock;
+    mutex_fnb unlock;
     log_func log_fn;
 } thread_logger;
 
