@@ -20,7 +20,7 @@ cg_return *new_cg_return(void *value, cg_error *err) {
 void free_cg_return(cg_return *ret) {
     // TODO(bonedaddy): determine how we can determine if ret->value needs to be freed
     if (ret->err != NULL) {
-        free(ret->err);
+        free_cg_error(ret->err);
     }
     free(ret);
 }
