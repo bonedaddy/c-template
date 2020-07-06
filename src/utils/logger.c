@@ -55,6 +55,10 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
 int write_file_log(int file_descriptor, char *message) {
     // 2 for \n
     char *msg = calloc(sizeof(char), strlen(message) + 2);
+    if (msg == NULL) {
+        printf("failed to calloc msg\n");
+        return -1;
+    }
     strcat(msg, message);
     strcat(msg, "\n");
     int response = write(file_descriptor, msg, strlen(msg));

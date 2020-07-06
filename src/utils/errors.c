@@ -6,12 +6,20 @@
 
 cg_error *new_cg_error(char *message) {
     cg_error *err = calloc(sizeof(cg_error), sizeof(cg_error) + strlen(message) + 1);
+    if (err == NULL) {
+        printf("failed to calloc cg_error\n");
+        return NULL;
+    }
     err->message = cg_error_string(message);
     return err;
 }
 
 char *cg_error_string(char *message) {
     char *msg = calloc(sizeof(char), strlen(message) + 1);
+    if (msg == NULL) {
+        printf("failed to calloc msg\n");
+        return NULL;
+    }
     // TODO(bonedaddy): should we use strcpy??
     memmove(msg, message, strlen(message) + 1);
     return msg;
