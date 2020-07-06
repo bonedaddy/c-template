@@ -13,7 +13,7 @@
 #include <stdbool.h>
 #include "colors.h"
 
-/*! @brief base struct used by the thread_logger
+/*! @struct base struct used by the thread_logger
 */
 struct thread_logger;
 

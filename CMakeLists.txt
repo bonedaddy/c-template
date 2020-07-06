@@ -25,6 +25,8 @@ endif()
 # BEGIN MACRO INCLUDES #
 ########################
 
+include(cmake/doxygen.cmake)
+
 include(cmake/glib.cmake)
 
 include(cmake/returns_test.cmake)
@@ -97,8 +99,19 @@ define_random_test()
 
 define_logger_lib()
 define_logger_test()
-
+ 
 define_array_len_test()
+
+add_doxygen_doc(
+    BUILD_DIR
+        ${PROJECT_SOURCE_DIR}/build
+    DOXY_FILE
+        ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
+    TARGET_NAME
+        docs
+    COMMENT
+        "HTML documentation"
+)
 
 #############################
 # END MACRO FUNCTION INVOKE #
