@@ -25,7 +25,7 @@ endif()
 # BEGIN MACRO INCLUDES #
 ########################
 
-include(cmake/UseDoxygenDoc.cmake)
+include(cmake/doxygen.cmake)
 
 include(cmake/glib.cmake)
 
@@ -104,7 +104,7 @@ define_array_len_test()
 
 add_doxygen_doc(
     BUILD_DIR
-        ${PROJECT_SOURCE_DIR}/docs/build
+        ${PROJECT_SOURCE_DIR}/build
     DOXY_FILE
         ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
     TARGET_NAME
