@@ -23,39 +23,33 @@ thread_logger *new_thread_logger(bool with_debug) {
 }
 
 file_logger *new_file_logger(char *output_file, bool with_debug) {
-    /*
-        TODO(bonedaddy): im not sure how I like the goto and label for error cleaning up
-        it seems to make the code a bit harder to understand
-    */
     thread_logger *thl = new_thread_logger(with_debug);
     if (thl == NULL) {
         // dont printf log here since new_thread_logger handles that
-        goto HANDLE_ERROR;
+        return NULL;
     }
     file_logger *fhl = malloc(sizeof(file_logger));
     if (fhl == NULL) {
+        // free thl as it is not null
+        free(thl);
         printf("failed to malloc file_logger\n");
-        goto HANDLE_ERROR;
+        return NULL;
     }
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
     int file_descriptor = open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND, 0640);
     // TODO(bonedaddy): should this just be `< 0` ? `open` shouldn't return 0 but im unsure about removing the check for it
     if (file_descriptor <= 0) {
+        // free thl as it is not null
+        free(thl);
+        // free fhl as it is not null
+        free(fhl);
         printf("failed to run posix open function\n");
-        goto HANDLE_ERROR;
+        return NULL;
     }
     fhl->file_descriptor = file_descriptor;
     fhl->thl = thl;
     return fhl;
-    HANDLE_ERROR:
-        if (thl != NULL) {
-            free(thl);
-        }
-        if (fhl != NULL) {
-            free(fhl);
-        }
-        return NULL;
 }
 
 int write_file_log(int file_descriptor, char *message) {

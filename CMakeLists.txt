@@ -27,6 +27,8 @@ endif()
 
 include(cmake/glib.cmake)
 
+include(cmake/returns_lib.cmake)
+
 include(cmake/errors_lib.cmake)
 
 include(cmake/colors_lib.cmake)
@@ -65,6 +67,8 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_returns_lib()
 
 define_errors_lib()
 

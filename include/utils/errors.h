@@ -1,5 +1,5 @@
-/*! @file errors.c
-  * @brief provides a C equivalent of the golang stdlib `errors` package
+/*! @file errors.h
+  * @brief golang like error handling
 */
 
 #pragma once
