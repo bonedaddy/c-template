@@ -14,6 +14,7 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 void test_get_random_string_length(void **state) {
     cg_return *ret_val = get_random_string(10);
+    assert(ret_val->err == NULL);
     char *word = (char *)ret_val->value;
     assert(sizeof(word) == 8);
     assert(strlen(word) == 10);
