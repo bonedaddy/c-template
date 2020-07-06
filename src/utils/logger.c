@@ -25,8 +25,9 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
     int file_descriptor = open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND, 0640);
-    if (file_descriptor <= 0) {
-        thl->log(thl, 0, "failed to run posix open function", LOG_LEVELS_ERROR);
+    if (file_descriptor < 0) {
+        printf("failed to run posix open function\n");
+        clear_thread_logger(thl);
         return NULL;
     }
     fhl->file_descriptor = file_descriptor;
