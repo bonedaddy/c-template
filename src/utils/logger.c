@@ -23,15 +23,19 @@ thread_logger *new_thread_logger(bool with_debug) {
 }
 
 file_logger *new_file_logger(char *output_file, bool with_debug) {
+    /*
+        TODO(bonedaddy): im not sure how I like the goto and label for error cleaning up
+        it seems to make the code a bit harder to understand
+    */
     thread_logger *thl = new_thread_logger(with_debug);
     if (thl == NULL) {
         // dont printf log here since new_thread_logger handles that
-        return NULL;
+        goto HANDLE_ERROR;
     }
     file_logger *fhl = malloc(sizeof(file_logger));
     if (fhl == NULL) {
         printf("failed to malloc file_logger\n");
-        return NULL;
+        goto HANDLE_ERROR;
     }
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
@@ -39,12 +43,19 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     // TODO(bonedaddy): should this just be `< 0` ? `open` shouldn't return 0 but im unsure about removing the check for it
     if (file_descriptor <= 0) {
         printf("failed to run posix open function\n");
-        clear_thread_logger(thl);
-        return NULL;
+        goto HANDLE_ERROR;
     }
     fhl->file_descriptor = file_descriptor;
     fhl->thl = thl;
     return fhl;
+    HANDLE_ERROR:
+        if (thl != NULL) {
+            clear_thread_logger(thl);
+        }
+        if (fhl != NULL) {
+            clear_file_logger(fhl);
+        }
+        return NULL;
 }
 
 int write_file_log(int file_descriptor, char *message) {
@@ -52,15 +63,17 @@ int write_file_log(int file_descriptor, char *message) {
     char *msg = calloc(sizeof(char), strlen(message) + 2);
     strcat(msg, message);
     strcat(msg, "\n");
-    //strcat(msg, message);
-    // strcat(msg, "\n");
     int response = write(file_descriptor, msg, strlen(msg));
     if (response == -1) {
         printf("failed to write file log message");
-        return response;
+    } else {
+        // this branch will be triggered if write doesnt fail
+        // so overwrite the response to 0 as we want to return 0 to indicate
+        // no error was received, and returning response directly would return the number of bytes written
+        response = 0;
     }
     free(msg);
-    return 0;
+    return response;
 }
 
 void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
