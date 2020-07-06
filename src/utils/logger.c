@@ -1,3 +1,11 @@
+/*! @file logger.c
+  * @brief provides logging related functionality
+  * provides a thread safe logger capable of printing colored logs and writing logs to disk
+  * TODOS:
+  *  - buffer logs and use a dedicated thread for writing (avoid blocking locks)
+  *  - handling system signals (exit, kill, etc...)
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -154,6 +162,7 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     if (thl->debug == false) {
         return;
     }
+
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[debug]") + (size_t) 2);
