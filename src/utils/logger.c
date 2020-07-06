@@ -150,9 +150,7 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     strcat(msg, "[debug] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
-        //char *cpy = malloc(strlen(msg));
-        //strcpy(cpy, msg);
-        write_file_log(file_descriptor, /*cpy*/ msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_SOFT_RED, msg);
     thl->unlock(&thl->mutex);
