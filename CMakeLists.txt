@@ -31,6 +31,7 @@ include(cmake/returns_test.cmake)
 include(cmake/returns_lib.cmake)
 
 include(cmake/errors_lib.cmake)
+include(cmake/errors_test.cmake)
 
 include(cmake/colors_lib.cmake)
 include(cmake/colors_test.cmake)
@@ -73,6 +74,7 @@ define_returns_test()
 define_returns_lib()
 
 define_errors_lib()
+define_errors_test()
 
 define_colors_lib()
 define_colors_test()

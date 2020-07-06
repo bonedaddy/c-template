@@ -18,10 +18,12 @@ char *cg_error_string(char *message) {
 }
 
 int wrap_cg_error(cg_error *error, char *message) {
-    error->message = realloc(error->message, strlen(error->message) + strlen(message) + 1);
+    // 4 for delimiter of ` | `
+    error->message = realloc(error->message, strlen(error->message) + strlen(message) + 4);
     if (error->message == NULL) {
         return -1;
     }
+    strcat(error->message, " | ");
     strcat(error->message, message);
     return 0;
 }
@@ -29,28 +31,4 @@ int wrap_cg_error(cg_error *error, char *message) {
 void free_cg_error(cg_error *error) {
     free(error->message);
     free(error);
-}
-
-int main(void) {
-    cg_error *err = new_cg_error("hello");
-    printf("%s\n", err->message);
-    int response = wrap_cg_error(err, " world");
-    if (response == -1) {
-        printf("failed to wrap error");
-        return response;
-    }
-    printf("%s\n", err->message);
-    response = wrap_cg_error(err, " world");
-    if (response == -1) {
-        printf("failed to wrap error");
-        return response;
-    }
-    printf("%s\n", err->message);
-    response = wrap_cg_error(err, " world");
-    if (response == -1) {
-        printf("failed to wrap error");
-        return response;
-    }
-    printf("%s\n", err->message);
-    free_cg_error(err);
 }
