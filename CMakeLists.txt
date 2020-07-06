@@ -104,7 +104,7 @@ define_array_len_test()
 
 add_doxygen_doc(
     BUILD_DIR
-        ${PROJECT_SOURCE_DIR}/build
+        ${PROJECT_SOURCE_DIR}/docs/build
     DOXY_FILE
         ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
     TARGET_NAME
