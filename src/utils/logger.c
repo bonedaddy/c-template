@@ -10,7 +10,10 @@
 
 thread_logger *new_thread_logger(bool with_debug) {
     thread_logger *thl = malloc(sizeof(thread_logger));
-    // thl->lock = fn_mutex_lock;
+    if (thl == NULL) {
+        printf("failed to malloc thread_logger\n");
+        return NULL;
+    }
     thl->lock = pthread_mutex_lock;
     thl->unlock = pthread_mutex_unlock;
     thl->log = log_func;
@@ -20,18 +23,39 @@ thread_logger *new_thread_logger(bool with_debug) {
 }
 
 file_logger *new_file_logger(char *output_file, bool with_debug) {
+    /*
+        TODO(bonedaddy): im not sure how I like the goto and label for error cleaning up
+        it seems to make the code a bit harder to understand
+    */
     thread_logger *thl = new_thread_logger(with_debug);
+    if (thl == NULL) {
+        // dont printf log here since new_thread_logger handles that
+        goto HANDLE_ERROR;
+    }
     file_logger *fhl = malloc(sizeof(file_logger));
+    if (fhl == NULL) {
+        printf("failed to malloc file_logger\n");
+        goto HANDLE_ERROR;
+    }
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
     int file_descriptor = open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND, 0640);
+    // TODO(bonedaddy): should this just be `< 0` ? `open` shouldn't return 0 but im unsure about removing the check for it
     if (file_descriptor <= 0) {
-        thl->log(thl, 0, "failed to run posix open function", LOG_LEVELS_ERROR);
-        return NULL;
+        printf("failed to run posix open function\n");
+        goto HANDLE_ERROR;
     }
     fhl->file_descriptor = file_descriptor;
     fhl->thl = thl;
     return fhl;
+    HANDLE_ERROR:
+        if (thl != NULL) {
+            free(thl);
+        }
+        if (fhl != NULL) {
+            free(fhl);
+        }
+        return NULL;
 }
 
 int write_file_log(int file_descriptor, char *message) {
@@ -39,15 +63,17 @@ int write_file_log(int file_descriptor, char *message) {
     char *msg = calloc(sizeof(char), strlen(message) + 2);
     strcat(msg, message);
     strcat(msg, "\n");
-    //strcat(msg, message);
-    // strcat(msg, "\n");
     int response = write(file_descriptor, msg, strlen(msg));
     if (response == -1) {
         printf("failed to write file log message");
-        return response;
+    } else {
+        // this branch will be triggered if write doesnt fail
+        // so overwrite the response to 0 as we want to return 0 to indicate
+        // no error was received, and returning response directly would return the number of bytes written
+        response = 0;
     }
     free(msg);
-    return 0;
+    return response;
 }
 
 void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
@@ -71,13 +97,7 @@ void info_log(thread_logger *thl,  int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[info]") + (size_t)2);
-    msg[0] = '[';
-    msg[1] = 'i';
-    msg[2] = 'n';
-    msg[3] = 'f';
-    msg[4] = 'o';
-    msg[5] = ']';
-    msg[6] = ' ';
+    strcat(msg, "[info] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
         write_file_log(file_descriptor, msg);
@@ -91,13 +111,7 @@ void warn_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[warn]") + (size_t) 2);
-    msg[0] = '[';
-    msg[1] = 'w';
-    msg[2] = 'a';
-    msg[3] = 'r';
-    msg[4] = 'n';
-    msg[5] = ']';
-    msg[6] = ' ';
+    strcat(msg, "[warn] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
         // TODO(bonedaddy): decide if we want to copy
@@ -115,14 +129,7 @@ void error_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[error]") + (size_t)2);
-    msg[0] = '[';
-    msg[1] = 'e';
-    msg[2] = 'r';
-    msg[3] = 'r';
-    msg[4] = 'o';
-    msg[5] = 'r';
-    msg[6] = ']';
-    msg[7] = ' ';
+    strcat(msg, "[error] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
         write_file_log(file_descriptor, msg);
@@ -140,19 +147,10 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[debug]") + (size_t) 2);
-    msg[0] = '[';
-    msg[1] = 'd';
-    msg[2] = 'e';
-    msg[3] = 'b';
-    msg[4] = 'u';
-    msg[5] = 'g';
-    msg[6] = ']';
-    msg[7] = ' ';
+    strcat(msg, "[debug] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
-        //char *cpy = malloc(strlen(msg));
-        //strcpy(cpy, msg);
-        write_file_log(file_descriptor, /*cpy*/ msg);
+        write_file_log(file_descriptor, msg);
     }
     print_colored(COLORS_SOFT_RED, msg);
     thl->unlock(&thl->mutex);

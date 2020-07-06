@@ -34,43 +34,50 @@ void *test_file_log(void *data) {
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_thread_logger(void **state) {
-    thread_logger *thl = new_thread_logger(true);
-    thl->log(thl, 0, "this is an info log", LOG_LEVELS_INFO);
-    thl->log(thl, 0, "this is a warn log", LOG_LEVELS_WARN);
-    thl->log(thl, 0, "this is an error log", LOG_LEVELS_ERROR);
-    thl->log(thl, 0, "this is a debug log", LOG_LEVELS_DEBUG);
-    pthread_t threads[4];
-    pthread_attr_t attrs[4];
-    for (int i = 0; i < 4; i++) {
-        pthread_attr_init(&attrs[i]);
-        pthread_create(&threads[i], &attrs[i], test_thread_log, thl);
+    bool args[2] = {false, true};
+    for (int i = 0; i < 2; i++) {
+        thread_logger *thl = new_thread_logger(args[i]);
+        assert(thl != NULL);
+        thl->log(thl, 0, "this is an info log", LOG_LEVELS_INFO);
+        thl->log(thl, 0, "this is a warn log", LOG_LEVELS_WARN);
+        thl->log(thl, 0, "this is an error log", LOG_LEVELS_ERROR);
+        thl->log(thl, 0, "this is a debug log", LOG_LEVELS_DEBUG);
+        pthread_t threads[4];
+        pthread_attr_t attrs[4];
+        for (int i = 0; i < 4; i++) {
+            pthread_attr_init(&attrs[i]);
+            pthread_create(&threads[i], &attrs[i], test_thread_log, thl);
+        }
+        for (int i = 0; i < 4; i++) {
+            pthread_join(threads[i], NULL);
+            pthread_attr_destroy(&attrs[i]);
+        }
+        clear_thread_logger(thl);
     }
-    for (int i = 0; i < 4; i++) {
-        pthread_join(threads[i], NULL);
-        pthread_attr_destroy(&attrs[i]);
-    }
-    clear_thread_logger(thl);
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void test_file_logger(void **state) {
-    file_logger *fhl = new_file_logger("file_logger_test.log", true);
-    assert(fhl != NULL);
-    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an info log", LOG_LEVELS_INFO);
-    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a warn log", LOG_LEVELS_WARN);
-    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an error log", LOG_LEVELS_ERROR);
-    fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a debug log", LOG_LEVELS_DEBUG);
-    pthread_t threads[4];
-    pthread_attr_t attrs[4];
-    for (int i = 0; i < 4; i++) {
-        pthread_attr_init(&attrs[i]);
-        pthread_create(&threads[i], &attrs[i], test_file_log, fhl);
+    bool args[2] = {false, true};
+    for (int i = 0; i < 2; i++) {
+        file_logger *fhl = new_file_logger("file_logger_test.log", args[i]);
+        assert(fhl != NULL);
+        fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an info log", LOG_LEVELS_INFO);
+        fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a warn log", LOG_LEVELS_WARN);
+        fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is an error log", LOG_LEVELS_ERROR);
+        fhl->thl->log(fhl->thl, fhl->file_descriptor, "this is a debug log", LOG_LEVELS_DEBUG);
+        pthread_t threads[4];
+        pthread_attr_t attrs[4];
+        for (int i = 0; i < 4; i++) {
+            pthread_attr_init(&attrs[i]);
+            pthread_create(&threads[i], &attrs[i], test_file_log, fhl);
+        }
+        for (int i = 0; i < 4; i++) {
+            pthread_join(threads[i], NULL);
+            pthread_attr_destroy(&attrs[i]);
+        }
+        clear_file_logger(fhl);
     }
-    for (int i = 0; i < 4; i++) {
-        pthread_join(threads[i], NULL);
-        pthread_attr_destroy(&attrs[i]);
-    }
-    clear_file_logger(fhl);
 }
 
 int main(void) {
