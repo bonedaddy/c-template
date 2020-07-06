@@ -50,10 +50,10 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     return fhl;
     HANDLE_ERROR:
         if (thl != NULL) {
-            clear_thread_logger(thl);
+            free(thl);
         }
         if (fhl != NULL) {
-            clear_file_logger(fhl);
+            free(fhl);
         }
         return NULL;
 }
