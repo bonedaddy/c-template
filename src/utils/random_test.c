@@ -8,13 +8,18 @@
 #include <assert.h>
 #include "../../include/utils/random.h"
 #include "../../include/utils/array_len.h"
+#include "../../include/utils/returns.h"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
 void test_get_random_string_length(void **state) {
-    char *word = get_random_string(10);
+    cg_return *ret_val = get_random_string(10);
+    assert(ret_val->err == NULL);
+    char *word = (char *)ret_val->value;
     assert(sizeof(word) == 8);
+    assert(strlen(word) == 10);
     free(word);
+    free_cg_return(ret_val);
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"

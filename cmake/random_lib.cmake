@@ -6,4 +6,6 @@ macro(define_random_lib)
             ./src/utils/random.c
     )
     target_compile_options(randomlib PRIVATE ${flags})
+    target_link_libraries(randomlib returnslib)
+    target_link_libraries(randomlib errorslib)
 endmacro()
