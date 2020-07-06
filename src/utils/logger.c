@@ -91,6 +91,10 @@ void info_log(thread_logger *thl,  int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[info]") + (size_t)2);
+    if (msg == NULL) {
+        printf("failed to calloc info_log msg");
+        return;
+    }
     strcat(msg, "[info] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
@@ -105,6 +109,10 @@ void warn_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[warn]") + (size_t) 2);
+    if (msg == NULL) {
+        printf("failed to calloc warn_log msg");
+        return;
+    }
     strcat(msg, "[warn] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
@@ -123,6 +131,10 @@ void error_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[error]") + (size_t)2);
+    if (msg == NULL) {
+        printf("failed to calloc error_log msg");
+        return;
+    }
     strcat(msg, "[error] ");
     strcat(msg, message);
     if (file_descriptor != 0) {
@@ -141,6 +153,10 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
     char *msg = calloc(sizeof(char), strlen(message) + strlen("[debug]") + (size_t) 2);
+    if (msg == NULL) {
+        printf("failed to calloc debug_log msg");
+        return;
+    }
     strcat(msg, "[debug] ");
     strcat(msg, message);
     if (file_descriptor != 0) {

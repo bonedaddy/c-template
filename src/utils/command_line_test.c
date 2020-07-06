@@ -14,6 +14,10 @@ void print_hello_world() {
 command_handler *new_test_command();
 command_handler *new_test_command() {
     command_handler *handler = malloc(sizeof(command_handler));
+    if (handler == NULL) {
+        printf("failed to malloc comand_handler\n");
+        return NULL;
+    }
     handler->callback = print_hello_world;
     handler->name = "hello-world";
     return handler;

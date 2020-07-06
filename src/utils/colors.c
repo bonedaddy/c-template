@@ -31,6 +31,10 @@ char *get_ansi_color_scheme(COLORS color) {
 char *format_colored(COLORS color, char *message) {
   char *pcolor = get_ansi_color_scheme(color);
   char *formatted = malloc(sizeof(message) + sizeof(pcolor));
+  if (formatted == NULL) {
+      printf("failed to format colored string\n");
+      return NULL;
+  }
   strcat(formatted, pcolor);
   strcat(formatted, message);
   return formatted;
