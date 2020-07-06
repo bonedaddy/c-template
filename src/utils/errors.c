@@ -5,7 +5,7 @@
 #include "../../include/utils/errors.h"
 
 cg_error *new_cg_error(char *message) {
-    cg_error *err = calloc(sizeof(cg_error), sizeof(cg_error) + strlen(message));
+    cg_error *err = calloc(sizeof(cg_error), sizeof(cg_error) + strlen(message) + 1);
     err->message = cg_error_string(message);
     return err;
 }
