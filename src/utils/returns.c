@@ -24,12 +24,3 @@ void free_cg_return(cg_return *ret) {
     }
     free(ret);
 }
-
-int main(void) {
-    int a = 1;
-    cg_error *err = new_cg_error("hello world");
-    cg_return *ret_val = new_cg_return(&a, err);
-    printf("%i\n", *(int *)ret_val->value);
-    printf("%s\n", ret_val->err->message);
-    free_cg_return(ret_val);
-}
