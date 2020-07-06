@@ -1,6 +1,9 @@
 /*! @file logger.h
   * @brief provides logging related functionality
   * provides a thread safe logger capable of printing colored logs and writing logs to disk
+  * TODOS:
+  *  - buffer logs and use a dedicated thread for writing (avoid blocking locks)
+  *  - handling system signals (exit, kill, etc...)
 */
 
 #pragma once
