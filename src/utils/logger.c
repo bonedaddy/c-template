@@ -6,6 +6,7 @@
   *  - handling system signals (exit, kill, etc...)
 */
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -25,6 +26,7 @@ thread_logger *new_thread_logger(bool with_debug) {
     thl->lock = pthread_mutex_lock;
     thl->unlock = pthread_mutex_unlock;
     thl->log = log_func;
+    thl->logf = logf_func;
     thl->debug = with_debug;
     pthread_mutex_init(&thl->mutex, NULL);
     return thl;
@@ -80,6 +82,18 @@ int write_file_log(int file_descriptor, char *message) {
     }
     free(msg);
     return response;
+}
+
+void logf_func(thread_logger *thl,  int file_descriptor, LOG_LEVELS level, char *message, ...) {
+    va_list args;
+    va_start(args, message);
+    char *msg = malloc(sizeof(args) + strlen(message) + 1);
+    int response = vsprintf(msg, message, args);
+    if (response < 0) {
+        printf("failed to vsprintf\n");
+        return;
+    }
+    log_func(thl, file_descriptor, msg, level);
 }
 
 void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
