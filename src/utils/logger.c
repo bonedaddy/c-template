@@ -21,6 +21,8 @@
 #include <unistd.h>
 #include "../../include/utils/logger.h"
 
+/*! @brief private function that returns a timestamp of format `Jul 06 10:12:20 PM`
+*/
 char *get_time_string();
 
 thread_logger *new_thread_logger(bool with_debug) {
