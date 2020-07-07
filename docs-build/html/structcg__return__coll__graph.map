@@ -1,0 +1,4 @@
+<map id="cg_return" name="cg_return">
+<area shape="rect" id="node1" title="allows returning both a value and error message from a function call useful as it makes it easier to ..." alt="" coords="5,95,88,121"/>
+<area shape="rect" id="node2" href="$structcg__error.html" title=" " alt="" coords="9,5,84,32"/>
+</map>
