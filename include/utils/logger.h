@@ -23,7 +23,16 @@ struct thread_logger;
 
 /*! @typedef specifies log_levels, typically used when determining function invocation by log_fn
 */
-typedef enum { LOG_LEVELS_INFO, LOG_LEVELS_WARN, LOG_LEVELS_ERROR, LOG_LEVELS_DEBUG } LOG_LEVELS;
+typedef enum { 
+  /*! indicates the message we are logging is of type info (color green) */
+  LOG_LEVELS_INFO, 
+  /*! indicates the message we are logging is of type warn (color yellow) */
+  LOG_LEVELS_WARN, 
+  /*! indicates the message we are logging is of type error (color red) */
+  LOG_LEVELS_ERROR, 
+  /*! indicates the message we are logging is of type debug (color soft red) */
+  LOG_LEVELS_DEBUG 
+} LOG_LEVELS;
 
 /*! @typedef signature of pthread_mutex_unlock and pthread_mutex_lock used by the thread_logger
   * @param mx pointer to a pthread_mutex_t type
