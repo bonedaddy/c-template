@@ -1,0 +1,7 @@
+<map id="write_file_log" name="write_file_log">
+<area shape="rect" id="node1" title="used to write a log message to file" alt="" coords="143,81,252,108"/>
+<area shape="rect" id="node2" href="$logger_8h.html#adbd079d224c0a17760bd34be2b94d4d4" title="logs a debug styled message &#45; called by log_fn" alt="" coords="5,5,95,32"/>
+<area shape="rect" id="node3" href="$logger_8h.html#a86974eb20c3c2a9b8528cca2bfd1526b" title="logs an error styled message &#45; called by log_fn" alt="" coords="10,56,90,83"/>
+<area shape="rect" id="node4" href="$logger_8h.html#acb4bc62c4f5124145fdd7813a8eff213" title="logs an info styled message &#45; called by log_fn" alt="" coords="13,107,87,133"/>
+<area shape="rect" id="node5" href="$logger_8h.html#a1979109bb7f9b3fccd5d35ab62af76b0" title="logs a warned styled message &#45; called by log_fn" alt="" coords="9,157,91,184"/>
+</map>
