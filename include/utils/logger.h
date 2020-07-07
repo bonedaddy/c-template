@@ -1,7 +1,11 @@
 /*! @file logger.h
-  * @brief provides logging related functionality
-  * provides a thread safe logger capable of printing colored logs and writing logs to disk
-  * TODOS:
+  * @brief a thread safe logger with optional printf style logging
+  * @details allows writing color coded logs to stdout, with optional file output as well. timestamps all logs, and provides optional printf style logging
+  * @note logf_func has a bug where some format is respected and others are not, consider the following from a `%s%s` format:
+  *   - [error - Jul 06 10:01:07 PM] one<insert-tab-here>two
+  *   - [warn - Jul 06 10:01:07 PM] one	two
+  * @note warn, and info appear to not respect format, while debug and error do
+  * @todo
   *  - buffer logs and use a dedicated thread for writing (avoid blocking locks)
   *  - handling system signals (exit, kill, etc...)
 */
