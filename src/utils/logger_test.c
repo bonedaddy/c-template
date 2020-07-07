@@ -38,6 +38,8 @@ void test_thread_logger(void **state) {
     for (int i = 0; i < 2; i++) {
         thread_logger *thl = new_thread_logger(args[i]);
         assert(thl != NULL);
+        logf_func(thl, 0, LOG_LEVELS_INFO, "hello world %s %s", "doggo", "poop");
+        return;
         thl->log(thl, 0, "this is an info log", LOG_LEVELS_INFO);
         thl->log(thl, 0, "this is a warn log", LOG_LEVELS_WARN);
         thl->log(thl, 0, "this is an error log", LOG_LEVELS_ERROR);

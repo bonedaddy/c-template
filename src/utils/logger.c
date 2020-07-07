@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include "../../include/utils/logger.h"
 
+char *get_time_string();
+
 thread_logger *new_thread_logger(bool with_debug) {
     thread_logger *thl = malloc(sizeof(thread_logger));
     if (thl == NULL) {
@@ -97,18 +99,22 @@ void logf_func(thread_logger *thl,  int file_descriptor, LOG_LEVELS level, char 
 }
 
 void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
+     char *time_str =get_time_string();
+    char *date_msg = calloc(sizeof(char), strlen(time_str) + strlen(message) + 1);
+    strcat(date_msg, time_str);
+    strcat(date_msg, message);
     switch (level) {
         case LOG_LEVELS_INFO:
-            info_log(thl, file_descriptor, message);
+            info_log(thl, file_descriptor, date_msg);
             break;
         case LOG_LEVELS_WARN:
-            warn_log(thl, file_descriptor, message);
+            warn_log(thl, file_descriptor, date_msg);
             break;
         case LOG_LEVELS_ERROR:
-            error_log(thl, file_descriptor, message);
+            error_log(thl, file_descriptor, date_msg);
             break;
         case LOG_LEVELS_DEBUG:
-            debug_log(thl, file_descriptor, message);
+            debug_log(thl, file_descriptor, date_msg);
             break;
     }
 }
@@ -202,4 +208,15 @@ void clear_file_logger(file_logger *fhl) {
     close(fhl->file_descriptor);
     clear_thread_logger(fhl->thl);
     free(fhl);
+}
+
+char *get_time_string() {
+    char date[50];
+    strftime(date, sizeof date, "%b %d %r", localtime(&(time_t){time(NULL)}));
+    // 4 for [ ] and 1 for \0
+    char *msg = calloc(sizeof(char), sizeof(date) + 6);
+    strcat(msg, "[ ");
+    strcat(msg, date);
+    strcat(msg, " ] ");
+    return msg;
 }
