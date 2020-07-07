@@ -1,6 +1,0 @@
-macro(define_array_len_test)
-    add_executable(array-len-test ./src/utils/array_test.c)
-    target_compile_options(array-len-test PRIVATE ${flags})
-    target_link_libraries(array-len-test cmocka)
-    add_test(NAME ArrayLenTest COMMAND array-len-test)
-endmacro()
