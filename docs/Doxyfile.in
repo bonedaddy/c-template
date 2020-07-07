@@ -8,8 +8,8 @@ PROJECT_NAME           = c-template
 PROJECT_NUMBER         =
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
-OUTPUT_DIRECTORY       =
-CREATE_SUBDIRS         = NO
+OUTPUT_DIRECTORY       = ../docs-build
+CREATE_SUBDIRS         = YES
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
@@ -36,16 +36,16 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 4
-ALIASES                =
+ALIASES                = YES
 TCL_SUBST              =
-OPTIMIZE_OUTPUT_FOR_C  = YE
+OPTIMIZE_OUTPUT_FOR_C  = YES
 OPTIMIZE_OUTPUT_JAVA   = NO
 OPTIMIZE_FOR_FORTRAN   = NO
 OPTIMIZE_OUTPUT_VHDL   = NO
 EXTENSION_MAPPING      =
 MARKDOWN_SUPPORT       = YES
 AUTOLINK_SUPPORT       = YES
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
 CPP_CLI_SUPPORT        = NO
 SIP_SUPPORT            = NO
 IDL_PROPERTY_SUPPORT   = YES
@@ -173,9 +173,9 @@ USE_MDFILE_AS_MAINPAGE = front_page.md
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
 #---------------------------------------------------------------------------
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 INLINE_SOURCES         = NO
-STRIP_CODE_COMMENTS    = YES
+STRIP_CODE_COMMENTS    = NO
 REFERENCED_BY_RELATION = NO
 REFERENCES_RELATION    = NO
 REFERENCES_LINK_SOURCE = YES
@@ -307,7 +307,7 @@ PERLMOD_MAKEVAR_PREFIX =
 # Configuration options related to the preprocessor
 #---------------------------------------------------------------------------
 ENABLE_PREPROCESSING   = YES
-MACRO_EXPANSION        = NO
+MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           =
