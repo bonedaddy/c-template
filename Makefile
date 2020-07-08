@@ -1,11 +1,11 @@
 .PHONY: build-all
 build-all:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc .. ; cmake -D CMAKE_C_COMPILER=gcc -build  . ; make )
+	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -DPYTHON_EXECUTABLE=/usr/bin/python3 .. ; cmake -D CMAKE_C_COMPILER=gcc -DPYTHON_EXECUTABLE=/usr/bin/python3 -build  . ; make )
 
 
 .PHONY: build-all-debug
 build-all-debug:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -build  . ; make )
+	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -DPYTHON_EXECUTABLE=/usr/bin/python3 .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -DPYTHON_EXECUTABLE=/usr/bin/python3 -build  . ; make )
 
 .PHONY: doxygen-docs
 doxygen-docs:
@@ -15,6 +15,10 @@ doxygen-docs:
 sphinx-docs:
 	(cd build ; cmake --build . --target sphinx-docs)
 
+.PHONY: breathe-docs
+breathe-docs:
+	(cd build ; cmake --build . --target breathe-docs)
+
 .PHONY: valgrind-all-debug
 valgrind-all-debug: build-all-debug
 	bash ./scripts/valgrind.sh
@@ -23,6 +27,9 @@ valgrind-all-debug: build-all-debug
 valgrind-all: build-all
 	bash ./scripts/valgrind.sh
 
+.PHONY: clean
+clean:
+	rm -rf _doctrees build _build source html
 # Minimal makefile for Sphinx documentation
 #
 
