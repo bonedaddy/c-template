@@ -27,7 +27,7 @@ valgrind-all: build-all
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
-BUILDDIR      = _build
+BUILDDIR      = docs-sphinx
 
 # Put it first so that "make" without argument is like "make help".
 help:

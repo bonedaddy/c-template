@@ -10,3 +10,7 @@ test.info
 out/
 
 docs-build/
+
+docs-sphinx/
+
+_build/
