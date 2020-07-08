@@ -122,15 +122,15 @@ add_doxygen_doc(
 
 add_sphinx_doc(
   SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs
+    ${PROJECT_SOURCE_DIR}/docs
   BUILD_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_build
+    ${PROJECT_SOURCE_DIR}/_build
   CACHE_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_doctrees
+    ${PROJECT_SOURCE_DIR}/_doctrees
   HTML_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/sphinx_html
+    ${PROJECT_SOURCE_DIR}/sphinx_html
   CONF_FILE
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py
+    ${PROJECT_SOURCE_DIR}/docs/conf.py
   TARGET_NAME
     sphinx-docs
   COMMENT
@@ -139,17 +139,17 @@ add_sphinx_doc(
 
 add_breathe_doc(
   SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs
+    ${PROJECT_SOURCE_DIR}/docs
   BUILD_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_build
+    ${PROJECT_SOURCE_DIR}/_build
   CACHE_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_doctrees
+    ${PROJECT_SOURCE_DIR}/_doctrees
   HTML_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/html
+    ${PROJECT_SOURCE_DIR}/html
   DOXY_FILE
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
+    ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
   CONF_FILE
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py
+    ${PROJECT_SOURCE_DIR}/docs/conf.py
   TARGET_NAME
     breathe-docs
   COMMENT

@@ -14,3 +14,7 @@ docs-build/
 docs-sphinx/
 
 _build/
+
+_doctrees/
+
+html/
