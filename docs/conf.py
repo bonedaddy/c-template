@@ -154,3 +154,22 @@ texinfo_documents = [
     (master_doc, 'c-template-REPLACEME', 'c-template-REPLACEME Documentation', author, 'c-template-REPLACEME',
      'One line description of project.', 'Miscellaneous'),
 ]
+
+breathe_projects = {'c-template-REPLACEME': '@BREATHE_DOC_BUILD_DIR@/xml'}
+
+
+def run_doxygen(folder):
+    """Run the doxygen make command in the designated folder"""
+
+    try:
+        retcode = subprocess.call("cd {}; doxygen".format(folder), shell=True)
+        if retcode < 0:
+            sys.stderr.write(
+                "doxygen terminated by signal {}".format(-retcode))
+    except OSError as e:
+        sys.stderr.write("doxygen execution failed: {}".format(e))
+
+
+def setup(app):
+    run_doxygen('@BREATHE_DOC_BUILD_DIR@')
+
