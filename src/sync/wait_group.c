@@ -45,12 +45,11 @@ int wait_group_done(wait_group_t *wg) {
     if (wg->active_processes <= 0) {
         printf("[warn] invalid call to wait_group_done with 0 active processes\n");
         rc = -1;
-        goto UNLOCK;
+    } else {
+        // decrease count by 1
+        wg->active_processes--;
     }
-    // decrease count by 1
-    wg->active_processes--;
-    UNLOCK:
-        pthread_mutex_unlock(&wg->mutex);
+    pthread_mutex_unlock(&wg->mutex);
     return rc;
 }
 
