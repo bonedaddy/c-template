@@ -14,6 +14,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include "../../include/utils/logger.h"
 
 typedef struct addrinfo addr_info;
@@ -25,6 +26,8 @@ typedef struct socket_server {
     log_fn log; // alis for thl->log
     log_fnf logf; // alias for thl->logf
     thread_logger *thl;
+    pthread_t thread;
+    pthread_attr_t taddr;
 } socket_server;
 
 typedef struct client_conn {
@@ -37,6 +40,8 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
 client_conn *accept_client_conn(socket_server *srv);
 
 char  *get_name_info(sock_addr *client_address);
+
+void *async_listen_func(void *data);
 void print_and_exit(int error_number);
 void close_client_conn(client_conn *conn);
 void close_socket_server(socket_server *srv);
@@ -53,6 +58,43 @@ void close_socket_server(socket_server *srv) {
 void print_and_exit(int error_number) {
     printf("failure detected: %s\n", strerror(error_number));
     exit(-1);
+}
+
+void *async_listen_func(void *data) {
+    socket_server *srv = (socket_server *)data;
+    for (;;) {
+        client_conn *conn = accept_client_conn(srv);
+        if (conn == NULL) {
+            srv->log(srv->thl, 0, "failed to accept client connection", LOG_LEVELS_ERROR);
+            continue;
+        }
+        char *address_buffer = get_name_info((sock_addr *)conn->address);
+        srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
+        char request[1024];
+        for (;;) {
+            int bytes_received = recv(
+                conn->socket_number, 
+                request, // output buffer
+                1024,  // output buffer size 
+                0 // speciifes flags
+            );
+            if (bytes_received == 0 || bytes_received == -1) {
+                srv->log(srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
+                break;
+            }
+            int bytes_sent = send(
+                conn->socket_number,
+                request,
+                strlen(request),
+                0 // specifies flags
+            );
+            if ((size_t)bytes_sent < strlen(request)) {
+                srv->log(srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
+            }
+        }
+        close_client_conn(conn);
+    }
+    return NULL;
 }
 
 client_conn *accept_client_conn(socket_server *srv) {
@@ -166,6 +208,8 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     // the following two functions are shorthands for thl->log[f]
     srv->log = thl->log;
     srv->logf = thl->logf;
+    // intialize pthread attributes
+    pthread_attr_init(&srv->taddr);
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
     return srv;
 }
@@ -178,36 +222,14 @@ int main(void) {
         srv->log(thl, 0, "socket server creation failed", LOG_LEVELS_ERROR);
         return -1;
     }
-    client_conn *conn = accept_client_conn(srv);
-    if (conn == NULL) {
-        srv->log(thl, 0, "failed to accept client connection", LOG_LEVELS_ERROR);
-        return -1;
-    }
-    char *address_buffer = get_name_info((sock_addr *)conn->address);
-    thl->logf(thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
-    char request[1024];
-    for (;;) {
-        int bytes_received = recv(
-            conn->socket_number, 
-            request, // output buffer
-            1024,  // output buffer size
-            0 // speciifes flags
-        );
-        if (bytes_received == 0 || bytes_received == -1) {
-            srv->log(srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
-            break;
-        }
-        int bytes_sent = send(
-            conn->socket_number,
-            request,
-            strlen(request),
-            0 // specifies flags
-        );
-        if ((size_t)bytes_sent < strlen(request)) {
-            srv->log(srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
-        }
-    }
+    pthread_create(
+        &srv->thread,
+        &srv->taddr,
+        async_listen_func,
+        srv
+    );
+    for (;;) { }
     // close allocated sockets
     close_socket_server(srv);
-    close_client_conn(conn);
+    // close_client_conn(conn);
 } 
