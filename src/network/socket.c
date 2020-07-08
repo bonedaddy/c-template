@@ -35,6 +35,12 @@ typedef struct client_conn {
     sock_addr_storage *address;
 } client_conn;
 
+typedef struct conn_handle_data {
+    pthread_t thread;
+    socket_server *srv;
+    client_conn *conn;
+} conn_handle_data;
+
 addr_info default_hints();
 socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port);
 client_conn *accept_client_conn(socket_server *srv);
@@ -60,11 +66,6 @@ void print_and_exit(int error_number) {
     exit(-1);
 }
 
-typedef struct conn_handle_data {
-    pthread_t thread;
-    socket_server *srv;
-    client_conn *conn;
-} conn_handle_data;
 
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
@@ -96,6 +97,7 @@ void *async_handle_conn_func(void *data) {
     close_client_conn(chdata->conn);
     // free up data allocated for chdata
     free(chdata);
+    pthread_exit(NULL);
     return NULL;
 }
 
