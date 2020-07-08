@@ -17,8 +17,25 @@ After that you'll want to decide what macros to include. The default `CMakeLists
 
 # documentation
 
+## doxygen
+
 Doxygen documentation is supported, [click here for an example generated off the current code](https://bonedaddy.github.io/c-template/html/index.html).
 
+To build doxygen docs run:
+
+```shell
+$> make # build project
+$> make doxygen-docs
+```
+
+## sphinx
+
+Commands to build docs are one of the following supported builders:
+
+```shell
+$> make # build project
+$> make sphinx-docs
+```
 # utility functions/programs
 
 * thread safe logger

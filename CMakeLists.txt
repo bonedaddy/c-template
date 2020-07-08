@@ -17,6 +17,8 @@ if(NOT CMAKE_BUILD_TYPE)
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 endif()
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 ###################
 # END CMAKE SETUP #
 ###################
@@ -24,6 +26,9 @@ endif()
 ########################
 # BEGIN MACRO INCLUDES #
 ########################
+
+include(cmake/FindSphinx.cmake)
+include(cmake/UseSphinxDoc.cmake)
 
 include(cmake/doxygen.cmake)
 
@@ -108,9 +113,26 @@ add_doxygen_doc(
     DOXY_FILE
         ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
     TARGET_NAME
-        docs
+        doxygen-docs
     COMMENT
         "HTML documentation"
+)
+
+add_sphinx_doc(
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs
+  BUILD_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/_build
+  CACHE_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/_doctrees
+  HTML_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/sphinx_html
+  CONF_FILE
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py
+  TARGET_NAME
+    sphinx-docs
+  COMMENT
+    "HTML documentation"
 )
 
 #############################
