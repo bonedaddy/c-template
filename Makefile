@@ -9,11 +9,15 @@ build-all-debug:
 
 .PHONY: doxygen-docs
 doxygen-docs:
-	(cd build ; cmake -DPYTHON_EXECUTABLE=/usr/bin/python3 --build . --target doxygen-docs)
+	(cd build ; cmake --build . --target doxygen-docs)
 
 .PHONY: sphinx-docs
 sphinx-docs:
-	(cd build ; cmake -DPYTHON_EXECUTABLE=/usr/bin/python3 --build . --target sphinx-docs)
+	(cd build ; cmake --build . --target sphinx-docs)
+
+.PHONY: breathe-docs
+breathe-docs:
+	(cd build ; cmake --build . --target breathe-docs)
 
 .PHONY: valgrind-all-debug
 valgrind-all-debug: build-all-debug
