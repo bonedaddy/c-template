@@ -40,7 +40,7 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
 client_conn *accept_client_conn(socket_server *srv);
 
 char  *get_name_info(sock_addr *client_address);
-
+void *async_handle_conn_func(void *data);
 void *async_listen_func(void *data);
 void print_and_exit(int error_number);
 void close_client_conn(client_conn *conn);
@@ -60,6 +60,45 @@ void print_and_exit(int error_number) {
     exit(-1);
 }
 
+typedef struct conn_handle_data {
+    pthread_t thread;
+    socket_server *srv;
+    client_conn *conn;
+} conn_handle_data;
+
+void *async_handle_conn_func(void *data) {
+    conn_handle_data *chdata = (conn_handle_data *)data;
+    char *address_buffer = get_name_info((sock_addr *)chdata->conn->address);
+    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
+    char request[1024];
+    for (;;) {
+        int bytes_received = recv(
+            chdata->conn->socket_number, 
+            request, // output buffer
+            1024,  // output buffer size 
+            0 // speciifes flags
+        );
+        if (bytes_received == 0 || bytes_received == -1) {
+            chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
+            break;
+        }
+        int bytes_sent = send(
+            chdata->conn->socket_number,
+            request,
+            strlen(request),
+            0 // specifies flags
+        );
+        if ((size_t)bytes_sent < strlen(request)) {
+            chdata->srv->log(chdata->srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
+        }
+    }
+    // close resources associated with the connection
+    close_client_conn(chdata->conn);
+    // free up data allocated for chdata
+    free(chdata);
+    return NULL;
+}
+
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
     for (;;) {
@@ -68,31 +107,12 @@ void *async_listen_func(void *data) {
             srv->log(srv->thl, 0, "failed to accept client connection", LOG_LEVELS_ERROR);
             continue;
         }
-        char *address_buffer = get_name_info((sock_addr *)conn->address);
-        srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
-        char request[1024];
-        for (;;) {
-            int bytes_received = recv(
-                conn->socket_number, 
-                request, // output buffer
-                1024,  // output buffer size 
-                0 // speciifes flags
-            );
-            if (bytes_received == 0 || bytes_received == -1) {
-                srv->log(srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
-                break;
-            }
-            int bytes_sent = send(
-                conn->socket_number,
-                request,
-                strlen(request),
-                0 // specifies flags
-            );
-            if ((size_t)bytes_sent < strlen(request)) {
-                srv->log(srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
-            }
-        }
-        close_client_conn(conn);
+        pthread_t thread;
+        conn_handle_data *chdata = malloc(sizeof(conn_handle_data));
+        chdata->srv = srv;
+        chdata->conn = conn;
+        chdata->thread = thread;
+        pthread_create(&thread, NULL, async_handle_conn_func, chdata);
     }
     return NULL;
 }
