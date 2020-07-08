@@ -56,18 +56,29 @@ void print_and_exit(int error_number) {
 }
 
 client_conn *accept_client_conn(socket_server *srv) {
+    // temporary variable for storing socket address
     sock_addr_storage addr_temp;
+    // set client_len
+    // i tried doing `(sock_addr *)&sizeof(addr_temp)
+    // in the `accept` function call but it didnt work
     socklen_t client_len = sizeof(addr_temp);
     int client_socket_num = accept(
         srv->socket_number,
         (sock_addr *)&addr_temp,
         &client_len
     );
+    // socket number less than 0 is an error
     if (client_socket_num < 0) {
         return NULL;
     }
+    // allocate memory for returning the client address
     sock_addr_storage *client_address = malloc(sizeof(addr_temp));
+    if (client_address == NULL) {
+        return NULL;
+    }
+    // copy the addr_temp variable data
     client_address = &addr_temp;
+    // allocate memory for client_conn struct
     client_conn *connection = malloc(sizeof(client_conn));
     if (client_address == NULL) {
         return NULL;
@@ -89,6 +100,9 @@ char  *get_name_info(sock_addr *client_address) {
         NI_NUMERICHOST    // want to see hostnmae as an ip address
     );
     char *addr = malloc(sizeof(address_info));
+    if (addr == NULL) {
+        return NULL;
+    }
     strcpy(addr, address_info);
     return addr;
 }
@@ -107,20 +121,25 @@ addr_info default_hints() {
 
 socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port) {
     addr_info *bind_address;
+    // using the information contained in hints
+    // get address data for this socket and store it in bind_address
     int rc = getaddrinfo(0, port, &hints, &bind_address);
     if (rc != 0) {
         thl->log(thl, 0, "failed to getaddrinfo", LOG_LEVELS_ERROR);
         return NULL;
     }
+    // creates the socket and gets us its file descriptor
     int listen_socket_num = socket(
         bind_address->ai_family,
         bind_address->ai_socktype,
         bind_address->ai_protocol
     );
+    // less than 0 is an error
     if (listen_socket_num < 0) {
         thl->log(thl, 0, "socket creation failed", LOG_LEVELS_ERROR);
         return NULL;
     }
+    // binds the address to the socket
     bind(
         listen_socket_num,
         bind_address->ai_addr,
@@ -132,7 +151,7 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     }
     // free up addrinfo resources
     freeaddrinfo(bind_address);
-    // start listening
+    // start listening on the socket and begin accepting connection
     listen(listen_socket_num, max_conns);
     if (errno != 0) {
         thl->logf(thl, 0, LOG_LEVELS_ERROR, "failed to start listening on socket with error %s", strerror(errno));
@@ -144,6 +163,7 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     }
     srv->socket_number = listen_socket_num;
     srv->thl = thl;
+    // the following two functions are shorthands for thl->log[f]
     srv->log = thl->log;
     srv->logf = thl->logf;
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
