@@ -23,6 +23,10 @@ valgrind-all-debug: build-all-debug
 valgrind-all: build-all
 	bash ./scripts/valgrind.sh
 
+PHONY: clean
+clean:
+	rm -rf _doctrees build _build source html
+	
 # Minimal makefile for Sphinx documentation
 #
 
