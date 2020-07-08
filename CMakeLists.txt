@@ -113,7 +113,7 @@ add_doxygen_doc(
     DOXY_FILE
         ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in
     TARGET_NAME
-        docs
+        doxygen-docs
     COMMENT
         "HTML documentation"
 )
@@ -128,9 +128,9 @@ add_sphinx_doc(
   HTML_DIR
     ${CMAKE_CURRENT_BINARY_DIR}/sphinx_html
   CONF_FILE
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py
   TARGET_NAME
-    docs
+    sphinx-docs
   COMMENT
     "HTML documentation"
 )
