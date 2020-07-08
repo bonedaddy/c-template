@@ -1,19 +1,19 @@
 .PHONY: build-all
 build-all:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc .. ; cmake -D CMAKE_C_COMPILER=gcc -build  . ; make )
+	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -DPYTHON_EXECUTABLE=/usr/bin/python3 .. ; cmake -D CMAKE_C_COMPILER=gcc -DPYTHON_EXECUTABLE=/usr/bin/python3 -build  . ; make )
 
 
 .PHONY: build-all-debug
 build-all-debug:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -build  . ; make )
+	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -DPYTHON_EXECUTABLE=/usr/bin/python3 .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -DPYTHON_EXECUTABLE=/usr/bin/python3 -build  . ; make )
 
 .PHONY: doxygen-docs
 doxygen-docs:
-	(cd build ; cmake --build . --target doxygen-docs)
+	(cd build ; cmake -DPYTHON_EXECUTABLE=/usr/bin/python3 --build . --target doxygen-docs)
 
 .PHONY: sphinx-docs
 sphinx-docs:
-	(cd build ; cmake --build . --target sphinx-docs)
+	(cd build ; cmake -DPYTHON_EXECUTABLE=/usr/bin/python3 --build . --target sphinx-docs)
 
 .PHONY: valgrind-all-debug
 valgrind-all-debug: build-all-debug
