@@ -24,7 +24,8 @@ Doxygen documentation is supported, [click here for an example generated off the
 To build doxygen docs run:
 
 ```shell
-$> cmake --build . --target doxygen-docs
+$> make # build project
+$> make doxygen-docs
 ```
 
 ## sphinx
@@ -32,17 +33,9 @@ $> cmake --build . --target doxygen-docs
 Commands to build docs are one of the following supported builders:
 
 ```shell
-$> make html
-$> make latex
-$> make linkcheck
+$> make # build project
+$> make sphinx-docs
 ```
-
-To run build sphinx docs run:
-
-```shell
-$> cmake --build . --target sphinx-docs
-```
-
 # utility functions/programs
 
 * thread safe logger
