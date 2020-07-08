@@ -17,6 +17,8 @@ if(NOT CMAKE_BUILD_TYPE)
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 endif()
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 ###################
 # END CMAKE SETUP #
 ###################
@@ -24,6 +26,9 @@ endif()
 ########################
 # BEGIN MACRO INCLUDES #
 ########################
+
+include(cmake/FindSphinx.cmake)
+include(cmake/UseSphinxDoc.cmake)
 
 include(cmake/doxygen.cmake)
 
