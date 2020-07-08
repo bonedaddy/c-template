@@ -45,9 +45,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'recipe-02'
-copyright = '2018, Radovan Bast, Roberto Di Remigio'
-author = 'Radovan Bast, Roberto Di Remigio'
+project = 'c-template-REPLACEME'
+copyright = '2020 c-template-REPLACEME'
+author = 'c-template-REPLACEME'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -109,7 +109,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'recipe-02doc'
+htmlhelp_basename = 'c-template-REPLACEME-doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -135,15 +135,15 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'recipe-02.tex', 'recipe-02 Documentation',
-     'Radovan Bast, Roberto Di Remigio', 'manual'),
+    (master_doc, 'c-template-REPLACEME.tex', 'c-template-REPLACEME Documentation',
+     'c-template-REPLACEME. c-template-AUTHOR', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, 'recipe-02', 'recipe-02 Documentation', [author], 1)]
+man_pages = [(master_doc, 'c-template-REPLACEME', 'c-template-REPLACEME Documentation', [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -151,6 +151,6 @@ man_pages = [(master_doc, 'recipe-02', 'recipe-02 Documentation', [author], 1)]
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'recipe-02', 'recipe-02 Documentation', author, 'recipe-02',
+    (master_doc, 'c-template-REPLACEME', 'c-template-REPLACEME Documentation', author, 'c-template-REPLACEME',
      'One line description of project.', 'Miscellaneous'),
 ]
