@@ -1,3 +1,7 @@
+// this is needed otherwise compilation errors occur
+// https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+// https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+#define _POSIX_C_SOURCE 201112L
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -9,13 +13,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include "../../include/utils/logger.h"
 
 #define ISVALIDSOCKET(s) ((s) >= 0)
 #define CLOSESOCKET(s) close(s)
 #define SOCKET int
 #define GETSOCKETERRNO() (errno)
 
+typedef struct socket_server {
+    int socket_number;
+    thread_logger *log;
+} socket_server;
+
 void print_and_exit(int error_number);
+// socket_server *new_socket_server(struct addinfo hints);
 
 void print_and_exit(int error_number) {
     printf("failure detected: %s\n", strerror(error_number));
@@ -87,6 +98,31 @@ int main(void) {
         NI_NUMERICHOST    // want to see hostnmae as an ip address
     );
     printf("%s\n", address_buffer);
+    char request[1024];
+    for (;;) {
+        int bytes_received = recv(
+            client_socket_num, 
+            request, // output buffer
+            1024,  // output buffer size
+            0 // speciifes flags
+        );
+        if (bytes_received == 0 || bytes_received == -1) {
+            printf("client disconnected\n");
+            break;
+        }
+        int bytes_sent = send(
+            client_socket_num,
+            request,
+            strlen(request),
+            0 // specifies flags
+        );
+        if (bytes_sent < strlen(request)) {
+            // production: send the reqest of the data
+            printf("sent less bytes than execpted\n");
+        }
+        printf("bytes sent: %i\n", bytes_sent);
+    }
+    // close allocated sockets
     close(listen_socket_num);
     close(client_socket_num);
 } 

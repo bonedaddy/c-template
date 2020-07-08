@@ -9,12 +9,12 @@ project(c-template-REPLACEME LANGUAGES C)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # -g indicates to include debug symbols
-    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g)
+    list(APPEND flags -std=c2x -Wall -Wextra -Werror -pedantic -g)
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
+    list(APPEND flags -std=c2x -Wall -Wextra -Werror -pedantic)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -31,6 +31,8 @@ include(cmake/FindSphinx.cmake)
 include(cmake/UseSphinxDoc.cmake)
 
 include(cmake/doxygen.cmake)
+
+include(cmake/socket_lib.cmake)
 
 include(cmake/glib.cmake)
 
@@ -76,6 +78,8 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_socket_lib()
 
 define_returns_test()
 define_returns_lib()

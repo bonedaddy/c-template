@@ -1,0 +1,6 @@
+macro(define_socket_lib)
+    add_executable(socketserver ./src/network/socket.c)
+    target_compile_options(socketserver PRIVATE ${flags})
+    target_link_libraries(socketserver loggerlib)
+    target_link_libraries(socketserver socket)
+endmacro()
