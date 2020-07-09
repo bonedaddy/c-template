@@ -21,53 +21,18 @@
 #include <sys/time.h>
 #include "../../include/utils/logger.h"
 #include "../../include/sync/wait_group.h"
+#include "../../include/network/socket.h"
 
 /*
-    START GLOBAL VARIABLES
+    * the following two variables are not set
+    * in the header file to prevent accidental use
+    * while accessible from within the source file
+    * if you are just importing the header, they will not be available
 */
-// used for handling signal control
-pthread_mutex_t signal_mutex;
+pthread_mutex_t _signal_mutex;
 // indicates we should begin cleanup processes
-bool do_exit;
-/*
-    END GLOBAL VARIABLES
-*/
-typedef struct addrinfo addr_info;
-typedef struct sockaddr sock_addr;
-typedef struct sockaddr_storage sock_addr_storage;
+bool _do_exit;
 
-typedef struct socket_server {
-    int socket_number;
-    log_fn log; // alis for thl->log
-    log_fnf logf; // alias for thl->logf
-    thread_logger *thl;
-    pthread_t thread;
-    // pthread_attr_t taddr;
-    wait_group_t *wg;
-} socket_server;
-
-typedef struct client_conn {
-    int socket_number;
-    sock_addr_storage *address;
-} client_conn;
-
-typedef struct conn_handle_data {
-    pthread_t thread;
-    socket_server *srv;
-    client_conn *conn; 
-} conn_handle_data;
-
-addr_info default_hints();
-socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port);
-client_conn *accept_client_conn(socket_server *srv);
-
-char  *get_name_info(sock_addr *client_address);
-void *async_handle_conn_func(void *data);
-void *async_listen_func(void *data);
-void print_and_exit(int error_number);
-void signal_handler_fn(int signal_number);
-void setup_signal_handling();
-bool set_socket_blocking_status(int fd, bool blocking);
 
 /** Returns true on success, or false if there was an error */
 /* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
@@ -87,9 +52,9 @@ bool set_socket_blocking_status(int fd, bool blocking) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void signal_handler_fn(int signal_number) {
     printf("\n"); // print new line so terminal doesn't display ^c on a line with a log message
-    pthread_mutex_lock(&signal_mutex);
-    do_exit = true;
-    pthread_mutex_unlock(&signal_mutex);
+    pthread_mutex_lock(&_signal_mutex);
+    _do_exit = true;
+    pthread_mutex_unlock(&_signal_mutex);
 }
 
 void print_and_exit(int error_number) {
@@ -124,7 +89,7 @@ void *async_handle_conn_func(void *data) {
         chdata->srv->log(chdata->srv->thl, 0, "connection not ready before timeout", LOG_LEVELS_WARN);
     } else {
         for (;;) {
-            if (do_exit == true) {
+            if (_do_exit == true) {
                 // break out of loop trigger closure
                 break;
             }
@@ -163,7 +128,7 @@ void *async_listen_func(void *data) {
     for (;;) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
-        if (do_exit == true) {
+        if (_do_exit == true) {
             // break out of loop trigger closure
             break;
         }
@@ -324,9 +289,9 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
 }
 
 void setup_signal_handling() {
-    do_exit = false; // initialize to false
+    _do_exit = false; // initialize to false
     // initialize the mutex we use to block access to the boolean global
-    pthread_mutex_init(&signal_mutex, NULL);
+    pthread_mutex_init(&_signal_mutex, NULL);
     // register signal handling so we can invoke program exit
     signal(SIGINT, signal_handler_fn); // CTRL+C
     signal(SIGTERM, signal_handler_fn);
