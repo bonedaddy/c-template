@@ -42,6 +42,8 @@ int wait_group_done(wait_group_t *wg) {
     int rc = 0;
     pthread_mutex_lock(&wg->mutex);
     // should we guard this with an assert and use compile time NODEBUG ?
+    // TODO(bonedaddy): decide if we should exit here, as this logic would only trigger
+    // if there was an error in program design
     if (wg->active_processes <= 0) {
         printf("[warn] invalid call to wait_group_done with 0 active processes\n");
         rc = -1;

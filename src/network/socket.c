@@ -27,8 +27,6 @@
 */
 // used for handling signal control
 pthread_mutex_t signal_mutex;
-pthread_mutex_t cond_mutex;
-pthread_cond_t cond_wait;
 // indicates we should begin cleanup processes
 bool do_exit;
 /*
@@ -67,8 +65,6 @@ char  *get_name_info(sock_addr *client_address);
 void *async_handle_conn_func(void *data);
 void *async_listen_func(void *data);
 void print_and_exit(int error_number);
-void close_client_conn(client_conn *conn);
-void close_socket_server(socket_server *srv);
 void signal_handler_fn(int signal_number);
 void setup_signal_handling();
 bool set_socket_blocking_status(int fd, bool blocking);
@@ -93,30 +89,6 @@ void signal_handler_fn(int signal_number) {
     pthread_mutex_lock(&signal_mutex);
     do_exit = true;
     pthread_mutex_unlock(&signal_mutex);
-    // lock the mutex
-    pthread_mutex_unlock(&cond_mutex);
-    // signal cond
-    pthread_cond_signal(&cond_wait);
-    // unlock the mutex
-    pthread_mutex_unlock(&cond_mutex);
-}
-
-void close_client_conn(client_conn *conn) {
-    int err = 1;
-    socklen_t len = sizeof(err);
-    // clean socket errors
-    getsockopt(conn->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
-    shutdown(conn->socket_number, SHUT_RDWR);
-    close(conn->socket_number);
-}
-
-void close_socket_server(socket_server *srv) {
-    int err = 1;
-    socklen_t len = sizeof(err);
-    // clean socket errors
-    getsockopt(srv->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
-    shutdown(srv->socket_number, SHUT_RDWR);
-    close(srv->socket_number);
 }
 
 void print_and_exit(int error_number) {
@@ -174,10 +146,11 @@ void *async_handle_conn_func(void *data) {
             }
         }
     }
-    close_client_conn(chdata->conn);
+    close(chdata->conn->socket_number);
     chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
    // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
+    // free up resources associated with this connection
     free(chdata->conn);
     free(chdata);
     // close resources associated with the connection
@@ -360,9 +333,6 @@ void setup_signal_handling() {
     do_exit = false; // initialize to false
     // initialize the mutex we use to block access to the boolean global
     pthread_mutex_init(&signal_mutex, NULL);
-    pthread_mutex_init(&cond_mutex, NULL);
-    // init the conditional variable
-    pthread_cond_init(&cond_wait, NULL);
     // register signal handling so we can invoke program exit
     signal(SIGINT, signal_handler_fn); // CTRL+C
     signal(SIGTERM, signal_handler_fn);
@@ -390,17 +360,12 @@ int main(void) {
         async_listen_func,
         srv
     );
-    // lock cond mutex first
-    pthread_mutex_lock(&cond_mutex);
-    pthread_cond_wait(&cond_wait, &cond_mutex);
+    wait_group_wait(srv->wg);
     srv->log(srv->thl, 0, "caught exit signal, exiting", LOG_LEVELS_INFO);
-    close_socket_server(srv);
-    pthread_mutex_unlock(&cond_mutex);
+    close(srv->socket_number);
     // wait for main async listen func thread to finish
     pthread_join(srv->thread, NULL);
-    wait_group_wait(srv->wg);
     srv->log(srv->thl, 0, "goodbye", LOG_LEVELS_INFO);
     clear_thread_logger(srv->thl);
     free(srv);
-    // pthread_attr_destroy(&srv->taddr);
 }
