@@ -15,8 +15,20 @@
 #include <time.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <signal.h>
 #include "../../include/utils/logger.h"
+#include "../../include/sync/wait_group.h"
 
+/*
+    START GLOBAL VARIABLES
+*/
+// used for handling signal control
+pthread_mutex_t signal_mutex;
+// indicates we should begin cleanup processes
+bool signal_sent_exit;
+/*
+    END GLOBAL VARIABLES
+*/
 typedef struct addrinfo addr_info;
 typedef struct sockaddr sock_addr;
 typedef struct sockaddr_storage sock_addr_storage;
@@ -28,6 +40,7 @@ typedef struct socket_server {
     thread_logger *thl;
     pthread_t thread;
     pthread_attr_t taddr;
+    wait_group_t *wg;
 } socket_server;
 
 typedef struct client_conn {
@@ -51,10 +64,30 @@ void *async_listen_func(void *data);
 void print_and_exit(int error_number);
 void close_client_conn(client_conn *conn);
 void close_socket_server(socket_server *srv);
+void signal_handler_fn(int signal_number);
+void setup_signal_handling();
+bool signalled_exit();
+
+bool signalled_exit() {
+    // read so no lock needed
+    bool do_exit = signal_sent_exit;
+    if (do_exit == true) {
+        printf("received exit signal, cleaning up\n");
+    }
+    return do_exit;
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void signal_handler_fn(int signal_number) {
+    pthread_mutex_lock(&signal_mutex);
+    signal_sent_exit = true;
+    pthread_mutex_unlock(&signal_mutex);
+}
 
 void close_client_conn(client_conn *conn) {
     close(conn->socket_number);
 }
+
 void close_socket_server(socket_server *srv) {
     close(srv->socket_number);
     clear_thread_logger(srv->thl);
@@ -73,6 +106,10 @@ void *async_handle_conn_func(void *data) {
     chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
     char request[1024];
     for (;;) {
+        if (signalled_exit() == true) {
+            // break out of loop trigger closure
+            break;
+        }
         int bytes_received = recv(
             chdata->conn->socket_number, 
             request, // output buffer
@@ -98,12 +135,18 @@ void *async_handle_conn_func(void *data) {
     // free up data allocated for chdata
     free(chdata);
     pthread_exit(NULL);
+    // decrease the wait group counter as this thread is no longer active
+    wait_group_done(chdata->srv->wg);
     return NULL;
 }
 
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
     for (;;) {
+        if (signalled_exit() == true) {
+            // break out of loop trigger closure
+            break;
+        }
         client_conn *conn = accept_client_conn(srv);
         if (conn == NULL) {
             srv->log(srv->thl, 0, "failed to accept client connection", LOG_LEVELS_ERROR);
@@ -116,6 +159,7 @@ void *async_listen_func(void *data) {
         chdata->thread = thread;
         pthread_create(&thread, NULL, async_handle_conn_func, chdata);
     }
+    wait_group_done(srv->wg);
     return NULL;
 }
 
@@ -183,6 +227,9 @@ addr_info default_hints() {
     return hints;
 }
 
+/*
+    this likely has memory leaks and needs proper post-cleanup
+*/
 socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port) {
     addr_info *bind_address;
     // using the information contained in hints
@@ -224,7 +271,14 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     socket_server *srv = calloc(sizeof(socket_server), sizeof(socket_server));
     if (srv == NULL) {
         thl->log(thl, 0,"socket_srv malloc failed", LOG_LEVELS_ERROR);
+        return NULL;
     }
+    wait_group_t *wg = wait_group_new();
+    if (wg == NULL) {
+        srv->log(thl, 0, "failed to initialize wait_group_t", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    srv->wg = wg;
     srv->socket_number = listen_socket_num;
     srv->thl = thl;
     // the following two functions are shorthands for thl->log[f]
@@ -236,7 +290,18 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     return srv;
 }
 
+void setup_signal_handling() {
+    signal_sent_exit = false; // initialize to false
+    // initialize the mutex we use to block access to the boolean global
+    pthread_mutex_init(&signal_mutex, NULL);
+    // register signal handling so we can invoke program exit
+    signal(SIGINT, signal_handler_fn); // CTRL+C
+    signal(SIGTERM, signal_handler_fn);
+    signal(SIGQUIT, signal_handler_fn);
+}
+
 int main(void) {
+    setup_signal_handling();
     thread_logger *thl = new_thread_logger(false);
     addr_info hints = default_hints();
     socket_server *srv = new_socket_server(hints, thl, 100, "8081");
@@ -244,6 +309,9 @@ int main(void) {
         srv->log(thl, 0, "socket server creation failed", LOG_LEVELS_ERROR);
         return -1;
     }
+    // increase the wait_group count before thread create
+    // so the created thread will call wait_group_done
+    wait_group_add(srv->wg, 1);
     pthread_create(
         &srv->thread,
         &srv->taddr,
@@ -251,6 +319,7 @@ int main(void) {
         srv
     );
     for (;;) { }
+    wait_group_wait(srv->wg);
     // close allocated sockets
     close_socket_server(srv);
     // close_client_conn(conn);
