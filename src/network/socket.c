@@ -153,34 +153,54 @@ void print_and_exit(int error_number) {
 
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
-    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected");
-    char request[1024];
-    for (;;) {
-        if (signalled_exit() == true) {
-            // break out of loop trigger closure
-            break;
-        }
-        int bytes_received = recv(
-            chdata->conn->socket_number, 
-            request, // output buffer
-            1024,  // output buffer size 
-            0 // speciifes flags
-        );
-        if (bytes_received == 0 || bytes_received == -1) {
-            break;
-        }
-        int bytes_sent = send(
-            chdata->conn->socket_number,
-            request,
-            strlen(request),
-            0 // specifies flags
-        );
-        if ((size_t)bytes_sent < strlen(request)) {
-            chdata->srv->log(chdata->srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
+    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "handling new connection");
+    fd_set socket_set;
+    FD_ZERO(&socket_set); // always zero out before use
+    FD_SET(chdata->conn->socket_number, &socket_set);
+    // FD_CLR() // used to remove from set
+    // must provide a number larger than last socket descriptor
+    int max_socket = chdata->conn->socket_number + 1;
+    // copy since select() modifies stuff
+    fd_set socket_set_copy;
+    socket_set_copy = socket_set;
+    // set a timeout of 1 second
+    struct timeval timeout;
+    timeout.tv_sec = 1;
+    timeout.tv_usec = 0;
+    int rc = select(
+        max_socket, 
+        &socket_set_copy, 
+        0, 
+        0, 
+        &timeout
+    );
+    if (rc == 0 || rc == -1) {
+        chdata->srv->log(chdata->srv->thl, 0, "no connections ready to receive data on", LOG_LEVELS_WARN);
+    } else {
+        for (;;) {
+            if (signalled_exit() == true) {
+                // break out of loop trigger closure
+                break;
+            }
+            // once select returns the copy contains the sockets which are ready to be read from
+            if (FD_ISSET(chdata->conn->socket_number, &socket_set_copy)) {
+                char request[1024];
+                rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
+                if (rc == -1 || rc == 0) {
+                    break;
+                }
+                rc = send(
+                    chdata->conn->socket_number,
+                    request,
+                    strlen(request),
+                    0
+                );
+                if ((size_t)rc < strlen(request)) {
+                    chdata->srv->log(chdata->srv->thl, 0, "failed to send enough bytes", LOG_LEVELS_WARN);
+                }
+            }
         }
     }
-    // close resources associated with the connection
-    close_client_conn(chdata->conn);
    // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
     // free(chdata);
@@ -188,6 +208,8 @@ void *async_handle_conn_func(void *data) {
     free(chdata->conn);
     free(chdata);
     pthread_exit(NULL);
+    // close resources associated with the connection
+    close_client_conn(chdata->conn);
 }
 
 void *async_listen_func(void *data) {
