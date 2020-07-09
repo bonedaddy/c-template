@@ -180,6 +180,12 @@ void *async_listen_func(void *data) {
     pthread_exit(NULL);
 }
 
+/*! @brief handles a new connection in a dedicated pthread
+  * is laucnched in a pthread by async_listen_func when any new connection is received
+  * @param data `void *` to a conn_handle_data object
+  * @warning currently is a generic echo client which reads data and sends it back to cient
+  * @warning you will want to adapt to your uses
+*/
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
     fd_set socket_set;
@@ -191,9 +197,9 @@ void *async_handle_conn_func(void *data) {
     // copy since select() modifies stuff
     fd_set socket_set_copy;
     socket_set_copy = socket_set;
-    // set a timeout of 1 second
+    // set a timeout of 3 seconds
     struct timeval timeout;
-    timeout.tv_sec = 1;
+    timeout.tv_sec = 3;
     timeout.tv_usec = 0;
     int rc = select(
         max_socket, 
@@ -241,6 +247,7 @@ void *async_handle_conn_func(void *data) {
 }
 
 /*! @brief helper function for accepting client connections
+  * times out new attempts if they take 3 seconds or more
   * @return Failure: NULL client conn failed
   * @return Success: non-NULL populated client_conn object
 */

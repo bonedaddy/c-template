@@ -100,15 +100,16 @@ int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock
 */
 void *async_listen_func(void *data);
 
-/*! @brief handles connections in a dedicated pthread 
+/*! @brief handles connections in a dedicated pthread   
+  * is laucnched in a pthread by async_listen_func when any new connection is received
   * @param data `void *` to a conn_handle_data object
   * @warning currently is a generic echo client which reads data and sends it back to cient
   * @warning you will want to adapt to your uses
-  * is laucnched in a pthread by async_listen_func when any new connection is received
 */
 void *async_handle_conn_func(void *data);
 
 /*! @brief helper function for accepting client connections
+  * times out new attempts if they take 3 seconds or more
   * @return Failure: NULL client conn failed
   * @return Success: non-NULL populated client_conn object
 */
