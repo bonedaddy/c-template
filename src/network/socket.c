@@ -204,19 +204,12 @@ client_conn *accept_client_conn(socket_server *srv) {
     if (client_socket_num < 0) {
         return NULL;
     }
-    // allocate memory for returning the client address
-    sock_addr_storage *client_address = malloc(sizeof(addr_temp));
-    if (client_address == NULL) {
-        return NULL;
-    }
-    // copy the addr_temp variable data
-    client_address = &addr_temp;
-    // allocate memory for client_conn struct
     client_conn *connection = malloc(sizeof(client_conn));
-    if (client_address == NULL) {
+    if (connection == NULL) {
         return NULL;
     }
-    connection->address = client_address;
+    sock_addr_storage addr = addr_temp;
+    connection->address = &addr;
     connection->socket_number = client_socket_num;
     char *addr_info = get_name_info((sock_addr *)connection->address);
     srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
