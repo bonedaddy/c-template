@@ -26,7 +26,9 @@ void wait_group_wait(wait_group_t *wg) {
         if (count == 0) {
             break;
         }
+        printf("count remaining: %i\n", count);
     }
+    printf("DONE\n");
     pthread_mutex_destroy(&wg->mutex);
     free(wg);
 }

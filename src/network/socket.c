@@ -16,6 +16,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <signal.h>
+#include <fcntl.h>
 #include "../../include/utils/logger.h"
 #include "../../include/sync/wait_group.h"
 
@@ -68,6 +69,22 @@ void signal_handler_fn(int signal_number);
 void setup_signal_handling();
 bool signalled_exit();
 
+/** Returns true on success, or false if there was an error */
+/* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
+bool SetSocketBlockingEnabled(int fd, bool blocking){
+    if (fd < 0) {
+        return false;
+    } else {
+        int flags = fcntl(fd, F_GETFL, 0);
+        if (flags == -1) {
+            return false;
+        }
+        flags = blocking ? (flags & ~O_NONBLOCK) : (flags | O_NONBLOCK);
+        return (fcntl(fd, F_SETFL, flags) == 0) ? true : false;
+    }
+}
+
+
 bool signalled_exit() {
     // read so no lock needed
     bool do_exit = signal_sent_exit;
@@ -85,15 +102,23 @@ void signal_handler_fn(int signal_number) {
 }
 
 void close_client_conn(client_conn *conn) {
-    shutdown(conn->socket_number, SHUT_WR);
-   // close(conn->socket_number);
+    int err = 1;
+    socklen_t len = sizeof(err);
+    // clean socket errors
+    getsockopt(conn->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
+    shutdown(conn->socket_number, SHUT_RDWR);
+    close(conn->socket_number);
 }
 
 void close_socket_server(socket_server *srv) {
-    shutdown(srv->socket_number, SHUT_WR);
-    // close(srv->socket_number);
+    int err = 1;
+    socklen_t len = sizeof(err);
+    // clean socket errors
+    getsockopt(srv->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
+    shutdown(srv->socket_number, SHUT_RDWR);
+    close(srv->socket_number);
     clear_thread_logger(srv->thl);
-    free(srv);
+
 }
 
 void print_and_exit(int error_number) {
@@ -108,11 +133,6 @@ void *async_handle_conn_func(void *data) {
     chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
     char request[1024];
     for (;;) {
-        if (signalled_exit() == true) {
-            printf("exiting connection handling func\n");
-            // break out of loop trigger closure
-            break;
-        }
         int bytes_received = recv(
             chdata->conn->socket_number, 
             request, // output buffer
@@ -132,20 +152,27 @@ void *async_handle_conn_func(void *data) {
         if ((size_t)bytes_sent < strlen(request)) {
             chdata->srv->log(chdata->srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
         }
+        if (signalled_exit() == true) {
+            printf("exiting connection handling func\n");
+            // break out of loop trigger closure
+            break;
+        }
     }
-    pthread_exit(NULL);
     // close resources associated with the connection
     close_client_conn(chdata->conn);
-    // free up data allocated for chdata
-    free(chdata);
-    // decrease the wait group counter as this thread is no longer active
+   // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
+    // pthread_exit(NULL);
+    // free up data allocated for chdata
+    // free(chdata);
     return NULL;
 }
 
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
     for (;;) {
+        // detach the thread as we aren't join to join with it
+        // pthread_detach(thread);
         if (signalled_exit() == true) {
             printf("exiting async listen func\n");
             // break out of loop trigger closure
@@ -153,20 +180,21 @@ void *async_listen_func(void *data) {
         }
         client_conn *conn = accept_client_conn(srv);
         if (conn == NULL) {
-            srv->log(srv->thl, 0, "failed to accept client connection", LOG_LEVELS_ERROR);
             continue;
         }
+        wait_group_add(srv->wg, 1);
         pthread_t thread;
+        pthread_attr_t attr;
+        pthread_attr_init(&attr);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
         conn_handle_data *chdata = malloc(sizeof(conn_handle_data));
         chdata->srv = srv;
         chdata->conn = conn;
         chdata->thread = thread;
-        pthread_create(&thread, NULL, async_handle_conn_func, chdata);
-        // detach the thread as we aren't join to join with it
-        pthread_detach(thread);
+        pthread_create(&thread, &attr, async_handle_conn_func, chdata);
     }
-    pthread_exit(NULL);
     wait_group_done(srv->wg);
+    pthread_exit(NULL);
     return NULL;
 }
 
@@ -293,6 +321,12 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     srv->logf = thl->logf;
     // intialize pthread attributes
     pthread_attr_init(&srv->taddr);
+    int err;
+    // TODO(bonedaddy): this is a monkey patch for a bug fix 
+    //  where we are unable to shitdown the usage of the socket
+    // set SO_REUSEADDR to enable address reuse
+    setsockopt(srv->socket_number, SOL_SOCKET, SO_REUSEADDR, &err, sizeof(int));
+    SetSocketBlockingEnabled(srv->socket_number, false);
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
     return srv;
 }
@@ -325,10 +359,14 @@ int main(void) {
         async_listen_func,
         srv
     );
+
+    printf("waiting for processes to finish\n");
     wait_group_wait(srv->wg);
+    printf("joining main async listen thread\n");
     // wait for main async listen func thread to finish
     pthread_join(srv->thread, NULL);
-    pthread_attr_destroy(&srv->taddr);
+    printf("closing socket serve\n");
+    // pthread_attr_destroy(&srv->taddr);
     // close allocated sockets
     close_socket_server(srv);
     printf("all allocated resources freed");
