@@ -30,7 +30,7 @@ pthread_mutex_t signal_mutex;
 pthread_mutex_t cond_mutex;
 pthread_cond_t cond_wait;
 // indicates we should begin cleanup processes
-bool signal_sent_exit;
+bool do_exit;
 /*
     END GLOBAL VARIABLES
 */
@@ -71,27 +71,8 @@ void close_client_conn(client_conn *conn);
 void close_socket_server(socket_server *srv);
 void signal_handler_fn(int signal_number);
 void setup_signal_handling();
-bool signalled_exit();
 bool set_socket_blocking_status(int fd, bool blocking);
-bool set_socket_timeouts(int fd, int timeout);
 
-bool set_socket_timeouts(int fd, int timeout_secs) {
-    if (fd < 0) {
-        return false;
-    }
-    struct timeval timeout;
-    timeout.tv_sec = timeout_secs;
-    timeout.tv_usec = 0;
-    int rc = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
-    if (rc != 0) {
-        return false;
-    }
-    rc = setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO,  (char *)&timeout, sizeof(timeout));
-    if (rc == 0) {
-        return true;
-    }
-    return false;
-}
 /** Returns true on success, or false if there was an error */
 /* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
 bool set_socket_blocking_status(int fd, bool blocking) {
@@ -107,17 +88,10 @@ bool set_socket_blocking_status(int fd, bool blocking) {
     }
 }
 
-
-bool signalled_exit() {
-    // read so no lock needed
-    bool do_exit = signal_sent_exit;
-    return do_exit;
-}
-
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void signal_handler_fn(int signal_number) {
     pthread_mutex_lock(&signal_mutex);
-    signal_sent_exit = true;
+    do_exit = true;
     pthread_mutex_unlock(&signal_mutex);
     // lock the mutex
     pthread_mutex_unlock(&cond_mutex);
@@ -153,7 +127,6 @@ void print_and_exit(int error_number) {
 
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
-    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "handling new connection");
     fd_set socket_set;
     FD_ZERO(&socket_set); // always zero out before use
     FD_SET(chdata->conn->socket_number, &socket_set);
@@ -175,10 +148,10 @@ void *async_handle_conn_func(void *data) {
         &timeout
     );
     if (rc == 0 || rc == -1) {
-        chdata->srv->log(chdata->srv->thl, 0, "no connections ready to receive data on", LOG_LEVELS_WARN);
+        chdata->srv->log(chdata->srv->thl, 0, "connection not ready before timeout", LOG_LEVELS_WARN);
     } else {
         for (;;) {
-            if (signalled_exit() == true) {
+            if (do_exit == true) {
                 // break out of loop trigger closure
                 break;
             }
@@ -201,15 +174,14 @@ void *async_handle_conn_func(void *data) {
             }
         }
     }
+    close_client_conn(chdata->conn);
+    chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
    // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
-    // free(chdata);
-    chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
     free(chdata->conn);
     free(chdata);
-    pthread_exit(NULL);
     // close resources associated with the connection
-    close_client_conn(chdata->conn);
+    pthread_exit(NULL);
 }
 
 void *async_listen_func(void *data) {
@@ -217,7 +189,7 @@ void *async_listen_func(void *data) {
     for (;;) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
-        if (signalled_exit() == true) {
+        if (do_exit == true) {
             // break out of loop trigger closure
             break;
         }
@@ -272,12 +244,9 @@ client_conn *accept_client_conn(socket_server *srv) {
     }
     connection->address = client_address;
     connection->socket_number = client_socket_num;
-    /* TODO(bonedaddy): this causes client_address to not get populated after */
-    bool passed = set_socket_timeouts(connection->socket_number, 10);
-    if (passed == false) {
-        printf("failed to set socket timeout\n");
-        return NULL;
-    }
+    char *addr_info = get_name_info((sock_addr *)connection->address);
+    srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
+    free(addr_info);
     return connection;
 }
 
@@ -371,12 +340,12 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     srv->logf = thl->logf;
     // intialize pthread attributes
     // pthread_attr_init(&srv->taddr);
-    int err;
+    int one;
     // TODO(bonedaddy): this is a monkey patch for a bug fix 
     //  where we are unable to shitdown the usage of the socket
     // set SO_REUSEADDR to enable address reuse
-    setsockopt(srv->socket_number, SOL_SOCKET, SO_REUSEADDR, &err, sizeof(int));
-    if (err == 1) {
+    rc = setsockopt(srv->socket_number, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
+    if (rc != 0) {
         printf("failed to setsockopt\n");
         return NULL;
     }
@@ -390,7 +359,7 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
 }
 
 void setup_signal_handling() {
-    signal_sent_exit = false; // initialize to false
+    do_exit = false; // initialize to false
     // initialize the mutex we use to block access to the boolean global
     pthread_mutex_init(&signal_mutex, NULL);
     pthread_mutex_init(&cond_mutex, NULL);
