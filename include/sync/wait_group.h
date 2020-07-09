@@ -54,7 +54,7 @@ void wait_group_wait(wait_group_t *wg);
 wait_group_t *wait_group_new();
 
 
-void wait_group_reset_signal(wait_group_t *wg);
+void wait_group_recv_signal(wait_group_t *wg);
 
 void wait_group_listen_signal(wait_group_t *wg);
 void wait_group_send_signal(wait_group_t *wg);

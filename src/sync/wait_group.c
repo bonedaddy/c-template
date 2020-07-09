@@ -18,7 +18,7 @@ wait_group_t *wait_group_new() {
     return wg;
 }
 
-void wait_group_listen_signal(wait_group_t *wg) {
+void wait_group_recv_signal(wait_group_t *wg) {
     pthread_mutex_lock(&wg->cond_mutex);
     pthread_cond_wait(&wg->cond_var, &wg->cond_mutex);
     pthread_mutex_lock(&wg->cond_mutex);
@@ -46,13 +46,17 @@ void wait_group_wait(wait_group_t *wg) {
     for (;;) {
         // sleep for 750 milisecond
         sleep(0.75);
-        pthread_mutex_lock(&wg->mutex);
+        // NOTE(bonedaddy): iirc we dont need this
+        // pthread_mutex_lock(&wg->mutex);
         int count = wg->active_processes;
-        pthread_mutex_unlock(&wg->mutex);
+        // NOTE(bonedaddy): iirc we dont need this
+        // pthread_mutex_unlock(&wg->mutex);
         if (count == 0) {
             break;
         }
     }
+    // lock before destroy
+    pthread_mutex_lock(&wg->mutex);
     pthread_mutex_destroy(&wg->mutex);
     free(wg);
 }
