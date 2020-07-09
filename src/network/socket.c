@@ -12,11 +12,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
+// sys/time.h is needed for the timeval
+//  #include <time.h>
 #include <stdbool.h>
 #include <pthread.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <sys/time.h>
 #include "../../include/utils/logger.h"
 #include "../../include/sync/wait_group.h"
 
@@ -25,6 +27,8 @@
 */
 // used for handling signal control
 pthread_mutex_t signal_mutex;
+pthread_mutex_t cond_mutex;
+pthread_cond_t cond_wait;
 // indicates we should begin cleanup processes
 bool signal_sent_exit;
 /*
@@ -52,7 +56,7 @@ typedef struct client_conn {
 typedef struct conn_handle_data {
     pthread_t thread;
     socket_server *srv;
-    client_conn *conn;
+    client_conn *conn; 
 } conn_handle_data;
 
 addr_info default_hints();
@@ -69,7 +73,25 @@ void signal_handler_fn(int signal_number);
 void setup_signal_handling();
 bool signalled_exit();
 bool set_socket_blocking_status(int fd, bool blocking);
+bool set_socket_timeouts(int fd, int timeout);
 
+bool set_socket_timeouts(int fd, int timeout_secs) {
+    if (fd < 0) {
+        return false;
+    }
+    struct timeval timeout;
+    timeout.tv_sec = timeout_secs;
+    timeout.tv_usec = 0;
+    int rc = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+    if (rc != 0) {
+        return false;
+    }
+    rc = setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO,  (char *)&timeout, sizeof(timeout));
+    if (rc == 0) {
+        return true;
+    }
+    return false;
+}
 /** Returns true on success, or false if there was an error */
 /* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
 bool set_socket_blocking_status(int fd, bool blocking) {
@@ -89,9 +111,6 @@ bool set_socket_blocking_status(int fd, bool blocking) {
 bool signalled_exit() {
     // read so no lock needed
     bool do_exit = signal_sent_exit;
-    if (do_exit == true) {
-        printf("received exit signal, cleaning up\n");
-    }
     return do_exit;
 }
 
@@ -100,6 +119,12 @@ void signal_handler_fn(int signal_number) {
     pthread_mutex_lock(&signal_mutex);
     signal_sent_exit = true;
     pthread_mutex_unlock(&signal_mutex);
+    // lock the mutex
+    pthread_mutex_unlock(&cond_mutex);
+    // signal cond
+    pthread_cond_signal(&cond_wait);
+    // unlock the mutex
+    pthread_mutex_unlock(&cond_mutex);
 }
 
 void close_client_conn(client_conn *conn) {
@@ -119,8 +144,6 @@ void close_socket_server(socket_server *srv) {
     getsockopt(srv->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
     shutdown(srv->socket_number, SHUT_RDWR);
     close(srv->socket_number);
-    clear_thread_logger(srv->thl);
-    free(srv);
 }
 
 void print_and_exit(int error_number) {
@@ -136,7 +159,6 @@ void *async_handle_conn_func(void *data) {
     char request[1024];
     for (;;) {
         if (signalled_exit() == true) {
-            printf("exiting connection handling func\n");
             // break out of loop trigger closure
             break;
         }
@@ -178,7 +200,6 @@ void *async_listen_func(void *data) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
         if (signalled_exit() == true) {
-            printf("exiting async listen func\n");
             // break out of loop trigger closure
             break;
         }
@@ -232,6 +253,11 @@ client_conn *accept_client_conn(socket_server *srv) {
     }
     connection->address = client_address;
     connection->socket_number = client_socket_num;
+    bool passed = set_socket_timeouts(connection->socket_number, 10);
+    if (passed == false) {
+        printf("failed to set socket timeout\n");
+        return NULL;
+    }
     return connection;
 }
 
@@ -334,11 +360,12 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         printf("failed to setsockopt\n");
         return NULL;
     }
-    bool passed = set_socket_blocking_status(srv->socket_number, false);
+    /*bool passed = set_socket_blocking_status(srv->socket_number, false);
     if (passed == false) {
         printf("failed to set socket blocking mode\n");
         return NULL;
     }
+    */
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
     return srv;
 }
@@ -347,6 +374,9 @@ void setup_signal_handling() {
     signal_sent_exit = false; // initialize to false
     // initialize the mutex we use to block access to the boolean global
     pthread_mutex_init(&signal_mutex, NULL);
+    pthread_mutex_init(&cond_mutex, NULL);
+    // init the conditional variable
+    pthread_cond_init(&cond_wait, NULL);
     // register signal handling so we can invoke program exit
     signal(SIGINT, signal_handler_fn); // CTRL+C
     signal(SIGTERM, signal_handler_fn);
@@ -362,8 +392,6 @@ int main(void) {
         srv->log(thl, 0, "socket server creation failed", LOG_LEVELS_ERROR);
         return -1;
     }
-    // increase the wait_group count before thread create
-    // so the created thread will call wait_group_done
     wait_group_add(srv->wg, 1);
     pthread_create(
         &srv->thread,
@@ -371,14 +399,17 @@ int main(void) {
         async_listen_func,
         srv
     );
+    // lock cond mutex first
+    pthread_mutex_lock(&cond_mutex);
+    pthread_cond_wait(&cond_wait, &cond_mutex);
+    srv->log(srv->thl, 0, "caught exit signal, exiting", LOG_LEVELS_INFO);
+    close_socket_server(srv);
+    pthread_mutex_unlock(&cond_mutex);
     // wait for main async listen func thread to finish
     pthread_join(srv->thread, NULL);
-    printf("waiting for processes to finish\n");
     wait_group_wait(srv->wg);
-    printf("closing socket serve\n");
-    close_socket_server(srv);
+    srv->log(srv->thl, 0, "goodbye", LOG_LEVELS_INFO);
+    clear_thread_logger(srv->thl);
+    free(srv);
     // pthread_attr_destroy(&srv->taddr);
-    // close allocated sockets
-    printf("all allocated resources freed");
-    // close_client_conn(conn);
-} 
+}
