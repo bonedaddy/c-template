@@ -70,7 +70,8 @@ addr_info default_hints();
 socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port);
 
 /*! @brief helper function for accepting client connections
-  * @return if NULL client conn failed
+  * @return Failure: NULL client conn failed
+  * @return Success: non-NULL populated client_conn object
 */
 client_conn *accept_client_conn(socket_server *srv);
 

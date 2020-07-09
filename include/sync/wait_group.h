@@ -27,9 +27,11 @@ typedef struct wait_group_t {
 void wait_group_add(wait_group_t *wg, int count);
 /*! @brief used by a process to indicate it is done, decreasing the active process counter
   * we include a return code here to catch errors when trying to decrement count below 0
-  * @pre if active_process is less than or equal to 0
+  * @pre wg->active_process must be greater than or equal to 1 otherwise return -1
+  * @warning in the future this may be changed so that calling wait_group_done with a 0 value active_processes will cause a program exit
   * @param wg the waitgroup to manipulate a runtime error will occur and program will exit
-  * @return -1 on error 0 on success
+  * @return Failure: -1
+  * @return Success: 0
 */
 int wait_group_done(wait_group_t *wg);
 /*! @brief used to wait until current active_processes reaches 0, polling every 0.75 seconds
