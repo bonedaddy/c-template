@@ -85,11 +85,13 @@ void signal_handler_fn(int signal_number) {
 }
 
 void close_client_conn(client_conn *conn) {
-    close(conn->socket_number);
+    shutdown(conn->socket_number, SHUT_WR);
+   // close(conn->socket_number);
 }
 
 void close_socket_server(socket_server *srv) {
-    close(srv->socket_number);
+    shutdown(srv->socket_number, SHUT_WR);
+    // close(srv->socket_number);
     clear_thread_logger(srv->thl);
     free(srv);
 }
@@ -107,6 +109,7 @@ void *async_handle_conn_func(void *data) {
     char request[1024];
     for (;;) {
         if (signalled_exit() == true) {
+            printf("exiting connection handling func\n");
             // break out of loop trigger closure
             break;
         }
@@ -130,11 +133,11 @@ void *async_handle_conn_func(void *data) {
             chdata->srv->log(chdata->srv->thl, 0, "sent less bytes than expected", LOG_LEVELS_WARN);
         }
     }
+    pthread_exit(NULL);
     // close resources associated with the connection
     close_client_conn(chdata->conn);
     // free up data allocated for chdata
     free(chdata);
-    pthread_exit(NULL);
     // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
     return NULL;
@@ -144,6 +147,7 @@ void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
     for (;;) {
         if (signalled_exit() == true) {
+            printf("exiting async listen func\n");
             // break out of loop trigger closure
             break;
         }
@@ -158,7 +162,10 @@ void *async_listen_func(void *data) {
         chdata->conn = conn;
         chdata->thread = thread;
         pthread_create(&thread, NULL, async_handle_conn_func, chdata);
+        // detach the thread as we aren't join to join with it
+        pthread_detach(thread);
     }
+    pthread_exit(NULL);
     wait_group_done(srv->wg);
     return NULL;
 }
@@ -318,9 +325,12 @@ int main(void) {
         async_listen_func,
         srv
     );
-    for (;;) { }
     wait_group_wait(srv->wg);
+    // wait for main async listen func thread to finish
+    pthread_join(srv->thread, NULL);
+    pthread_attr_destroy(&srv->taddr);
     // close allocated sockets
     close_socket_server(srv);
+    printf("all allocated resources freed");
     // close_client_conn(conn);
 } 
