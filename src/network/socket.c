@@ -34,6 +34,7 @@ pthread_mutex_t _signal_mutex;
 bool _do_exit;
 
 
+
 /** Returns true on success, or false if there was an error */
 /* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
 bool set_socket_blocking_status(int fd, bool blocking) {
@@ -214,6 +215,67 @@ addr_info default_hints() {
     return hints;
 }
 
+int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts) {
+     // creates the socket and gets us its file descriptor
+    int listen_socket_num = socket(
+        bind_address->ai_family,
+        bind_address->ai_socktype,
+        bind_address->ai_protocol
+    );
+    // less than 0 is an error
+    if (listen_socket_num < 0) {
+        thl->log(thl, 0, "socket creation failed", LOG_LEVELS_ERROR);
+        return -1;
+    }
+    int one;
+    int rc;
+    bool passed;
+    for (int i = 0; i < num_opts; i++) {
+        switch (sock_opts[i]) {
+            case REUSEADDR:
+                one = 1;
+                // set socket options before doing anything else
+                // i tried setting it after listen, but I don't think that works
+                rc = setsockopt(listen_socket_num, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
+                if (rc != 0) {
+                    thl->log(thl, 0, "failed to set socket reuse addr", LOG_LEVELS_ERROR);
+                    return -1;
+                }
+                thl->log(thl, 0, "set socket opt REUSEADDR", LOG_LEVELS_INFO);
+                break;
+            case BLOCK:
+                passed = set_socket_blocking_status(listen_socket_num, true);
+                if (passed == false) {
+                    thl->log(thl, 0, "failed to set socket blocking mode", LOG_LEVELS_ERROR);
+                    return -1;
+                }
+                thl->log(thl, 0, "set socket opt BLOCK", LOG_LEVELS_INFO);
+                break;
+            case NOBLOCK:
+                passed = set_socket_blocking_status(listen_socket_num, false);
+                if (passed == false) {
+                    thl->log(thl, 0, "failed to set socket blocking mode", LOG_LEVELS_ERROR);
+                    return -1;
+                }
+                thl->log(thl, 0, "set socket opt NOBLOCK", LOG_LEVELS_INFO);
+                break;
+            default:
+                thl->log(thl, 0, "invalid socket option", LOG_LEVELS_ERROR);
+                return -1;
+        }
+    }
+    // binds the address to the socket
+    bind(
+        listen_socket_num,
+        bind_address->ai_addr,
+        bind_address->ai_addrlen
+    );
+    if (errno != 0) {
+        thl->logf(thl, 0, LOG_LEVELS_ERROR, "socket bind failed with error %s", strerror(errno));
+        return -1;
+    }
+    return listen_socket_num;
+}
 /*
     this likely has memory leaks and needs proper post-cleanup
 */
@@ -226,35 +288,13 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         thl->log(thl, 0, "failed to getaddrinfo", LOG_LEVELS_ERROR);
         return NULL;
     }
-    // creates the socket and gets us its file descriptor
-    int listen_socket_num = socket(
-        bind_address->ai_family,
-        bind_address->ai_socktype,
-        bind_address->ai_protocol
+    SOCKET_OPTS opts[2] = {REUSEADDR, NOBLOCK};
+    int listen_socket_num = get_new_socket(
+        thl,
+        bind_address,
+        opts,
+        2
     );
-    int one = 1;
-    // set socket options before doing anything else
-    // i tried setting it after listen, but I don't think that works
-    rc = setsockopt(listen_socket_num, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
-    if (rc != 0) {
-        printf("failed to setsockopt\n");
-        return NULL;
-    }
-    // less than 0 is an error
-    if (listen_socket_num < 0) {
-        thl->log(thl, 0, "socket creation failed", LOG_LEVELS_ERROR);
-        return NULL;
-    }
-    // binds the address to the socket
-    bind(
-        listen_socket_num,
-        bind_address->ai_addr,
-        bind_address->ai_addrlen
-    );
-    if (errno != 0) {
-        thl->logf(thl, 0, LOG_LEVELS_ERROR, "socket bind failed with error %s", strerror(errno));
-        return NULL;
-    }
     // free up addrinfo resources
     freeaddrinfo(bind_address);
     // start listening on the socket and begin accepting connection
@@ -279,11 +319,6 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     // the following two functions are shorthands for thl->log[f]
     srv->log = thl->log;
     srv->logf = thl->logf;
-    bool passed = set_socket_blocking_status(srv->socket_number, false);
-    if (passed == false) {
-        printf("failed to set socket blocking mode\n");
-        return NULL;
-    }
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
     return srv;
 }

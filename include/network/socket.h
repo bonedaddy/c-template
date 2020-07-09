@@ -3,6 +3,11 @@
   * @brief a generic multi-threaded tcp socket server
 */
 
+#pragma once
+
+#include <pthread.h>
+#include "../utils/logger.h"
+
 /*! @typedef addr_info
   * @struct addrinfo
   * @brief alias for `struct addrinfo`
@@ -60,6 +65,12 @@ typedef struct conn_handle_data {
     client_conn *conn; 
 } conn_handle_data;
 
+typedef enum {
+  REUSEADDR,
+  NOBLOCK,
+  BLOCK,
+} SOCKET_OPTS;
+
 /*! @brief generates an addr_info struct with defaults
   * defaults is IPv4, TCP, and AI_PASSIVE flags
 */
@@ -74,6 +85,14 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
   * @return Success: non-NULL populated client_conn object
 */
 client_conn *accept_client_conn(socket_server *srv);
+
+/*! @brief  gets an available socket attached to bind_address
+  * @return Success: file descriptor socket number greater than 0
+  * @return Failure: -1
+  * initializers a socket attached to bind_address with sock_opts, and binds the address
+*/
+int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts);
+
 
 char  *get_name_info(sock_addr *client_address);
 void *async_handle_conn_func(void *data);
