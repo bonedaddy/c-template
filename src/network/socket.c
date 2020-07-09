@@ -134,7 +134,6 @@ void close_client_conn(client_conn *conn) {
     getsockopt(conn->socket_number, SOL_SOCKET, SO_ERROR, (char *)&err, &len);
     shutdown(conn->socket_number, SHUT_RDWR);
     close(conn->socket_number);
-    // free(conn);
 }
 
 void close_socket_server(socket_server *srv) {
@@ -187,8 +186,7 @@ void *async_handle_conn_func(void *data) {
     wait_group_done(chdata->srv->wg);
     // free(chdata);
     chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
-    // pthread_exit(NULL);
-    // free up data allocated for chdata
+    free(chdata->conn);
     // free(chdata);
     return NULL;
 }
@@ -204,7 +202,7 @@ void *async_listen_func(void *data) {
         }
         client_conn *conn = accept_client_conn(srv);
         if (conn == NULL) {
-            sleep(0.50); // sleep for 500 seconds
+            sleep(0.50); // sleep for 500 miliseconds
             continue;
         }
         wait_group_add(srv->wg, 1);
