@@ -49,7 +49,7 @@ typedef struct socket_server {
 /*! @typedef client_conn
   * @struct client_conn
   * @brief a structure containing a file descriptor and address information
-  * @TODO:
+  * @todo
   *   - enable a queue/list of these
 */
 typedef struct client_conn {
@@ -95,7 +95,8 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
 */
 int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts);
 
-/*! @brief starts listening and accepting connections in a dedicated pthread
+/*! @brief runs in a pthread, listening and accepting new connections
+  * runs in a pthread attempting to accept connections. if an attempt fails sleep for 500 seconds spawns a detached pthread running async_handle_conn_func on the new connection
 */
 void *async_listen_func(void *data);
 

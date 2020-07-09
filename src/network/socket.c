@@ -145,7 +145,9 @@ int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock
     }
     return listen_socket_num;
 }
-/*! @brief starts listening and accepting connections in a dedicated pthread
+
+/*! @brief runs in a pthread, listening and accepting new connections
+  * runs in a pthread attempting to accept connections. if an attempt fails sleep for 500 seconds spawns a detached pthread running async_handle_conn_func on the new connection
 */
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
