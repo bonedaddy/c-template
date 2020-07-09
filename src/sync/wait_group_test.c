@@ -9,7 +9,9 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include "../../include/sync/wait_group.h"
-int main(void) {
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void test_wait_group(void **state) {
     wait_group_t *wg = wait_group_new();
     wait_group_add(wg, 1);
     assert(wg->active_processes == 1);
@@ -24,4 +26,11 @@ int main(void) {
     wait_group_wait(wg);
     int rc = wait_group_done(wg);
     assert(rc == -1);
+}
+
+int main(void) {
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(test_wait_group),
+    };
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
