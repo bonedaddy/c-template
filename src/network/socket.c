@@ -169,7 +169,6 @@ void *async_handle_conn_func(void *data) {
             0 // speciifes flags
         );
         if (bytes_received == 0 || bytes_received == -1) {
-            chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
             break;
         }
         int bytes_sent = send(
@@ -187,7 +186,7 @@ void *async_handle_conn_func(void *data) {
    // decrease the wait group counter as this thread is no longer active
     wait_group_done(chdata->srv->wg);
     // free(chdata);
-    
+    chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
     // pthread_exit(NULL);
     // free up data allocated for chdata
     // free(chdata);
@@ -205,6 +204,7 @@ void *async_listen_func(void *data) {
         }
         client_conn *conn = accept_client_conn(srv);
         if (conn == NULL) {
+            sleep(0.50); // sleep for 500 seconds
             continue;
         }
         wait_group_add(srv->wg, 1);
@@ -360,12 +360,11 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         printf("failed to setsockopt\n");
         return NULL;
     }
-    /*bool passed = set_socket_blocking_status(srv->socket_number, false);
+    bool passed = set_socket_blocking_status(srv->socket_number, false);
     if (passed == false) {
         printf("failed to set socket blocking mode\n");
         return NULL;
     }
-    */
     srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
     return srv;
 }
