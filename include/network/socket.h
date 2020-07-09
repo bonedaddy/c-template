@@ -1,6 +1,8 @@
 /*! @file socket.h
   * @author Bonedaddy
   * @brief a generic multi-threaded tcp socket server
+  * @warning before use you must call setup_signal_handling() so that all threads get properly cleaned up on exit
+  * @note you will want to adjust `async_handle_conn_func` to suit your needs as right now it is just an echo client
 */
 
 #pragma once
@@ -65,9 +67,15 @@ typedef struct conn_handle_data {
     client_conn *conn; 
 } conn_handle_data;
 
+/*! @enum SOCKET_OPTS
+  * @brief used to configure new sockets
+*/
 typedef enum {
+  /*! sets socket with SO_REUSEADDR */
   REUSEADDR,
+  /*! sets socket to non-blocking mode */
   NOBLOCK,
+  /*! sets socket to blocking mode */
   BLOCK,
 } SOCKET_OPTS;
 
@@ -80,12 +88,6 @@ addr_info default_hints();
 */
 socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port);
 
-/*! @brief helper function for accepting client connections
-  * @return Failure: NULL client conn failed
-  * @return Success: non-NULL populated client_conn object
-*/
-client_conn *accept_client_conn(socket_server *srv);
-
 /*! @brief  gets an available socket attached to bind_address
   * @return Success: file descriptor socket number greater than 0
   * @return Failure: -1
@@ -93,11 +95,34 @@ client_conn *accept_client_conn(socket_server *srv);
 */
 int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts);
 
+/*! @brief starts listening and accepting connections in a dedicated pthread
+*/
+void *async_listen_func(void *data);
+
+/*! @brief handles connections in a dedicated pthread 
+  * @param data `void *` to a conn_handle_data object
+  * @warning currently is a generic echo client which reads data and sends it back to cient
+  * @warning you will want to adapt to your uses
+  * is laucnched in a pthread by async_listen_func when any new connection is received
+*/
+void *async_handle_conn_func(void *data);
+
+/*! @brief helper function for accepting client connections
+  * @return Failure: NULL client conn failed
+  * @return Success: non-NULL populated client_conn object
+*/
+client_conn *accept_client_conn(socket_server *srv);
+
+/*! @brief prepares library for usage
+  * @warning must be called before using the library
+  * sets up internal mutex, and system signal handling for terminating the server
+  * listes to SIGINT, SIGTERM, and SIGQUIT which will terminate the server
+*/
+void setup_signal_handling();
 
 char  *get_name_info(sock_addr *client_address);
-void *async_handle_conn_func(void *data);
-void *async_listen_func(void *data);
+
 void print_and_exit(int error_number);
 void signal_handler_fn(int signal_number);
-void setup_signal_handling();
+
 bool set_socket_blocking_status(int fd, bool blocking);

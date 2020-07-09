@@ -33,188 +33,57 @@ pthread_mutex_t _signal_mutex;
 // indicates we should begin cleanup processes
 bool _do_exit;
 
-
-
-/** Returns true on success, or false if there was an error */
-/* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
-bool set_socket_blocking_status(int fd, bool blocking) {
-    if (fd < 0) {
-        return false;
-    } else {
-        int flags = fcntl(fd, F_GETFL, 0);
-        if (flags == -1) {
-            return false;
-        }
-        flags = blocking ? (flags & ~O_NONBLOCK) : (flags | O_NONBLOCK);
-        return (fcntl(fd, F_SETFL, flags) == 0) ? true : false;
-    }
-}
-
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void signal_handler_fn(int signal_number) {
-    printf("\n"); // print new line so terminal doesn't display ^c on a line with a log message
-    pthread_mutex_lock(&_signal_mutex);
-    _do_exit = true;
-    pthread_mutex_unlock(&_signal_mutex);
-}
-
-void print_and_exit(int error_number) {
-    printf("failure detected: %s\n", strerror(error_number));
-    exit(-1);
-}
-
-
-void *async_handle_conn_func(void *data) {
-    conn_handle_data *chdata = (conn_handle_data *)data;
-    fd_set socket_set;
-    FD_ZERO(&socket_set); // always zero out before use
-    FD_SET(chdata->conn->socket_number, &socket_set);
-    // FD_CLR() // used to remove from set
-    // must provide a number larger than last socket descriptor
-    int max_socket = chdata->conn->socket_number + 1;
-    // copy since select() modifies stuff
-    fd_set socket_set_copy;
-    socket_set_copy = socket_set;
-    // set a timeout of 1 second
-    struct timeval timeout;
-    timeout.tv_sec = 1;
-    timeout.tv_usec = 0;
-    int rc = select(
-        max_socket, 
-        &socket_set_copy, 
-        0, 
-        0, 
-        &timeout
-    );
-    if (rc == 0 || rc == -1) {
-        chdata->srv->log(chdata->srv->thl, 0, "connection not ready before timeout", LOG_LEVELS_WARN);
-    } else {
-        for (;;) {
-            if (_do_exit == true) {
-                // break out of loop trigger closure
-                break;
-            }
-            // once select returns the copy contains the sockets which are ready to be read from
-            if (FD_ISSET(chdata->conn->socket_number, &socket_set_copy)) {
-                char request[1024];
-                rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
-                if (rc == -1 || rc == 0) {
-                    break;
-                }
-                rc = send(
-                    chdata->conn->socket_number,
-                    request,
-                    strlen(request),
-                    0
-                );
-                if ((size_t)rc < strlen(request)) {
-                    chdata->srv->log(chdata->srv->thl, 0, "failed to send enough bytes", LOG_LEVELS_WARN);
-                }
-            }
-        }
-    }
-    close(chdata->conn->socket_number);
-    chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
-   // decrease the wait group counter as this thread is no longer active
-    wait_group_done(chdata->srv->wg);
-    // free up resources associated with this connection
-    free(chdata->conn);
-    free(chdata);
-    // close resources associated with the connection
-    pthread_exit(NULL);
-}
-
-void *async_listen_func(void *data) {
-    socket_server *srv = (socket_server *)data;
-    pthread_t thread;
-    for (;;) {
-        // detach the thread as we aren't join to join with it
-        // pthread_detach(thread);
-        if (_do_exit == true) {
-            // break out of loop trigger closure
-            break;
-        }
-        client_conn *conn = accept_client_conn(srv);
-        if (conn == NULL) {
-            sleep(0.50); // sleep for 500 miliseconds
-            continue;
-        }
-        wait_group_add(srv->wg, 1);
-        /*pthread_attr_t attr;
-        pthread_attr_init(&attr);
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);*/
-        conn_handle_data *chdata = malloc(sizeof(conn_handle_data));
-        chdata->srv = srv;
-        chdata->conn = conn;
-        chdata->thread = thread;
-        pthread_create(&thread, NULL, async_handle_conn_func, chdata);
-        // here we detach, in theory we can use join
-        pthread_detach(thread);
-    }
-    wait_group_done(srv->wg);
-    pthread_exit(NULL);
-}
-
-client_conn *accept_client_conn(socket_server *srv) {
-    // temporary variable for storing socket address
-    sock_addr_storage addr_temp;
-    // set client_len
-    // i tried doing `(sock_addr *)&sizeof(addr_temp)
-    // in the `accept` function call but it didnt work
-    socklen_t client_len = sizeof(addr_temp);
-    int client_socket_num = accept(
-        srv->socket_number,
-        (sock_addr *)&addr_temp,
-        &client_len
-    );
-    // socket number less than 0 is an error
-    if (client_socket_num < 0) {
+/*! @brief returns a new socket server bound to the port number and ready to accept connections
+*/
+socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port) {
+    addr_info *bind_address;
+    // using the information contained in hints
+    // get address data for this socket and store it in bind_address
+    int rc = getaddrinfo(0, port, &hints, &bind_address);
+    if (rc != 0) {
+        thl->log(thl, 0, "failed to getaddrinfo", LOG_LEVELS_ERROR);
         return NULL;
     }
-    client_conn *connection = malloc(sizeof(client_conn));
-    if (connection == NULL) {
-        return NULL;
-    }
-    sock_addr_storage addr = addr_temp;
-    connection->address = &addr;
-    connection->socket_number = client_socket_num;
-    char *addr_info = get_name_info((sock_addr *)connection->address);
-    srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
-    free(addr_info);
-    return connection;
-}
-
-char  *get_name_info(sock_addr *client_address) {
-    char address_info[256]; // destroy when function returns
-    getnameinfo(
-        client_address,
-        sizeof(*client_address),
-        address_info, // output buffer
-        sizeof(address_info), // size of the output buffer
-        0, // second buffer which outputs service name
-        0, // length of the second buffer
-        NI_NUMERICHOST    // want to see hostnmae as an ip address
+    SOCKET_OPTS opts[2] = {REUSEADDR, NOBLOCK};
+    int listen_socket_num = get_new_socket(
+        thl,
+        bind_address,
+        opts,
+        2
     );
-    char *addr = malloc(sizeof(address_info));
-    if (addr == NULL) {
+    // free up addrinfo resources
+    freeaddrinfo(bind_address);
+    // start listening on the socket and begin accepting connection
+    listen(listen_socket_num, max_conns);
+    if (errno != 0) {
+        thl->logf(thl, 0, LOG_LEVELS_ERROR, "failed to start listening on socket with error %s", strerror(errno));
         return NULL;
     }
-    strcpy(addr, address_info);
-    return addr;
+    socket_server *srv = calloc(sizeof(socket_server), sizeof(socket_server));
+    if (srv == NULL) {
+        thl->log(thl, 0,"socket_srv malloc failed", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    wait_group_t *wg = wait_group_new();
+    if (wg == NULL) {
+        srv->log(thl, 0, "failed to initialize wait_group_t", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    srv->wg = wg;
+    srv->socket_number = listen_socket_num;
+    srv->thl = thl;
+    // the following two functions are shorthands for thl->log[f]
+    srv->log = thl->log;
+    srv->logf = thl->logf;
+    srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
+    return srv;
 }
 
-addr_info default_hints() {
-    addr_info hints;
-    memset(&hints, 0, sizeof(hints));
-    // change to AF_INET6 to use IPv6
-    hints.ai_family = AF_INET;
-    // indicates TCP, if you want UDP use SOCKT_DGRAM
-    hints.ai_socktype = SOCK_STREAM;
-    // indicates to getaddrinfo we want to bind to the wildcard address
-    hints.ai_flags = AI_PASSIVE;
-    return hints;
-}
-
+/*! @brief  gets an available socket attached to bind_address
+  * @return Success: file descriptor socket number greater than 0
+  * @return Failure: -1
+  * initializers a socket attached to bind_address with sock_opts, and binds the address
+*/
 int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts) {
      // creates the socket and gets us its file descriptor
     int listen_socket_num = socket(
@@ -276,53 +145,138 @@ int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock
     }
     return listen_socket_num;
 }
-/*
-    this likely has memory leaks and needs proper post-cleanup
+/*! @brief starts listening and accepting connections in a dedicated pthread
 */
-socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_conns, char *port) {
-    addr_info *bind_address;
-    // using the information contained in hints
-    // get address data for this socket and store it in bind_address
-    int rc = getaddrinfo(0, port, &hints, &bind_address);
-    if (rc != 0) {
-        thl->log(thl, 0, "failed to getaddrinfo", LOG_LEVELS_ERROR);
-        return NULL;
+void *async_listen_func(void *data) {
+    socket_server *srv = (socket_server *)data;
+    pthread_t thread;
+    for (;;) {
+        // detach the thread as we aren't join to join with it
+        // pthread_detach(thread);
+        if (_do_exit == true) {
+            // break out of loop trigger closure
+            break;
+        }
+        client_conn *conn = accept_client_conn(srv);
+        if (conn == NULL) {
+            sleep(0.50); // sleep for 500 miliseconds
+            continue;
+        }
+        wait_group_add(srv->wg, 1);
+        /*pthread_attr_t attr;
+        pthread_attr_init(&attr);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);*/
+        conn_handle_data *chdata = malloc(sizeof(conn_handle_data));
+        chdata->srv = srv;
+        chdata->conn = conn;
+        chdata->thread = thread;
+        pthread_create(&thread, NULL, async_handle_conn_func, chdata);
+        // here we detach, in theory we can use join
+        pthread_detach(thread);
     }
-    SOCKET_OPTS opts[2] = {REUSEADDR, NOBLOCK};
-    int listen_socket_num = get_new_socket(
-        thl,
-        bind_address,
-        opts,
-        2
-    );
-    // free up addrinfo resources
-    freeaddrinfo(bind_address);
-    // start listening on the socket and begin accepting connection
-    listen(listen_socket_num, max_conns);
-    if (errno != 0) {
-        thl->logf(thl, 0, LOG_LEVELS_ERROR, "failed to start listening on socket with error %s", strerror(errno));
-        return NULL;
-    }
-    socket_server *srv = calloc(sizeof(socket_server), sizeof(socket_server));
-    if (srv == NULL) {
-        thl->log(thl, 0,"socket_srv malloc failed", LOG_LEVELS_ERROR);
-        return NULL;
-    }
-    wait_group_t *wg = wait_group_new();
-    if (wg == NULL) {
-        srv->log(thl, 0, "failed to initialize wait_group_t", LOG_LEVELS_ERROR);
-        return NULL;
-    }
-    srv->wg = wg;
-    srv->socket_number = listen_socket_num;
-    srv->thl = thl;
-    // the following two functions are shorthands for thl->log[f]
-    srv->log = thl->log;
-    srv->logf = thl->logf;
-    srv->log(thl, 0, "socket server creation succeeded", LOG_LEVELS_INFO);
-    return srv;
+    wait_group_done(srv->wg);
+    pthread_exit(NULL);
 }
 
+void *async_handle_conn_func(void *data) {
+    conn_handle_data *chdata = (conn_handle_data *)data;
+    fd_set socket_set;
+    FD_ZERO(&socket_set); // always zero out before use
+    FD_SET(chdata->conn->socket_number, &socket_set);
+    // FD_CLR() // used to remove from set
+    // must provide a number larger than last socket descriptor
+    int max_socket = chdata->conn->socket_number + 1;
+    // copy since select() modifies stuff
+    fd_set socket_set_copy;
+    socket_set_copy = socket_set;
+    // set a timeout of 1 second
+    struct timeval timeout;
+    timeout.tv_sec = 1;
+    timeout.tv_usec = 0;
+    int rc = select(
+        max_socket, 
+        &socket_set_copy, 
+        0, 
+        0, 
+        &timeout
+    );
+    if (rc == 0 || rc == -1) {
+        chdata->srv->log(chdata->srv->thl, 0, "connection not ready before timeout", LOG_LEVELS_WARN);
+    } else {
+        for (;;) {
+            if (_do_exit == true) {
+                // break out of loop trigger closure
+                break;
+            }
+            // once select returns the copy contains the sockets which are ready to be read from
+            if (FD_ISSET(chdata->conn->socket_number, &socket_set_copy)) {
+                char request[1024];
+                rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
+                if (rc == -1 || rc == 0) {
+                    break;
+                }
+                rc = send(
+                    chdata->conn->socket_number,
+                    request,
+                    strlen(request),
+                    0
+                );
+                if ((size_t)rc < strlen(request)) {
+                    chdata->srv->log(chdata->srv->thl, 0, "failed to send enough bytes", LOG_LEVELS_WARN);
+                }
+            }
+        }
+    }
+    close(chdata->conn->socket_number);
+    chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
+   // decrease the wait group counter as this thread is no longer active
+    wait_group_done(chdata->srv->wg);
+    // free up resources associated with this connection
+    free(chdata->conn);
+    free(chdata);
+    // close resources associated with the connection
+    pthread_exit(NULL);
+}
+
+/*! @brief helper function for accepting client connections
+  * @return Failure: NULL client conn failed
+  * @return Success: non-NULL populated client_conn object
+*/
+client_conn *accept_client_conn(socket_server *srv) {
+    // temporary variable for storing socket address
+    sock_addr_storage addr_temp;
+    // set client_len
+    // i tried doing `(sock_addr *)&sizeof(addr_temp)
+    // in the `accept` function call but it didnt work
+    socklen_t client_len = sizeof(addr_temp);
+    int client_socket_num = accept(
+        srv->socket_number,
+        (sock_addr *)&addr_temp,
+        &client_len
+    );
+    // socket number less than 0 is an error
+    if (client_socket_num < 0) {
+        return NULL;
+    }
+    client_conn *connection = malloc(sizeof(client_conn));
+    if (connection == NULL) {
+        return NULL;
+    }
+    sock_addr_storage addr = addr_temp;
+    connection->address = &addr;
+    connection->socket_number = client_socket_num;
+    char *addr_info = get_name_info((sock_addr *)connection->address);
+    srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
+    free(addr_info);
+    return connection;
+}
+
+
+/*! @brief prepares library for usage
+  * @warning must be called before using the library
+  * sets up internal mutex, and system signal handling for terminating the server
+  * listes to SIGINT, SIGTERM, and SIGQUIT which will terminate the server
+*/
 void setup_signal_handling() {
     _do_exit = false; // initialize to false
     // initialize the mutex we use to block access to the boolean global
@@ -331,6 +285,65 @@ void setup_signal_handling() {
     signal(SIGINT, signal_handler_fn); // CTRL+C
     signal(SIGTERM, signal_handler_fn);
     signal(SIGQUIT, signal_handler_fn);
+}
+
+/** Returns true on success, or false if there was an error */
+/* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
+bool set_socket_blocking_status(int fd, bool blocking) {
+    if (fd < 0) {
+        return false;
+    } else {
+        int flags = fcntl(fd, F_GETFL, 0);
+        if (flags == -1) {
+            return false;
+        }
+        flags = blocking ? (flags & ~O_NONBLOCK) : (flags | O_NONBLOCK);
+        return (fcntl(fd, F_SETFL, flags) == 0) ? true : false;
+    }
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void signal_handler_fn(int signal_number) {
+    printf("\n"); // print new line so terminal doesn't display ^c on a line with a log message
+    pthread_mutex_lock(&_signal_mutex);
+    _do_exit = true;
+    pthread_mutex_unlock(&_signal_mutex);
+}
+
+void print_and_exit(int error_number) {
+    printf("failure detected: %s\n", strerror(error_number));
+    exit(-1);
+}
+
+char  *get_name_info(sock_addr *client_address) {
+    char address_info[256]; // destroy when function returns
+    getnameinfo(
+        client_address,
+        sizeof(*client_address),
+        address_info, // output buffer
+        sizeof(address_info), // size of the output buffer
+        0, // second buffer which outputs service name
+        0, // length of the second buffer
+        NI_NUMERICHOST    // want to see hostnmae as an ip address
+    );
+    char *addr = malloc(sizeof(address_info));
+    if (addr == NULL) {
+        return NULL;
+    }
+    strcpy(addr, address_info);
+    return addr;
+}
+
+addr_info default_hints() {
+    addr_info hints;
+    memset(&hints, 0, sizeof(hints));
+    // change to AF_INET6 to use IPv6
+    hints.ai_family = AF_INET;
+    // indicates TCP, if you want UDP use SOCKT_DGRAM
+    hints.ai_socktype = SOCK_STREAM;
+    // indicates to getaddrinfo we want to bind to the wildcard address
+    hints.ai_flags = AI_PASSIVE;
+    return hints;
 }
 
 int main(void) {
