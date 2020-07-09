@@ -1,11 +1,13 @@
 /*! @file wait_group.h
   * @author Bonedaddy
   * @brief provides C equivalent of Golang sync.Wait
+  * enables "signalling" multiple threads
   * allows management of multiple threads, and enabling clean exits or cleanups
   * it is a bit different than joining pthreads to wait for processes to exit
   * as it doesn't require attached pthreads (can be used with detached) for synchronizatiion
   * @todo:
   *   - determine if this is more efficient than using thread joining
+  *   - expand signalling capabilities to enable a channel
 */
 
 #pragma once
@@ -19,6 +21,8 @@
 typedef struct wait_group_t {
     int active_processes;
     pthread_mutex_t mutex;
+    pthread_mutex_t cond_mutex;
+    pthread_cond_t cond_var;
 } wait_group_t;
 
 /*! @brief incremements the total number of active processes managed by this wait group
@@ -48,3 +52,9 @@ void wait_group_wait(wait_group_t *wg);
 /*! @brief returns a new and initialized wait_group_t pointer
 */
 wait_group_t *wait_group_new();
+
+
+void wait_group_reset_signal(wait_group_t *wg);
+
+void wait_group_listen_signal(wait_group_t *wg);
+void wait_group_send_signal(wait_group_t *wg);

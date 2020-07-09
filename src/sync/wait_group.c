@@ -13,7 +13,33 @@ wait_group_t *wait_group_new() {
     }
     wg->active_processes = 0;
     pthread_mutex_init(&wg->mutex, NULL);
+    pthread_mutex_init(&wg->cond_mutex, NULL);
+    pthread_cond_init(&wg->cond_var, NULL);
     return wg;
+}
+
+void wait_group_listen_signal(wait_group_t *wg) {
+    pthread_mutex_lock(&wg->cond_mutex);
+    pthread_cond_wait(&wg->cond_var, &wg->cond_mutex);
+    pthread_mutex_lock(&wg->cond_mutex);
+}
+
+void wait_group_send_signal(wait_group_t *wg) {
+    pthread_mutex_lock(&wg->cond_mutex);
+    pthread_cond_signal(&wg->cond_var);
+    pthread_mutex_unlock(&wg->cond_mutex);
+}
+
+void wait_group_reset_signal(wait_group_t *wg) {
+    // signal anyone waiting on the current cond_var
+    // we do this before replacing it
+    pthread_mutex_lock(&wg->cond_mutex);
+    pthread_cond_signal(&wg->cond_var);
+    pthread_mutex_unlock(&wg->cond_mutex);
+    // re init
+    pthread_mutex_lock(&wg->cond_mutex);
+    pthread_cond_init(&wg->cond_var, NULL);
+    pthread_mutex_unlock(&wg->cond_mutex);
 }
 
 void wait_group_wait(wait_group_t *wg) { 
