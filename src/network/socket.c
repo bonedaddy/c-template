@@ -186,6 +186,9 @@ void *async_handle_conn_func(void *data) {
 
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
+    int thread_count = 0;
+    int max_threads = 10;
+    pthread_t *threads = malloc(sizeof(pthread_t) * 10);
     for (;;) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
@@ -208,7 +211,15 @@ void *async_listen_func(void *data) {
         chdata->conn = conn;
         chdata->thread = thread;
         pthread_create(&thread, NULL, async_handle_conn_func, chdata);
-        pthread_detach(thread);
+        threads[thread_count] = thread;
+        thread_count++;
+        if (thread_count >= max_threads) {
+            threads = realloc(threads, max_threads * 2);
+        }
+        max_threads *= 2;
+    }
+    for (int i = 0; i < thread_count; i++) {
+        pthread_join(threads[i], NULL);
     }
     wait_group_done(srv->wg);
     pthread_exit(NULL);
@@ -299,6 +310,14 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         bind_address->ai_socktype,
         bind_address->ai_protocol
     );
+    int one = 1;
+    // set socket options before doing anything else
+    // i tried setting it after listen, but I don't think that works
+    rc = setsockopt(listen_socket_num, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
+    if (rc != 0) {
+        printf("failed to setsockopt\n");
+        return NULL;
+    }
     // less than 0 is an error
     if (listen_socket_num < 0) {
         thl->log(thl, 0, "socket creation failed", LOG_LEVELS_ERROR);
@@ -338,17 +357,6 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     // the following two functions are shorthands for thl->log[f]
     srv->log = thl->log;
     srv->logf = thl->logf;
-    // intialize pthread attributes
-    // pthread_attr_init(&srv->taddr);
-    int one;
-    // TODO(bonedaddy): this is a monkey patch for a bug fix 
-    //  where we are unable to shitdown the usage of the socket
-    // set SO_REUSEADDR to enable address reuse
-    rc = setsockopt(srv->socket_number, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
-    if (rc != 0) {
-        printf("failed to setsockopt\n");
-        return NULL;
-    }
     bool passed = set_socket_blocking_status(srv->socket_number, false);
     if (passed == false) {
         printf("failed to set socket blocking mode\n");
