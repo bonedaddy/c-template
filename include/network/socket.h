@@ -127,4 +127,9 @@ char  *get_name_info(sock_addr *client_address);
 void print_and_exit(int error_number);
 void signal_handler_fn(int signal_number);
 
+/*! @brief used to enable/disable blocking sockets
+  * @return Failure: false
+  * @return Success: true
+  * @note see https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344
+*/
 bool set_socket_blocking_status(int fd, bool blocking);

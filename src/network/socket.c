@@ -296,8 +296,11 @@ void setup_signal_handling() {
     signal(SIGQUIT, signal_handler_fn);
 }
 
-/** Returns true on success, or false if there was an error */
-/* https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 */
+/*! @brief used to enable/disable blocking sockets
+  * @return Failure: false
+  * @return Success: true
+  * @note see https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344
+*/
 bool set_socket_blocking_status(int fd, bool blocking) {
     if (fd < 0) {
         return false;
