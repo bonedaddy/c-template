@@ -46,6 +46,14 @@ typedef struct socket_server {
     wait_group_t *wg;
 } socket_server;
 
+/*! @typedef socket_client
+  * @struct socket_client
+  * a generic tcp socket client
+*/
+typedef struct socket_client {
+    int socket_number;
+} socket_client;
+
 /*! @typedef client_conn
   * @struct client_conn
   * @brief a structure containing a file descriptor and address information
@@ -83,6 +91,10 @@ typedef enum {
   * defaults is IPv4, TCP, and AI_PASSIVE flags
 */
 addr_info default_hints();
+
+/*! @brief reutnrs a new socket client connected to `addr:port`
+*/
+socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr, char *port);
 
 /*! @brief returns a new socket server bound to the port number and ready to accept connections
 */

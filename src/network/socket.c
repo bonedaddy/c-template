@@ -51,6 +51,10 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         opts,
         2
     );
+    if (listen_socket_num == -1) {
+        thl->log(thl, 0, "failed to get_new_socket", LOG_LEVELS_ERROR);
+        return NULL;
+    }
     // free up addrinfo resources
     freeaddrinfo(bind_address);
     // start listening on the socket and begin accepting connection
@@ -358,13 +362,54 @@ addr_info default_hints() {
     return hints;
 }
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr, char *port) {
+    addr_info *peer_address;
+    int rc = getaddrinfo(addr, port, NULL, &peer_address);
+    if (rc != 0) {
+        return NULL;
+    }
+    char address_buffer[100];
+    char service_buffer[100];
+    getnameinfo(
+        peer_address->ai_addr,
+        peer_address->ai_addrlen,
+        address_buffer,
+        sizeof(address_buffer),
+        service_buffer,
+        sizeof(service_buffer),
+        0
+    );
+    printf("address buff: %s\n", address_buffer);
+    printf("service buffer: %s\n", service_buffer);
+    int client_socket_num = get_new_socket(thl, peer_address, NULL, 0);
+    if (client_socket_num == -1) {
+        thl->log(thl, 0, "failed to get_new_socket", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    printf("socket num: %i\n", client_socket_num);
+    socket_client *sock_client = malloc(sizeof(sock_client));
+    sock_client->socket_number = client_socket_num;
+    return sock_client;
+}
+
 int main(int argc, char **argv) {
     setup_signal_handling();
+
     thread_logger *thl = new_thread_logger(false);
     if (thl == NULL) {
         printf("new_thread_logger failed\n");
         return -1;
     }
+    if (argc >= 2) {
+        if (strcmp(argv[1], "client") == 0) {
+            addr_info client_hints = default_hints();
+            socket_client *sock_client = new_socket_client(thl, client_hints, "localhost", "8081");
+            printf("%i\n", sock_client->socket_number);
+            return 0;
+        }
+    }
+
     addr_info hints = default_hints();
     char *port;
     switch (argc) {
