@@ -186,9 +186,6 @@ void *async_handle_conn_func(void *data) {
 
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
-    int thread_count = 0;
-    int max_threads = 10;
-    pthread_t *threads = malloc(sizeof(pthread_t) * 10);
     for (;;) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
@@ -211,15 +208,8 @@ void *async_listen_func(void *data) {
         chdata->conn = conn;
         chdata->thread = thread;
         pthread_create(&thread, NULL, async_handle_conn_func, chdata);
-        threads[thread_count] = thread;
-        thread_count++;
-        if (thread_count >= max_threads) {
-            threads = realloc(threads, max_threads * 2);
-        }
-        max_threads *= 2;
-    }
-    for (int i = 0; i < thread_count; i++) {
-        pthread_join(threads[i], NULL);
+        // here we detach, in theory we can use join
+        pthread_detach(thread);
     }
     wait_group_done(srv->wg);
     pthread_exit(NULL);
