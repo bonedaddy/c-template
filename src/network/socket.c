@@ -376,11 +376,13 @@ int main(int argc, char **argv) {
             break;
         default:
             thl->log(thl, 0, "improper command invocation\nusage: ./socketserver <port-num>\tport-num: default 8081", LOG_LEVELS_WARN);
+            clear_thread_logger(thl);
             return -1;
     }
     socket_server *srv = new_socket_server(hints, thl, 100, port);
     if (srv == NULL) {
         srv->log(thl, 0, "socket server creation failed", LOG_LEVELS_ERROR);
+        clear_thread_logger(thl);
         return -1;
     }
     wait_group_add(srv->wg, 1);
