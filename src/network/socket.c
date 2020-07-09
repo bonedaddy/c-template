@@ -125,6 +125,7 @@ void *async_handle_conn_func(void *data) {
 
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
+    pthread_t thread;
     for (;;) {
         // detach the thread as we aren't join to join with it
         // pthread_detach(thread);
@@ -138,7 +139,6 @@ void *async_listen_func(void *data) {
             continue;
         }
         wait_group_add(srv->wg, 1);
-        pthread_t thread;
         /*pthread_attr_t attr;
         pthread_attr_init(&attr);
         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);*/
@@ -184,7 +184,7 @@ client_conn *accept_client_conn(socket_server *srv) {
 }
 
 char  *get_name_info(sock_addr *client_address) {
-    char address_info[256];
+    char address_info[256]; // destroy when function returns
     getnameinfo(
         client_address,
         sizeof(*client_address),
