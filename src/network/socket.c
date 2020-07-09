@@ -86,6 +86,7 @@ bool set_socket_blocking_status(int fd, bool blocking) {
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 void signal_handler_fn(int signal_number) {
+    printf("\n"); // print new line so terminal doesn't display ^c on a line with a log message
     pthread_mutex_lock(&signal_mutex);
     do_exit = true;
     pthread_mutex_unlock(&signal_mutex);
