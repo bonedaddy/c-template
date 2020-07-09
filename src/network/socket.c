@@ -44,7 +44,7 @@ typedef struct socket_server {
     log_fnf logf; // alias for thl->logf
     thread_logger *thl;
     pthread_t thread;
-    pthread_attr_t taddr;
+    // pthread_attr_t taddr;
     wait_group_t *wg;
 } socket_server;
 
@@ -153,8 +153,7 @@ void print_and_exit(int error_number) {
 
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
-    char *address_buffer = get_name_info((sock_addr *)chdata->conn->address);
-    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected: %s", address_buffer);
+    chdata->srv->logf(chdata->srv->thl, 0, LOG_LEVELS_INFO, "new client connected");
     char request[1024];
     for (;;) {
         if (signalled_exit() == true) {
@@ -187,8 +186,8 @@ void *async_handle_conn_func(void *data) {
     // free(chdata);
     chdata->srv->log(chdata->srv->thl, 0, "client disconnected", LOG_LEVELS_INFO);
     free(chdata->conn);
-    // free(chdata);
-    return NULL;
+    free(chdata);
+    pthread_exit(NULL);
 }
 
 void *async_listen_func(void *data) {
@@ -207,18 +206,18 @@ void *async_listen_func(void *data) {
         }
         wait_group_add(srv->wg, 1);
         pthread_t thread;
-        pthread_attr_t attr;
+        /*pthread_attr_t attr;
         pthread_attr_init(&attr);
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);*/
         conn_handle_data *chdata = malloc(sizeof(conn_handle_data));
         chdata->srv = srv;
         chdata->conn = conn;
         chdata->thread = thread;
-        pthread_create(&thread, &attr, async_handle_conn_func, chdata);
+        pthread_create(&thread, NULL, async_handle_conn_func, chdata);
+        pthread_detach(thread);
     }
     wait_group_done(srv->wg);
     pthread_exit(NULL);
-    return NULL;
 }
 
 client_conn *accept_client_conn(socket_server *srv) {
@@ -251,6 +250,7 @@ client_conn *accept_client_conn(socket_server *srv) {
     }
     connection->address = client_address;
     connection->socket_number = client_socket_num;
+    /* TODO(bonedaddy): this causes client_address to not get populated after */
     bool passed = set_socket_timeouts(connection->socket_number, 10);
     if (passed == false) {
         printf("failed to set socket timeout\n");
@@ -348,7 +348,7 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
     srv->log = thl->log;
     srv->logf = thl->logf;
     // intialize pthread attributes
-    pthread_attr_init(&srv->taddr);
+    // pthread_attr_init(&srv->taddr);
     int err;
     // TODO(bonedaddy): this is a monkey patch for a bug fix 
     //  where we are unable to shitdown the usage of the socket
@@ -383,6 +383,10 @@ void setup_signal_handling() {
 int main(void) {
     setup_signal_handling();
     thread_logger *thl = new_thread_logger(false);
+    if (thl == NULL) {
+        printf("new_thread_logger failed\n");
+        return -1;
+    }
     addr_info hints = default_hints();
     socket_server *srv = new_socket_server(hints, thl, 100, "8081");
     if (srv == NULL) {
@@ -392,7 +396,8 @@ int main(void) {
     wait_group_add(srv->wg, 1);
     pthread_create(
         &srv->thread,
-        &srv->taddr,
+        // &srv->taddr,
+        NULL,
         async_listen_func,
         srv
     );
