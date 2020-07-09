@@ -1,6 +1,6 @@
 /*! @file socket.h
   * @author Bonedaddy
-  * @brief helper tooling for managing socket servers
+  * @brief a generic multi-threaded tcp socket server
 */
 
 /*! @typedef addr_info

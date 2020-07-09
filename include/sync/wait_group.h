@@ -34,6 +34,8 @@ void wait_group_add(wait_group_t *wg, int count);
   * @param wg the waitgroup to manipulate a runtime error will occur and program will exit
   * @return Failure: -1
   * @return Success: 0
+  * @todo:
+  *    - (bonedaddy) decide if we should do a runtime exit on pre condition failure
 */
 int wait_group_done(wait_group_t *wg);
 
