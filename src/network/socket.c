@@ -195,15 +195,16 @@ void *async_handle_conn_func(void *data) {
     // must provide a number larger than last socket descriptor
     int max_socket = chdata->conn->socket_number + 1;
     // copy since select() modifies stuff
-    fd_set socket_set_copy;
-    socket_set_copy = socket_set;
+    // not needed in our case since this is for a dedicated conn
+    // fd_set socket_set_copy;
+    // socket_set_copy = socket_set;
     // set a timeout of 3 seconds
     struct timeval timeout;
     timeout.tv_sec = 3;
     timeout.tv_usec = 0;
     int rc = select(
         max_socket, 
-        &socket_set_copy, 
+        &socket_set, 
         0, 
         0, 
         &timeout
@@ -217,7 +218,7 @@ void *async_handle_conn_func(void *data) {
                 break;
             }
             // once select returns the copy contains the sockets which are ready to be read from
-            if (FD_ISSET(chdata->conn->socket_number, &socket_set_copy)) {
+            if (FD_ISSET(chdata->conn->socket_number, &socket_set)) {
                 char request[1024];
                 rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
                 if (rc == -1 || rc == 0) {
@@ -271,8 +272,7 @@ client_conn *accept_client_conn(socket_server *srv) {
     if (connection == NULL) {
         return NULL;
     }
-    sock_addr_storage addr = addr_temp;
-    connection->address = &addr;
+    connection->address = &addr_temp;
     connection->socket_number = client_socket_num;
     char *addr_info = get_name_info((sock_addr *)connection->address);
     srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
