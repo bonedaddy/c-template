@@ -358,7 +358,7 @@ addr_info default_hints() {
     return hints;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
     setup_signal_handling();
     thread_logger *thl = new_thread_logger(false);
     if (thl == NULL) {
@@ -366,7 +366,19 @@ int main(void) {
         return -1;
     }
     addr_info hints = default_hints();
-    socket_server *srv = new_socket_server(hints, thl, 100, "8081");
+    char *port;
+    switch (argc) {
+        case 1:
+            port = "8081";
+            break;
+        case 2:
+            port = argv[1]; // 2nd element
+            break;
+        default:
+            thl->log(thl, 0, "improper command invocation\nusage: ./socketserver <port-num>\tport-num: default 8081", LOG_LEVELS_WARN);
+            return -1;
+    }
+    socket_server *srv = new_socket_server(hints, thl, 100, port);
     if (srv == NULL) {
         srv->log(thl, 0, "socket server creation failed", LOG_LEVELS_ERROR);
         return -1;
