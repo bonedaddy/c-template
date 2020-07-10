@@ -71,6 +71,7 @@ include(cmake/random_test.cmake)
 include(cmake/logger_lib.cmake)
 include(cmake/logger_test.cmake)
 
+include(cmake/arrays_lib.cmake)
 include(cmake/array_len_test.cmake)
 
 ######################
@@ -120,6 +121,7 @@ define_random_test()
 define_logger_lib()
 define_logger_test()
  
+define_arrays_lib()
 define_array_len_test()
 
 add_doxygen_doc(

@@ -7,7 +7,7 @@
 #include <cmocka.h>
 #include <assert.h>
 #include "../../include/utils/random.h"
-#include "../../include/utils/array_len.h"
+#include "../../include/utils/arrays.h"
 #include "../../include/utils/returns.h"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"

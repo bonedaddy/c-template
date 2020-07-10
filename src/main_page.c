@@ -19,7 +19,7 @@
  *  - thread safe logger ( \link logger.h \endlink )
  *    - color coded messages sent to stdout
  *    - optionally writes to a log file as well as sends to stdout
- *  - array length and size checking ( \link array_len.h \endlink )
+ *  - array length and size checking ( \link array.h \endlink )
  *    - note: doesn't work properly on `char*` data types
  *  - ansi color codes ( \link colors.h \endlink )
  *    - includes helper functions to created colored `char*`
