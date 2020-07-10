@@ -58,9 +58,9 @@ LOOKUP_CACHE_SIZE      = 0
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
-EXTRACT_ALL            = NO
+EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = YES
-EXTRACT_PACKAGE        = NO
+EXTRACT_PACKAGE        = YES
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = NO
@@ -115,8 +115,7 @@ INPUT                  = @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/include/utils \
                          @PROJECT_SOURCE_DIR@/include/sync \
                          @PROJECT_SOURCE_DIR@/include/network \
-                         @PROJECT_SOURCE_DIR@/include/network/socket \
-                         @PROJECT_SOURCE_DIR@/docs
+                         @PROJECT_SOURCE_DIR@/include/network/socket
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \

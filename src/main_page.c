@@ -16,16 +16,20 @@
  * In additional to this, commonly used functionality is included to reduce the need for rewriting functionality in each new library.
  * 
  * \section Reusable-Code Reusable Code
- *  - thread safe logger \link logger.h \endlink
+ *  - thread safe logger ( \link logger.h \endlink )
  *    - color coded messages sent to stdout
  *    - optionally writes to a log file as well as sends to stdout
- *  - array length and size checking
+ *  - array length and size checking ( \link array_len.h \endlink )
  *    - note: doesn't work properly on `char*` data types
- *  - ansi color codes
+ *  - ansi color codes ( \link colors.h \endlink )
  *    - includes helper functions to created colored `char*`
  *    - can write to files as well
- *  - random number and string generateion
- *  - CLI template 
+ *  - random number and string generateion ( \link random.h \endlink )
+ *  - CLI template ( \link command_line.h \endlink )
+ *    - example implementation in \link cli.c \endlink
+ *  - socket network tooling
+ *    - utility functions, socket creation, and client usage ( \link socket.h \endlink )
+ *    - socker server ( \link socket_server.h \endlink )
  * 
  * \section  Usage
  * 
