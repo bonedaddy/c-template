@@ -1,4 +1,3 @@
-
 /*! @file socket_server.h
   * @author Bonedaddy
   * @brief definitions related to socket server based services

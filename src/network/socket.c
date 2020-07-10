@@ -14,7 +14,6 @@
   * @brief fixes GCC not compiling correctly
   * @note https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
 */
-#define _POSIX_C_SOURCE 201112L
 
 #include <sys/types.h>
 #include <sys/socket.h>

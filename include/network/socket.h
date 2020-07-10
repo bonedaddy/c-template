@@ -7,9 +7,10 @@
 
 /*! @def _POSIX_C_SOURCE 201112L
   * @brief fixes GCC not compiling correctly
+  * currently we are handling this via our cmake build system (see CMakeLists.txt)
+  * however you may want to define the macro in source yourself
   * @note https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
 */
-#define _POSIX_C_SOURCE 201112L
 
 #include <pthread.h>
 #include "../utils/logger.h"

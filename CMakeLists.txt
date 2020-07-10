@@ -17,6 +17,9 @@ if(NOT CMAKE_BUILD_TYPE)
     list(APPEND flags -std=c2x -Wall -Wextra -Werror -pedantic)
 endif()
 
+# needed for building socket stuff
+list(APPEND flags -D_POSIX_C_SOURCE=201112L)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 ###################
