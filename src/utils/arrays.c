@@ -59,6 +59,18 @@ int pop_int_array(int_array *arr) {
     return ret;
 }
 
+int peek_int_array(int_array *arr) {
+    int ret = -1;
+    pthread_mutex_lock(&arr->mutex);
+    if (arr->count == 0) {
+        goto DO_UNLOCK;
+    }
+    ret = arr->values[arr->count - 1];
+    DO_UNLOCK:
+        pthread_mutex_unlock(&arr->mutex);
+    return ret;
+}
+
 /*! @brief returns the number of elements in the array
 */
 int length_int_array(int_array *arr) {

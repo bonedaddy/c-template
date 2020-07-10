@@ -5,6 +5,7 @@
 #include <cmocka.h>
 #include <assert.h>
 #include "../../include/utils/arrays.h"
+#include <stdlib.h>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
@@ -26,30 +27,37 @@ void test_array_size(void **state) {
     assert(array_size(two) == sizeof(int)*2);
 }
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-int main(void) {
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void test_int_array(void **state) {
     int_array *arr = new_int_array(10);
-    assert(length_int_array(arr) == 0);
-    append_int_array(arr, 100);
-    assert(arr->values[arr->count - 1] == 100);
-    assert(length_int_array(arr) == 1);
-    append_int_array(arr, 200);
+    // test appends
+    for (int i = 0; i < 10; i++) {
+        append_int_array(arr, i);
+        assert(length_int_array(arr) == i + 1);
+        int top = peek_int_array(arr);
+        assert(top == i);
+    }
+    // test print iter
     iter_int_array(arr, print_iter_func);
-    assert(length_int_array(arr) == 2);
-    assert(arr->values[arr->count - 1] == 200);
-    int top = pop_int_array(arr);
-    assert(top == 200);
-    assert(length_int_array(arr) == 1);
-    top = pop_int_array(arr);
-    assert(top == 100);
-    assert(length_int_array(arr) == 0);
+    for (int i = 9; i >= 0; i--) {
+        int top = pop_int_array(arr);
+        assert(top == i);
+        assert(length_int_array(arr) == i);
+    }
     for (int i = 0; i < 1000; i++) {
         append_int_array(arr, i);
     }
-    printf("length: %i\n", length_int_array(arr));
+    free(arr->values);
+    free(arr);
+}
+
+
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_array_len),
         cmocka_unit_test(test_array_size),
+        cmocka_unit_test(test_int_array),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

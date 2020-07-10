@@ -47,6 +47,10 @@ void append_int_array(int_array *arr, int value);
 */
 int pop_int_array(int_array *arr);
 
+/*! @brief like pop but doesnt remove
+*/
+int peek_int_array(int_array *arr);
+
 /*! @brief returns the number of elements in the array
 */
 int length_int_array(int_array *arr);
