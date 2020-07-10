@@ -35,6 +35,7 @@ include(cmake/doxygen.cmake)
 include(cmake/wait_group_lib.cmake)
 include(cmake/wait_group_test.cmake)
 
+include(cmake/socket_test.cmake)
 include(cmake/socket_lib.cmake)
 
 include(cmake/glib.cmake)
@@ -85,6 +86,7 @@ message(STATUS "Build flags: ${flags}")
 define_wait_group_lib()
 define_wait_group_test()
 
+define_socket_test()
 define_socket_lib()
 
 define_returns_test()
