@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('d4/d73/returns_8h_source.html','../../
 <div class="title">returns.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*! @file errors.h</span></div>
+<a href="../../d4/d73/returns_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*! @file errors.h</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">  * @brief provides a C equivlent of golang function returns</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">  * it enables returning two values from function call, one being an error (if any) and one being data if any</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">*/</span></div>
@@ -100,27 +100,31 @@ $(document).ready(function(){initNavTree('d4/d73/returns_8h_source.html','../../
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../d0/dcb/structcg__return.html">   14</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="comment">// value is the data returned by a function call (if any)</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">void</span> *value;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">   16</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">value</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">// if not a NULL pointer than it means the function call errored</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// and the value struct member will be a NULL pointer</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *err;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">   19</a></span>&#160;    <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *<a class="code" href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">err</a>;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;} <a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">/*! @brief creates a new cg_return struct</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *new_cg_return(<span class="keywordtype">void</span> *value, <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *err);<span class="comment"></span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *<a class="code" href="../../d4/d73/returns_8h.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a>(<span class="keywordtype">void</span> *value, <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *err);<span class="comment"></span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/*! @brief frees up resources associated with an instance of cg_return</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> free_cg_return(<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d4/d73/returns_8h.html#a78a160e946b7e9d2358576c48f68eb5b">free_cg_return</a>(<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructcg__return_html_aba6758415aca30f060dea8e7b0aec1ff"><div class="ttname"><a href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">cg_return::value</a></div><div class="ttdeci">void * value</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00016">returns.h:16</a></div></div>
+<div class="ttc" id="astructcg__return_html_aff1989f11a733f08b3a4f71df6c21500"><div class="ttname"><a href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">cg_return::err</a></div><div class="ttdeci">cg_error * err</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00019">returns.h:19</a></div></div>
 <div class="ttc" id="aerrors_8h_html"><div class="ttname"><a href="../../de/d45/errors_8h.html">errors.h</a></div><div class="ttdoc">golang like error handling</div></div>
 <div class="ttc" id="astructcg__return_html"><div class="ttname"><a href="../../d0/dcb/structcg__return.html">cg_return</a></div><div class="ttdoc">allows returning both a value and error message from a function call useful as it makes it easier to ...</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00014">returns.h:14</a></div></div>
+<div class="ttc" id="areturns_8h_html_adf75c93702ebc7986ab03452580adfff"><div class="ttname"><a href="../../d4/d73/returns_8h.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a></div><div class="ttdeci">cg_return * new_cg_return(void *value, cg_error *err)</div><div class="ttdoc">creates a new cg_return struct</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dd4/returns_8c_source.html#l00005">returns.c:5</a></div></div>
 <div class="ttc" id="astructcg__error_html"><div class="ttname"><a href="../../d4/dae/structcg__error.html">cg_error</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d45/errors_8h_source.html#l00014">errors.h:14</a></div></div>
+<div class="ttc" id="areturns_8h_html_a78a160e946b7e9d2358576c48f68eb5b"><div class="ttname"><a href="../../d4/d73/returns_8h.html#a78a160e946b7e9d2358576c48f68eb5b">free_cg_return</a></div><div class="ttdeci">void free_cg_return(cg_return *ret)</div><div class="ttdoc">frees up resources associated with an instance of cg_return</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dd4/returns_8c_source.html#l00024">returns.c:24</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><b>returns.h</b></li>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="../../d4/d73/returns_8h.html">returns.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

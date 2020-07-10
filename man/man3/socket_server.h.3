@@ -1,0 +1,206 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/include/network/socket/socket_server.h" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/include/network/socket/socket_server.h \- TCP socket servers, clients, and tooling for working with sockets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <sys/socket\&.h>\fP
+.br
+\fC#include <netinet/in\&.h>\fP
+.br
+\fC#include <arpa/inet\&.h>\fP
+.br
+\fC#include <netdb\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <errno\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <signal\&.h>\fP
+.br
+\fC#include <fcntl\&.h>\fP
+.br
+\fC#include <sys/time\&.h>\fP
+.br
+\fC#include 'socket\&.h'\fP
+.br
+\fC#include '\&.\&./\&.\&./utils/logger\&.h'\fP
+.br
+\fC#include '\&.\&./\&.\&./sync/wait_group\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsocket_server\fP"
+.br
+.RI "a generic tcp socket server using file descriptor socket_number it uses a dedicated pthread for accepting new client connections, with each connection being processed in another pthread in detached state\&. socket uses SO_REUSEADDR "
+.ti -1c
+.RI "struct \fBclient_conn\fP"
+.br
+.RI "a structure containing a file descriptor and address information "
+.ti -1c
+.RI "struct \fBconn_handle_data\fP"
+.br
+.RI "struct containing arguments passed into pthread "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBsocket_server\fP \fBsocket_server\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBclient_conn\fP \fBclient_conn\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBconn_handle_data\fP \fBconn_handle_data\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsocket_server\fP * \fBnew_socket_server\fP (\fBaddr_info\fP hints, \fBthread_logger\fP *thl, int max_conns, char *port)"
+.br
+.RI "returns a new socket server bound to the port number and ready to accept connections "
+.ti -1c
+.RI "void * \fBasync_listen_func\fP (void *data)"
+.br
+.RI "listens for new connections and spawns a thread to process the connection thread that is created to process the connection runs as a detached thread will poll for new connections to accept every 500 miliseconds "
+.ti -1c
+.RI "void * \fBasync_handle_conn_func\fP (void *data)"
+.br
+.RI "handles connections in a dedicated pthread 
+.br
+ is laucnched in a pthread by async_listen_func when any new connection is received "
+.ti -1c
+.RI "\fBclient_conn\fP * \fBaccept_client_conn\fP (\fBsocket_server\fP *srv)"
+.br
+.RI "helper function for accepting client connections times out new attempts if they take 3 seconds or more "
+.in -1c
+.SH "Detailed Description"
+.PP 
+TCP socket servers, clients, and tooling for working with sockets\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+Bonedaddy
+.RE
+.PP
+uses \fBwait_group\&.h\fP to provide lightweight synchronization between pthreads 
+.PP
+\fBWarning\fP
+.RS 4
+before use you must call \fBsetup_signal_handling()\fP so that all threads get properly cleaned up on exit 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+you will want to adjust \fCasync_handle_conn_func\fP to suit your needs as right now it is just an echo client it is likely you will need to have \fC#define _POSIX_C_SOURCE 201112L\fP see the following for more information
+.IP "\(bu" 2
+https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+.IP "\(bu" 2
+https://man7.org/linux/man-pages/man3/getaddrinfo.3.html 
+.PP
+.RE
+.PP
+
+.PP
+Definition in file \fBsocket_server\&.h\fP\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "\fBclient_conn\fP"
+
+.SS "\fBconn_handle_data\fP"
+
+.SS "\fBsocket_server\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "\fBclient_conn\fP* accept_client_conn (\fBsocket_server\fP * srv)"
+
+.PP
+helper function for accepting client connections times out new attempts if they take 3 seconds or more 
+.PP
+\fBReturns\fP
+.RS 4
+Failure: NULL client conn failed 
+.PP
+Success: non-NULL populated \fBclient_conn\fP object 
+.RE
+.PP
+
+.SS "void* async_handle_conn_func (void * data)"
+
+.PP
+handles connections in a dedicated pthread 
+.br
+ is laucnched in a pthread by async_listen_func when any new connection is received 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP \fCvoid *\fP to a \fBconn_handle_data\fP object 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+uses \fCselect\fP to determine if we can read data from the connection 
+.PP
+select runs for 3 seconds before timing out and releasing resources with the connection 
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+currently implements an example echo client 
+.PP
+you will want to adapt to your specific use case 
+.RE
+.PP
+
+.SS "void* async_listen_func (void * data)"
+
+.PP
+listens for new connections and spawns a thread to process the connection thread that is created to process the connection runs as a detached thread will poll for new connections to accept every 500 miliseconds 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP void pointer to a \fBsocket_server\fP struct 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+detached thread created calling async_handle_conn_func 
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+may change the 500 milisecond sleep 
+.RE
+.PP
+
+.SS "\fBsocket_server\fP* new_socket_server (\fBaddr_info\fP hints, \fBthread_logger\fP * thl, int max_conns, char * port)"
+
+.PP
+returns a new socket server bound to the port number and ready to accept connections 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

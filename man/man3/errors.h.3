@@ -1,0 +1,81 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/include/utils/errors.h" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/include/utils/errors.h \- golang like error handling  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdatomic\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBcg_error\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBcg_error\fP * \fBnew_cg_error\fP (char *message)"
+.br
+.RI "returns a \fBcg_error\fP struct containing message "
+.ti -1c
+.RI "char * \fBcg_error_string\fP (char *message)"
+.br
+.RI "creates a new variable and moves memory of message into that variable returning it this appears to be needed as if we dont do this \fCrealloc\fP will complain about an invalid pointer "
+.ti -1c
+.RI "int \fBwrap_cg_error\fP (\fBcg_error\fP *error, char *message)"
+.br
+.RI "appends message to the end of error->message uses realloc to maximize memory efficiency "
+.ti -1c
+.RI "void \fBfree_cg_error\fP (\fBcg_error\fP *error)"
+.br
+.RI "frees up resources associated with error "
+.in -1c
+.SH "Detailed Description"
+.PP 
+golang like error handling 
+
+provides a C equivlent of golang function returns it enables returning two values from function call, one being an error (if any) and one being data if any
+.PP
+Definition in file \fBerrors\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "char* cg_error_string (char * message)"
+
+.PP
+creates a new variable and moves memory of message into that variable returning it this appears to be needed as if we dont do this \fCrealloc\fP will complain about an invalid pointer 
+.PP
+Definition at line 17 of file errors\&.c\&.
+.SS "void free_cg_error (\fBcg_error\fP * error)"
+
+.PP
+frees up resources associated with error 
+.PP
+Definition at line 39 of file errors\&.c\&.
+.SS "\fBcg_error\fP* new_cg_error (char * message)"
+
+.PP
+returns a \fBcg_error\fP struct containing message 
+.PP
+Definition at line 7 of file errors\&.c\&.
+.SS "int wrap_cg_error (\fBcg_error\fP * error, char * message)"
+
+.PP
+appends message to the end of error->message uses realloc to maximize memory efficiency 
+.PP
+Definition at line 28 of file errors\&.c\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

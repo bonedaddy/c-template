@@ -1,4 +1,7 @@
 <map id="clear_thread_logger" name="clear_thread_logger">
-<area shape="rect" id="node1" title="free resources for the threaded logger" alt="" coords="183,5,333,32"/>
-<area shape="rect" id="node2" href="$d1/d8c/logger_8h.html#acb35852b4fbddea293c8aa641f5e5524" title="free resources for the file ogger" alt="" coords="5,5,135,32"/>
+<area shape="rect" id="node1" title="free resources for the threaded logger" alt="" coords="477,31,628,57"/>
+<area shape="rect" id="node2" href="$d1/d8c/logger_8h.html#acb35852b4fbddea293c8aa641f5e5524" title="free resources for the file ogger" alt="" coords="300,5,429,32"/>
+<area shape="rect" id="node5" href="$dd/d84/logger__test_8c.html#a86ac10a2cc429b20c21f538668f63525" title=" " alt="" coords="108,56,252,83"/>
+<area shape="rect" id="node3" href="$dd/d84/logger__test_8c.html#ab8bf27e38eacb86c3dc2a0b9a2e776d4" title=" " alt="" coords="119,5,241,32"/>
+<area shape="rect" id="node4" href="$dd/d84/logger__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,31,60,57"/>
 </map>

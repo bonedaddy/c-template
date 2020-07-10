@@ -1,0 +1,5 @@
+<map id="socket_server" name="socket_server">
+<area shape="rect" id="node1" title="a generic tcp socket server using file descriptor socket_number it uses a dedicated pthread for accep..." alt="" coords="49,127,161,153"/>
+<area shape="rect" id="node2" href="$da/dae/structwait__group__t.html" title=" " alt="" coords="5,7,112,33"/>
+<area shape="rect" id="node3" href="$da/da5/structthread__logger.html" title=" " alt="" coords="136,7,248,33"/>
+</map>

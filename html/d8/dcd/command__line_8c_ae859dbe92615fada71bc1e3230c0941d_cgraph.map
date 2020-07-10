@@ -1,0 +1,5 @@
+<map id="new_command_object" name="new_command_object">
+<area shape="rect" id="node1" title="intializes a new command_object to have commands loaded into" alt="" coords="5,5,173,32"/>
+<area shape="rect" id="node2" href="$d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="221,5,328,32"/>
+<area shape="rect" id="node3" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="376,5,551,32"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,132,60,159"/>
+<area shape="rect" id="node2" href="$d8/dcd/command__line_8c.html#a20a8e6f6fa900a1654e98b98ac08b654" title="checks to see if we have a command named according to run and executes it" alt="" coords="155,5,229,32"/>
+<area shape="rect" id="node5" href="$d8/dcd/command__line_8c.html#ad60c0b714bf0a87a2a176383b38cb39c" title="frees memory allocated for the command_object and sets pointer to null for some reason this is causin..." alt="" coords="109,56,275,83"/>
+<area shape="rect" id="node6" href="$d8/dcd/command__line_8c.html#ae859dbe92615fada71bc1e3230c0941d" title="intializes a new command_object to have commands loaded into" alt="" coords="108,107,276,133"/>
+<area shape="rect" id="node7" href="$d8/dcd/command__line_8c.html#a50267eeb40ac706adf05b3bb1ce640a8" title="parses arguments, and checks for any errors" alt="" coords="145,157,239,184"/>
+<area shape="rect" id="node8" href="$d8/dcd/command__line_8c.html#af50e076c2a7c248e02cb88d9c7e68737" title="formats output" alt="" coords="334,171,421,197"/>
+<area shape="rect" id="node9" href="$d8/dcd/command__line_8c.html#aa21c778456b1d4eb367adc80972d6d7e" title="setups the default argtable arguments" alt="" coords="145,259,239,285"/>
+<area shape="rect" id="node3" href="$d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="324,95,431,121"/>
+<area shape="rect" id="node4" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="479,95,653,121"/>
+</map>

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['format_5fcolored_80',['format_colored',['../da/dd8/colors_8h.html#ab3caa8a3d15672e3597eb5e08b593860',1,'colors.c']]],
-  ['free_5fcg_5ferror_81',['free_cg_error',['../de/d45/errors_8h.html#aca3ad672d0a42e55efaed753fa67bb96',1,'errors.c']]],
-  ['free_5fcommand_5fobject_82',['free_command_object',['../d8/dfd/command__line_8h.html#ad60c0b714bf0a87a2a176383b38cb39c',1,'command_line.c']]]
+  ['error_5flog_289',['error_log',['../d1/d22/logger_8c.html#a86974eb20c3c2a9b8528cca2bfd1526b',1,'error_log(thread_logger *thl, int file_descriptor, char *message):&#160;logger.c'],['../d1/d8c/logger_8h.html#a86974eb20c3c2a9b8528cca2bfd1526b',1,'error_log(thread_logger *thl, int file_descriptor, char *message):&#160;logger.c']]],
+  ['execute_290',['execute',['../d8/dcd/command__line_8c.html#a20a8e6f6fa900a1654e98b98ac08b654',1,'execute(command_object *self, char *run):&#160;command_line.c'],['../d8/dfd/command__line_8h.html#a256f96fa435f4cdcc69b740476e50cd6',1,'execute(command_object *self, char *command_to_run):&#160;command_line.c']]]
 ];

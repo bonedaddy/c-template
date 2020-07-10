@@ -1,0 +1,275 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/include/network/socket/socket.h" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/include/network/socket/socket.h \- TCP socket servers, clients, and tooling for working with sockets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <sys/socket\&.h>\fP
+.br
+\fC#include <netinet/in\&.h>\fP
+.br
+\fC#include <arpa/inet\&.h>\fP
+.br
+\fC#include <netdb\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <errno\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <signal\&.h>\fP
+.br
+\fC#include <fcntl\&.h>\fP
+.br
+\fC#include <sys/time\&.h>\fP
+.br
+\fC#include '\&.\&./\&.\&./utils/logger\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsocket_client\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBaddrinfo\fP \fBaddr_info\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBsockaddr\fP \fBsock_addr\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBsockaddr_storage\fP \fBsock_addr_storage\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBsocket_client\fP \fBsocket_client\fP"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBSOCKET_OPTS\fP { \fBREUSEADDR\fP, \fBNOBLOCK\fP, \fBBLOCK\fP }"
+.br
+.RI "used to configure new sockets "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsocket_client\fP * \fBnew_socket_client\fP (\fBthread_logger\fP *thl, \fBaddr_info\fP hints, char *addr, char *port)"
+.br
+.RI "returns a new socket client connected to \fCaddr:port\fP "
+.ti -1c
+.RI "int \fBget_new_socket\fP (\fBthread_logger\fP *thl, \fBaddr_info\fP *bind_address, \fBSOCKET_OPTS\fP sock_opts[], int num_opts)"
+.br
+.RI "gets an available socket attached to bind_address "
+.ti -1c
+.RI "void \fBsetup_signal_handling\fP ()"
+.br
+.RI "prepares library for usage "
+.ti -1c
+.RI "bool \fBset_socket_blocking_status\fP (int fd, bool blocking)"
+.br
+.RI "used to enable/disable blocking sockets "
+.ti -1c
+.RI "void \fBsignal_handler_fn\fP (int signal_number)"
+.br
+.RI "callback function used to handle OS signals shouldn't be called directly and instead used as the func in \fCsignal(SIGTERM, handler_fn)\fP "
+.ti -1c
+.RI "char * \fBget_name_info\fP (\fBsock_addr\fP *client_address)"
+.br
+.RI "returns the address the client is connecting from "
+.ti -1c
+.RI "\fBaddr_info\fP \fBdefault_hints\fP ()"
+.br
+.RI "generates an addr_info struct with defaults defaults is IPv4, TCP, and AI_PASSIVE flags "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "pthread_mutex_t \fB_signal_mutex\fP"
+.br
+.RI "used to lock writes for _do_exit "
+.ti -1c
+.RI "bool \fB_do_exit\fP"
+.br
+.RI "used to indicate when threads need to cleanup "
+.in -1c
+.SH "Detailed Description"
+.PP 
+TCP socket servers, clients, and tooling for working with sockets\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+Bonedaddy
+.RE
+.PP
+uses \fBwait_group\&.h\fP to provide lightweight synchronization between pthreads 
+.PP
+\fBWarning\fP
+.RS 4
+before use you must call \fBsetup_signal_handling()\fP so that all threads get properly cleaned up on exit 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+you will want to adjust \fCasync_handle_conn_func\fP to suit your needs as right now it is just an echo client it is likely you will need to have \fC#define _POSIX_C_SOURCE 201112L\fP see the following for more information
+.IP "\(bu" 2
+https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+.IP "\(bu" 2
+https://man7.org/linux/man-pages/man3/getaddrinfo.3.html 
+.PP
+.RE
+.PP
+
+.PP
+Definition in file \fBsocket\&.h\fP\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "\fBaddr_info\fP"
+
+.PP
+Definition at line 60 of file socket\&.h\&.
+.SS "\fBsock_addr\fP"
+
+.PP
+Definition at line 66 of file socket\&.h\&.
+.SS "\fBsock_addr_storage\fP"
+
+.PP
+Definition at line 72 of file socket\&.h\&.
+.SS "\fBsocket_client\fP"
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBSOCKET_OPTS\fP"
+
+.PP
+used to configure new sockets 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIREUSEADDR \fP\fP
+sets socket with SO_REUSEADDR 
+.TP
+\fB\fINOBLOCK \fP\fP
+sets socket to non-blocking mode 
+.TP
+\fB\fIBLOCK \fP\fP
+sets socket to blocking mode 
+.PP
+Definition at line 77 of file socket\&.h\&.
+.SH "Function Documentation"
+.PP 
+.SS "\fBaddr_info\fP default_hints ()"
+
+.PP
+generates an addr_info struct with defaults defaults is IPv4, TCP, and AI_PASSIVE flags 
+.SS "char* get_name_info (\fBsock_addr\fP * client_address)"
+
+.PP
+returns the address the client is connecting from 
+.SS "int get_new_socket (\fBthread_logger\fP * thl, \fBaddr_info\fP * bind_address, \fBSOCKET_OPTS\fP sock_opts[], int num_opts)"
+
+.PP
+gets an available socket attached to bind_address 
+.PP
+\fBReturns\fP
+.RS 4
+Success: file descriptor socket number greater than 0 
+.PP
+Failure: -1 initializers a socket attached to bind_address with sock_opts, and binds the address 
+.RE
+.PP
+
+.SS "\fBsocket_client\fP* new_socket_client (\fBthread_logger\fP * thl, \fBaddr_info\fP hints, char * addr, char * port)"
+
+.PP
+returns a new socket client connected to \fCaddr:port\fP 
+.SS "bool set_socket_blocking_status (int fd, bool blocking)"
+
+.PP
+used to enable/disable blocking sockets 
+.PP
+\fBReturns\fP
+.RS 4
+Failure: false 
+.PP
+Success: true 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+see https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking/1549344#1549344 
+.RE
+.PP
+
+.SS "void setup_signal_handling ()"
+
+.PP
+prepares library for usage 
+.PP
+\fBWarning\fP
+.RS 4
+must be called before using the library sets up internal mutex, and system signal handling for terminating the server listes to SIGINT, SIGTERM, and SIGQUIT which will terminate the server 
+.RE
+.PP
+
+.SS "void signal_handler_fn (int signal_number)"
+
+.PP
+callback function used to handle OS signals shouldn't be called directly and instead used as the func in \fCsignal(SIGTERM, handler_fn)\fP 
+.SH "Variable Documentation"
+.PP 
+.SS "bool _do_exit"
+
+.PP
+used to indicate when threads need to cleanup 
+.PP
+\fBWarning\fP
+.RS 4
+should not be called libraries using socket\&.c polled at the beginning of every async_listen_func loop and async_handle_conn_func when set to true causes active pthreads to exit after successfully cleaning up 
+.RE
+.PP
+
+.PP
+Definition at line 52 of file socket\&.h\&.
+.SS "pthread_mutex_t _signal_mutex"
+
+.PP
+used to lock writes for _do_exit 
+.PP
+\fBWarning\fP
+.RS 4
+should not be called libraries using socket\&.c 
+.RE
+.PP
+
+.PP
+Definition at line 46 of file socket\&.h\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

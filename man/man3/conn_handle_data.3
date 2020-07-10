@@ -1,0 +1,47 @@
+.TH "conn_handle_data" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+conn_handle_data \- struct containing arguments passed into pthread  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <socket_server\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "pthread_t \fBthread\fP"
+.br
+.ti -1c
+.RI "\fBsocket_server\fP * \fBsrv\fP"
+.br
+.ti -1c
+.RI "\fBclient_conn\fP * \fBconn\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+struct containing arguments passed into pthread 
+.PP
+Definition at line 70 of file socket_server\&.h\&.
+.SH "Field Documentation"
+.PP 
+.SS "\fBclient_conn\fP* conn_handle_data::conn"
+
+.PP
+Definition at line 73 of file socket_server\&.h\&.
+.SS "\fBsocket_server\fP* conn_handle_data::srv"
+
+.PP
+Definition at line 72 of file socket_server\&.h\&.
+.SS "pthread_t conn_handle_data::thread"
+
+.PP
+Definition at line 71 of file socket_server\&.h\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

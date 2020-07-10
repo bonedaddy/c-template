@@ -1,0 +1,8 @@
+<map id="conn_handle_data" name="conn_handle_data">
+<area shape="rect" id="node1" title="struct containing arguments passed into pthread" alt="" coords="77,216,217,243"/>
+<area shape="rect" id="node2" href="$d5/de2/structclient__conn.html" title="a structure containing a file descriptor and address information" alt="" coords="35,127,131,153"/>
+<area shape="rect" id="node3" href="$d0/d6d/structsockaddr__storage.html" title="alias for struct sockaddr_storage" alt="" coords="5,7,141,33"/>
+<area shape="rect" id="node4" href="$d7/d8d/structsocket__server.html" title="a generic tcp socket server using file descriptor socket_number it uses a dedicated pthread for accep..." alt="" coords="163,127,275,153"/>
+<area shape="rect" id="node5" href="$da/dae/structwait__group__t.html" title=" " alt="" coords="165,7,272,33"/>
+<area shape="rect" id="node6" href="$da/da5/structthread__logger.html" title=" " alt="" coords="296,7,408,33"/>
+</map>

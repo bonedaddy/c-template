@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['thread_5flogger_102',['thread_logger',['../d1/d8c/logger_8h.html#ac7cc06462e2d93e59c6346ad085a412a',1,'logger.h']]]
+  ['addr_5finfo_411',['addr_info',['../da/ddd/socket_8h.html#abd605b1edfb94b9967b92e0e99d931ba',1,'socket.h']]],
+  ['args_412',['args',['../df/dbf/colors__test_8c.html#afb57a4cb960232f60d85109c30599113',1,'colors_test.c']]]
 ];

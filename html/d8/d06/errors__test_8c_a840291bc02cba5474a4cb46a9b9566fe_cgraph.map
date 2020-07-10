@@ -1,0 +1,10 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,60,83"/>
+<area shape="rect" id="node2" href="$d8/d06/errors__test_8c.html#a7e32ac136591c34829414ea859009ff7" title=" " alt="" coords="108,5,259,32"/>
+<area shape="rect" id="node4" href="$d8/d06/errors__test_8c.html#af14b696d23e9d890741205af46e11f1a" title=" " alt="" coords="113,56,254,83"/>
+<area shape="rect" id="node7" href="$d8/d06/errors__test_8c.html#a7cf3f4ec2027a94cfd7151dbda078678" title=" " alt="" coords="110,107,257,133"/>
+<area shape="rect" id="node3" href="$d0/d15/errors_8c.html#a4a6a0f2fe1ad0cd6a20f2e54c0336526" title="creates a new variable and moves memory of message into that variable returning it this appears to be..." alt="" coords="469,31,588,57"/>
+<area shape="rect" id="node5" href="$d0/d15/errors_8c.html#aca3ad672d0a42e55efaed753fa67bb96" title="frees up resources associated with error" alt="" coords="310,107,418,133"/>
+<area shape="rect" id="node6" href="$d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d" title="returns a cg_error struct containing message" alt="" coords="309,56,419,83"/>
+<area shape="rect" id="node8" href="$d0/d15/errors_8c.html#a6e4b2ecbea4331a865b86f766c90ebbe" title="appends message to the end of error&#45;&gt;message uses realloc to maximize memory efficiency" alt="" coords="307,157,421,184"/>
+</map>

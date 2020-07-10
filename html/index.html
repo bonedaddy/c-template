@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>c-template: c-template-REPLACEME</title>
+<title>c-template: c-template</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,10 +82,57 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">c-template-REPLACEME </div>  </div>
+<div class="title">c-template </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Welcome to the documentation hub for c-template-REPLACEME built with doxygen. </p>
+<div class="textblock"><h1><a class="anchor" id="Goal"></a>
+Goal</h1>
+<p>To minimize the overhead in C development, and give a developer experience similar to Golang.</p>
+<h1><a class="anchor" id="Introduction"></a>
+Introduction</h1>
+<p><code>c-template</code> is a template repository intended to serve as a base layer for easier, and safer C development by encouraging best practices and providing well-tested components. It is intended to be used when starting a new C project by cloning the repository, and starting to work in the cloned repo, although you could copy the functionality into your respective libraries. It provides build management through CMake, unit testing with CMocka, dynamic analysis with Valgrind.</p>
+<p>Doxygen is used for parsing your code comments turning it into docuementation with a single command. This encourages writing comments, updating those comments, and having always up to date documentation.</p>
+<p>In additional to this, commonly used functionality is included to reduce the need for rewriting functionality in each new library.</p>
+<h1><a class="anchor" id="Reusable-Code"></a>
+Reusable Code</h1>
+<ul>
+<li>thread safe logger ( <a class="el" href="d1/d8c/logger_8h.html">logger.h</a> )<ul>
+<li>color coded messages sent to stdout</li>
+<li>optionally writes to a log file as well as sends to stdout</li>
+</ul>
+</li>
+<li>array length and size checking ( <a class="el" href="d8/d90/array__len_8h.html">array_len.h</a> )<ul>
+<li>note: doesn't work properly on <code>char*</code> data types</li>
+</ul>
+</li>
+<li>ansi color codes ( <a class="el" href="da/dd8/colors_8h.html">colors.h</a> )<ul>
+<li>includes helper functions to created colored <code>char*</code></li>
+<li>can write to files as well</li>
+</ul>
+</li>
+<li>random number and string generateion ( <a class="el" href="d1/d79/random_8h.html">random.h</a> )</li>
+<li>CLI template ( <a class="el" href="d8/dfd/command__line_8h.html">command_line.h</a> )<ul>
+<li>example implementation in <a class="el" href="dd/def/cli_8c.html">cli.c</a></li>
+</ul>
+</li>
+<li>socket network tooling<ul>
+<li>utility functions, socket creation, and client usage ( <a class="el" href="da/ddd/socket_8h.html">socket.h</a> )</li>
+<li>socker server ( <a class="el" href="d9/d26/socket__server_8h.html">socket_server.h</a> )</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="Usage"></a>
+Usage</h1>
+<h2><a class="anchor" id="New-Project"></a>
+New Project</h2>
+<p>If starting a new project, the best way to use <code>c-template</code> is to clone the repo and use it as the base of your new project</p>
+<h2><a class="anchor" id="Existing-Project"></a>
+Existing Project</h2>
+<p>If using an existing project, you'll probably want to juse copy &amp; paste the code and configs in this repo. Eventually installation via <code>make install</code> in a manner that places the code into locations like <code>/usr/include</code> will eventually be done but is not there yet.</p>
+<h1><a class="anchor" id="Examples"></a>
+Examples</h1>
+<p>For now you'll want to look at the various <code>*_test.c</code> files. Eventually dedicated examples will be written.</p>
+<p>etc... </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

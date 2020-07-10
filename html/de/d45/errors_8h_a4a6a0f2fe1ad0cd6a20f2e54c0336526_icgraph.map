@@ -1,0 +1,13 @@
+<map id="cg_error_string" name="cg_error_string">
+<area shape="rect" id="node1" title="creates a new variable and moves memory of message into that variable returning it this appears to be..." alt="" coords="732,170,851,197"/>
+<area shape="rect" id="node2" href="$de/d45/errors_8h.html#ab0cfcb6b04c404568c772f8b59da541d" title="returns a cg_error struct containing message" alt="" coords="554,119,663,146"/>
+<area shape="rect" id="node11" href="$d8/d06/errors__test_8c.html#a7e32ac136591c34829414ea859009ff7" title=" " alt="" coords="533,195,684,222"/>
+<area shape="rect" id="node3" href="$d1/d79/random_8h.html#a2c36cad71b0a749fcd7dc966a02a7ac6" title=" " alt="" coords="337,14,481,41"/>
+<area shape="rect" id="node6" href="$d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be" title=" " alt="" coords="332,69,485,95"/>
+<area shape="rect" id="node8" href="$d8/d06/errors__test_8c.html#af14b696d23e9d890741205af46e11f1a" title=" " alt="" coords="338,119,479,146"/>
+<area shape="rect" id="node10" href="$d8/d06/errors__test_8c.html#a7cf3f4ec2027a94cfd7151dbda078678" title=" " alt="" coords="335,170,482,197"/>
+<area shape="rect" id="node4" href="$dd/d90/random__test_8c.html#a1335cc32d40d948ce353054ae50540a7" title=" " alt="" coords="108,5,284,47"/>
+<area shape="rect" id="node5" href="$dd/d90/random__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,13,60,39"/>
+<area shape="rect" id="node7" href="$d3/d5f/returns__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="169,71,223,98"/>
+<area shape="rect" id="node9" href="$d8/d06/errors__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="169,170,223,197"/>
+</map>

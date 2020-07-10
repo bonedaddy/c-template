@@ -1,17 +1,25 @@
 var annotated_dup =
 [
+    [ "addrinfo", "d6/d9d/structaddrinfo.html", null ],
     [ "an", "df/ddb/structan.html", null ],
     [ "args", "d8/d08/structargs.html", "d8/d08/structargs" ],
     [ "base", "d4/d87/structbase.html", null ],
     [ "cg_error", "d4/dae/structcg__error.html", "d4/dae/structcg__error" ],
     [ "cg_return", "d0/dcb/structcg__return.html", "d0/dcb/structcg__return" ],
+    [ "client_conn", "d5/de2/structclient__conn.html", "d5/de2/structclient__conn" ],
     [ "command", "dc/d76/structcommand.html", "dc/d76/structcommand" ],
     [ "command_handler", "da/d6d/structcommand__handler.html", "da/d6d/structcommand__handler" ],
+    [ "conn_handle_data", "de/da7/structconn__handle__data.html", "de/da7/structconn__handle__data" ],
     [ "file_logger", "d5/d99/structfile__logger.html", "d5/d99/structfile__logger" ],
     [ "memory_object", "da/da3/structmemory__object.html", "da/da3/structmemory__object" ],
+    [ "sockaddr", "d5/dad/structsockaddr.html", null ],
+    [ "sockaddr_storage", "d0/d6d/structsockaddr__storage.html", null ],
+    [ "socket_client", "d9/d8c/structsocket__client.html", "d9/d8c/structsocket__client" ],
+    [ "socket_server", "d7/d8d/structsocket__server.html", "d7/d8d/structsocket__server" ],
     [ "test", "d8/d89/structtest.html", "d8/d89/structtest" ],
     [ "test_data", "dc/d9a/structtest__data.html", "dc/d9a/structtest__data" ],
     [ "the", "d5/db5/structthe.html", null ],
     [ "thread_logger", "da/da5/structthread__logger.html", "da/da5/structthread__logger" ],
+    [ "wait_group_t", "da/dae/structwait__group__t.html", "da/dae/structwait__group__t" ],
     [ "wraps", "df/dff/structwraps.html", null ]
 ];

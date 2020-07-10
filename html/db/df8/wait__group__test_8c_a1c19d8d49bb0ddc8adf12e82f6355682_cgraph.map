@@ -1,0 +1,7 @@
+<map id="test_wait_group" name="test_wait_group">
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,132,108"/>
+<area shape="rect" id="node2" href="$db/d85/wait__group_8c.html#ad57c76edc74eda87cd4eed91a5f9cca2" title="incremements the total number of active processes managed by this wait group" alt="" coords="184,5,309,32"/>
+<area shape="rect" id="node3" href="$db/d85/wait__group_8c.html#a67d61cbbb6b05119b8f39d989dd5cda0" title="used by a process to indicate it is done, decreasing the active process counter we include a return c..." alt="" coords="180,56,313,83"/>
+<area shape="rect" id="node4" href="$db/d85/wait__group_8c.html#a3a022fd857e66e14034c9bb91efee736" title="returns a new and initialized wait_group_t pointer" alt="" coords="183,107,311,133"/>
+<area shape="rect" id="node5" href="$db/d85/wait__group_8c.html#aa4638d728fca181fda9c4495f77f7f53" title="used to wait until current active_processes reaches 0, polling every 0.75 seconds will run free on th..." alt="" coords="182,157,311,184"/>
+</map>

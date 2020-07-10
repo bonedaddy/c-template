@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('d3/d5f/returns__test_8c_source.html','
 <div class="title">returns_test.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<a href="../../d3/d5f/returns__test_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;stdarg.h&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
@@ -97,50 +97,58 @@ $(document).ready(function(){initNavTree('d3/d5f/returns__test_8c_source.html','
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-parameter&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-variable&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">void</span> test_cg_return_no_error(<span class="keywordtype">void</span> **state) {</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="../../d3/d5f/returns__test_8c.html#a846006fbc5d191018a0b920e574bccbe">   13</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d3/d5f/returns__test_8c.html#a846006fbc5d191018a0b920e574bccbe">test_cg_return_no_error</a>(<span class="keywordtype">void</span> **state) {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">// ensures that no error passed in results in a NULL err</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">int</span> a = 10;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret_val = new_cg_return(&amp;a, NULL);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret_val = <a class="code" href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a>(&amp;a, NULL);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    assert(ret_val != NULL);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    assert(ret_val-&gt;value != NULL);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    assert(ret_val-&gt;err == NULL);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">int</span> *aa = (<span class="keywordtype">int</span> *)ret_val-&gt;value;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    assert(ret_val-&gt;<a class="code" href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">value</a> != NULL);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    assert(ret_val-&gt;<a class="code" href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">err</a> == NULL);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">int</span> *aa = (<span class="keywordtype">int</span> *)ret_val-&gt;<a class="code" href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">value</a>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    assert(*aa == a);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    free_cg_return(ret_val);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../d1/dd4/returns_8c.html#a78a160e946b7e9d2358576c48f68eb5b">free_cg_return</a>(ret_val);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-parameter&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-variable&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> test_cg_return_error(<span class="keywordtype">void</span> **state) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="../../d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be">   27</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be">test_cg_return_error</a>(<span class="keywordtype">void</span> **state) {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">char</span> *msg = <span class="stringliteral">&quot;thisisanerrormessage&quot;</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// ensures that the correct error is passed through</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *err = <a class="code" href="../../de/d45/errors_8h.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a>(msg);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d4/dae/structcg__error.html">cg_error</a> *err = <a class="code" href="../../d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a>(msg);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    assert(err != NULL);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret_val = new_cg_return(NULL, err);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *ret_val = <a class="code" href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a>(NULL, err);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    assert(ret_val != NULL);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    assert(</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        strcmp(msg, ret_val-&gt;err-&gt;message) == 0</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        strcmp(msg, ret_val-&gt;<a class="code" href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">err</a>-&gt;<a class="code" href="../../d4/dae/structcg__error.html#a9d5facab25dff1e2d56b7e8945c7791a">message</a>) == 0</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    );</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    free_cg_return(ret_val);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="../../d1/dd4/returns_8c.html#a78a160e946b7e9d2358576c48f68eb5b">free_cg_return</a>(ret_val);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d3/d5f/returns__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">   41</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d3/d5f/returns__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keywordtype">void</span>) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>CMUnitTest tests[] = {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        cmocka_unit_test(test_cg_return_no_error),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        cmocka_unit_test(test_cg_return_error),</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        cmocka_unit_test(<a class="code" href="../../d3/d5f/returns__test_8c.html#a846006fbc5d191018a0b920e574bccbe">test_cg_return_no_error</a>),</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        cmocka_unit_test(<a class="code" href="../../d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be">test_cg_return_error</a>),</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    };</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> cmocka_run_group_tests(tests, NULL, NULL);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aerrors_8h_html_ab0cfcb6b04c404568c772f8b59da541d"><div class="ttname"><a href="../../de/d45/errors_8h.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a></div><div class="ttdeci">cg_error * new_cg_error(char *message)</div><div class="ttdoc">returns a cg_error struct containing message</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d15/errors_8c_source.html#l00007">errors.c:7</a></div></div>
+<div class="ttc" id="astructcg__return_html_aba6758415aca30f060dea8e7b0aec1ff"><div class="ttname"><a href="../../d0/dcb/structcg__return.html#aba6758415aca30f060dea8e7b0aec1ff">cg_return::value</a></div><div class="ttdeci">void * value</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00016">returns.h:16</a></div></div>
+<div class="ttc" id="areturns__test_8c_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="../../d3/d5f/returns__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d5f/returns__test_8c_source.html#l00041">returns_test.c:41</a></div></div>
+<div class="ttc" id="astructcg__return_html_aff1989f11a733f08b3a4f71df6c21500"><div class="ttname"><a href="../../d0/dcb/structcg__return.html#aff1989f11a733f08b3a4f71df6c21500">cg_return::err</a></div><div class="ttdeci">cg_error * err</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00019">returns.h:19</a></div></div>
+<div class="ttc" id="aerrors_8c_html_ab0cfcb6b04c404568c772f8b59da541d"><div class="ttname"><a href="../../d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a></div><div class="ttdeci">cg_error * new_cg_error(char *message)</div><div class="ttdoc">returns a cg_error struct containing message</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d15/errors_8c_source.html#l00007">errors.c:7</a></div></div>
+<div class="ttc" id="areturns_8c_html_adf75c93702ebc7986ab03452580adfff"><div class="ttname"><a href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a></div><div class="ttdeci">cg_return * new_cg_return(void *value, cg_error *err)</div><div class="ttdoc">creates a new cg_return struct</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dd4/returns_8c_source.html#l00005">returns.c:5</a></div></div>
+<div class="ttc" id="astructcg__error_html_a9d5facab25dff1e2d56b7e8945c7791a"><div class="ttname"><a href="../../d4/dae/structcg__error.html#a9d5facab25dff1e2d56b7e8945c7791a">cg_error::message</a></div><div class="ttdeci">char * message</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d45/errors_8h_source.html#l00015">errors.h:15</a></div></div>
 <div class="ttc" id="astructcg__return_html"><div class="ttname"><a href="../../d0/dcb/structcg__return.html">cg_return</a></div><div class="ttdoc">allows returning both a value and error message from a function call useful as it makes it easier to ...</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00014">returns.h:14</a></div></div>
 <div class="ttc" id="astructcg__error_html"><div class="ttname"><a href="../../d4/dae/structcg__error.html">cg_error</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d45/errors_8h_source.html#l00014">errors.h:14</a></div></div>
+<div class="ttc" id="areturns_8c_html_a78a160e946b7e9d2358576c48f68eb5b"><div class="ttname"><a href="../../d1/dd4/returns_8c.html#a78a160e946b7e9d2358576c48f68eb5b">free_cg_return</a></div><div class="ttdeci">void free_cg_return(cg_return *ret)</div><div class="ttdoc">frees up resources associated with an instance of cg_return</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dd4/returns_8c_source.html#l00024">returns.c:24</a></div></div>
+<div class="ttc" id="areturns__test_8c_html_ad59370cca7480487f9d94e6541cc57be"><div class="ttname"><a href="../../d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be">test_cg_return_error</a></div><div class="ttdeci">void test_cg_return_error(void **state)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d5f/returns__test_8c_source.html#l00027">returns_test.c:27</a></div></div>
+<div class="ttc" id="areturns__test_8c_html_a846006fbc5d191018a0b920e574bccbe"><div class="ttname"><a href="../../d3/d5f/returns__test_8c.html#a846006fbc5d191018a0b920e574bccbe">test_cg_return_no_error</a></div><div class="ttdeci">void test_cg_return_no_error(void **state)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d5f/returns__test_8c_source.html#l00013">returns_test.c:13</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><b>returns_test.c</b></li>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><a class="el" href="../../d3/d5f/returns__test_8c.html">returns_test.c</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

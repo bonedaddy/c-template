@@ -1,0 +1,10 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,60,57"/>
+<area shape="rect" id="node2" href="$d3/d5f/returns__test_8c.html#ad59370cca7480487f9d94e6541cc57be" title=" " alt="" coords="119,56,273,83"/>
+<area shape="rect" id="node8" href="$d3/d5f/returns__test_8c.html#a846006fbc5d191018a0b920e574bccbe" title=" " alt="" coords="108,5,284,32"/>
+<area shape="rect" id="node3" href="$d1/dd4/returns_8c.html#a78a160e946b7e9d2358576c48f68eb5b" title="frees up resources associated with an instance of cg_return" alt="" coords="333,56,449,83"/>
+<area shape="rect" id="node5" href="$d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d" title="returns a cg_error struct containing message" alt="" coords="336,107,445,133"/>
+<area shape="rect" id="node7" href="$d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff" title="creates a new cg_return struct" alt="" coords="332,5,449,32"/>
+<area shape="rect" id="node4" href="$d0/d15/errors_8c.html#aca3ad672d0a42e55efaed753fa67bb96" title="frees up resources associated with error" alt="" coords="503,56,611,83"/>
+<area shape="rect" id="node6" href="$d0/d15/errors_8c.html#a4a6a0f2fe1ad0cd6a20f2e54c0336526" title="creates a new variable and moves memory of message into that variable returning it this appears to be..." alt="" coords="497,107,616,133"/>
+</map>

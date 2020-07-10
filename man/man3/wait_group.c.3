@@ -1,0 +1,141 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/src/sync/wait_group.c" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/src/sync/wait_group.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <stdatomic\&.h>\fP
+.br
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <assert\&.h>\fP
+.br
+\fC#include '\&.\&./\&.\&./include/sync/wait_group\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBwait_group_t\fP * \fBwait_group_new\fP ()"
+.br
+.RI "returns a new and initialized \fBwait_group_t\fP pointer "
+.ti -1c
+.RI "void \fBwait_group_recv_signal\fP (\fBwait_group_t\fP *wg)"
+.br
+.ti -1c
+.RI "void \fBwait_group_send_signal\fP (\fBwait_group_t\fP *wg)"
+.br
+.ti -1c
+.RI "void \fBwait_group_reset_signal\fP (\fBwait_group_t\fP *wg)"
+.br
+.ti -1c
+.RI "void \fBwait_group_wait\fP (\fBwait_group_t\fP *wg)"
+.br
+.RI "used to wait until current active_processes reaches 0, polling every 0\&.75 seconds will run free on the \fBwait_group_t\fP pointer to clear up resources "
+.ti -1c
+.RI "void \fBwait_group_add\fP (\fBwait_group_t\fP *wg, int count)"
+.br
+.RI "incremements the total number of active processes managed by this wait group "
+.ti -1c
+.RI "int \fBwait_group_done\fP (\fBwait_group_t\fP *wg)"
+.br
+.RI "used by a process to indicate it is done, decreasing the active process counter we include a return code here to catch errors when trying to decrement count below 0 "
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void wait_group_add (\fBwait_group_t\fP * wg, int count)"
+
+.PP
+incremements the total number of active processes managed by this wait group 
+.PP
+\fBParameters\fP
+.RS 4
+\fIwg\fP the waitgroup to manipulate 
+.br
+\fIcount\fP the number of new active processes 
+.RE
+.PP
+
+.PP
+Definition at line 64 of file wait_group\&.c\&.
+.SS "int wait_group_done (\fBwait_group_t\fP * wg)"
+
+.PP
+used by a process to indicate it is done, decreasing the active process counter we include a return code here to catch errors when trying to decrement count below 0 
+.PP
+\fBPrecondition\fP
+.RS 4
+wg->active_process must be greater than or equal to 1 otherwise return -1 
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+in the future this may be changed so that calling wait_group_done with a 0 value active_processes will cause a program exit 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIwg\fP the waitgroup to manipulate a runtime error will occur and program will exit 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Failure: -1 
+.PP
+Success: 0 
+.RE
+.PP
+\fBTodo\fP
+.RS 4
+:
+.IP "\(bu" 2
+(bonedaddy) decide if we should do a runtime exit on pre condition failure 
+.PP
+.RE
+.PP
+
+.PP
+Definition at line 70 of file wait_group\&.c\&.
+.SS "\fBwait_group_t\fP* wait_group_new ()"
+
+.PP
+returns a new and initialized \fBwait_group_t\fP pointer 
+.PP
+Definition at line 9 of file wait_group\&.c\&.
+.SS "void wait_group_recv_signal (\fBwait_group_t\fP * wg)"
+
+.PP
+Definition at line 21 of file wait_group\&.c\&.
+.SS "void wait_group_reset_signal (\fBwait_group_t\fP * wg)"
+
+.PP
+Definition at line 33 of file wait_group\&.c\&.
+.SS "void wait_group_send_signal (\fBwait_group_t\fP * wg)"
+
+.PP
+Definition at line 27 of file wait_group\&.c\&.
+.SS "void wait_group_wait (\fBwait_group_t\fP * wg)"
+
+.PP
+used to wait until current active_processes reaches 0, polling every 0\&.75 seconds will run free on the \fBwait_group_t\fP pointer to clear up resources 
+.PP
+\fBParameters\fP
+.RS 4
+\fIwg\fP the waitgroup to wait on 
+.RE
+.PP
+
+.PP
+Definition at line 45 of file wait_group\&.c\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

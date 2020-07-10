@@ -1,4 +1,27 @@
 var searchData=
 [
-  ['base_2',['base',['../d4/d87/structbase.html',1,'']]]
+  ['abs_2',['Abs',['../dd/de6/safe__math_8h.html#a25e479a9b05c2ac1b2daafe4fb561048',1,'safe_math.h']]],
+  ['accept_5fclient_5fconn_3',['accept_client_conn',['../d9/d26/socket__server_8h.html#aeaee88c8b98fa5ef3a6e551b3a7ed5e9',1,'socket_server.h']]],
+  ['active_5fprocesses_4',['active_processes',['../da/dae/structwait__group__t.html#a686c2d204046c0c96d93394c8edffff7',1,'wait_group_t']]],
+  ['addr_5finfo_5',['addr_info',['../da/ddd/socket_8h.html#abd605b1edfb94b9967b92e0e99d931ba',1,'socket.h']]],
+  ['address_6',['address',['../d5/de2/structclient__conn.html#af8e32eba77c5a495c18432e60add094c',1,'client_conn']]],
+  ['addrinfo_7',['addrinfo',['../d6/d9d/structaddrinfo.html',1,'']]],
+  ['an_8',['an',['../df/ddb/structan.html',1,'']]],
+  ['ansi_5fcolor_5fblue_9',['ANSI_COLOR_BLUE',['../da/dd8/colors_8h.html#aca16e6a49eb51333c5fd3eee19487315',1,'colors.h']]],
+  ['ansi_5fcolor_5fcyan_10',['ANSI_COLOR_CYAN',['../da/dd8/colors_8h.html#a8d0b0043e152438bb39b918a1f98c65f',1,'colors.h']]],
+  ['ansi_5fcolor_5fgreen_11',['ANSI_COLOR_GREEN',['../da/dd8/colors_8h.html#a966c72d8d733c7734c6c784753d894c7',1,'colors.h']]],
+  ['ansi_5fcolor_5fmagenta_12',['ANSI_COLOR_MAGENTA',['../da/dd8/colors_8h.html#acb30614ba1535da5b9d0c490b3c10515',1,'colors.h']]],
+  ['ansi_5fcolor_5fred_13',['ANSI_COLOR_RED',['../da/dd8/colors_8h.html#a34995b955465f6bbb37c359173d50477',1,'colors.h']]],
+  ['ansi_5fcolor_5freset_14',['ANSI_COLOR_RESET',['../da/dd8/colors_8h.html#a92a364c2b863dde1a024a77eac2a5b3b',1,'colors.h']]],
+  ['ansi_5fcolor_5fsoft_5fred_15',['ANSI_COLOR_SOFT_RED',['../da/dd8/colors_8h.html#a7840586d4a7dcee86a3e21342dae6f46',1,'colors.h']]],
+  ['ansi_5fcolor_5fyellow_16',['ANSI_COLOR_YELLOW',['../da/dd8/colors_8h.html#a5a123b382640b3aa65dd5db386002fbc',1,'colors.h']]],
+  ['argc_17',['argc',['../dc/d76/structcommand.html#a39d8af452518a3a9233dfdafd24ff9d0',1,'command']]],
+  ['args_18',['args',['../d8/d08/structargs.html',1,'args'],['../d8/d89/structtest.html#af940ad4c523d5ac53f28c48cb0608e12',1,'test::args()'],['../df/dbf/colors__test_8c.html#afb57a4cb960232f60d85109c30599113',1,'args():&#160;colors_test.c']]],
+  ['argv_19',['argv',['../dc/d76/structcommand.html#a744df1ce8af2adbeb5aa442b0357b3f6',1,'command']]],
+  ['array_5flen_20',['array_len',['../d8/d90/array__len_8h.html#a81230f7ca31023a3b6ccae0093a1ae46',1,'array_len.h']]],
+  ['array_5flen_2eh_21',['array_len.h',['../d8/d90/array__len_8h.html',1,'']]],
+  ['array_5fsize_22',['array_size',['../d8/d90/array__len_8h.html#a8bb1dc63b6cd0d39305c563ba49152eb',1,'array_len.h']]],
+  ['array_5ftest_2ec_23',['array_test.c',['../d9/d78/array__test_8c.html',1,'']]],
+  ['async_5fhandle_5fconn_5ffunc_24',['async_handle_conn_func',['../d9/d26/socket__server_8h.html#adecca0c90789dbda18db4d00986eda5f',1,'socket_server.h']]],
+  ['async_5flisten_5ffunc_25',['async_listen_func',['../d9/d26/socket__server_8h.html#a5f98c81dc341aa726f2f275aa89c9a16',1,'socket_server.h']]]
 ];

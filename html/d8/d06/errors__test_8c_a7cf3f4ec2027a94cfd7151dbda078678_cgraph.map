@@ -1,0 +1,7 @@
+<map id="test_wrap_cg_error" name="test_wrap_cg_error">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,152,83"/>
+<area shape="rect" id="node2" href="$d0/d15/errors_8c.html#aca3ad672d0a42e55efaed753fa67bb96" title="frees up resources associated with error" alt="" coords="203,5,311,32"/>
+<area shape="rect" id="node3" href="$d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d" title="returns a cg_error struct containing message" alt="" coords="203,56,312,83"/>
+<area shape="rect" id="node5" href="$d0/d15/errors_8c.html#a6e4b2ecbea4331a865b86f766c90ebbe" title="appends message to the end of error&#45;&gt;message uses realloc to maximize memory efficiency" alt="" coords="200,107,315,133"/>
+<area shape="rect" id="node4" href="$d0/d15/errors_8c.html#a4a6a0f2fe1ad0cd6a20f2e54c0336526" title="creates a new variable and moves memory of message into that variable returning it this appears to be..." alt="" coords="363,56,481,83"/>
+</map>

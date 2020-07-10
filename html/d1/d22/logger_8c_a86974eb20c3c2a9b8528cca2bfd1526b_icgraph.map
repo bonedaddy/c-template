@@ -1,7 +1,10 @@
 <map id="error_log" name="error_log">
-<area shape="rect" id="node1" title="logs an error styled message &#45; called by log_fn" alt="" coords="628,31,708,57"/>
-<area shape="rect" id="node2" href="$d1/d8c/logger_8h.html#a01cf0356db3e561c2ec43fa766ef56af" title="main function you should call, which will delegate to the appopriate *_log function" alt="" coords="503,31,580,57"/>
-<area shape="rect" id="node3" href="$d1/d8c/logger_8h.html#ad4ca0f60df17abc4a0cfcbd71049aef9" title="like log_func but for formatted logs" alt="" coords="372,5,455,32"/>
-<area shape="rect" id="node4" href="$d1/d8c/logger_8h.html#aba435ba2ea5433b4dc792c5d8038a0d1" title="returns a new thread safe logger if with_debug is false, then all debug_log calls will be ignored" alt="" coords="177,31,324,57"/>
-<area shape="rect" id="node5" href="$d1/d8c/logger_8h.html#a346f22d0e57a25484ee39115185ef609" title="returns a new file_logger Calls new_thread_logger internally" alt="" coords="5,31,129,57"/>
+<area shape="rect" id="node1" title="logs an error styled message &#45; called by log_fn" alt="" coords="923,31,1003,57"/>
+<area shape="rect" id="node2" href="$d1/d8c/logger_8h.html#a01cf0356db3e561c2ec43fa766ef56af" title="main function you should call, which will delegate to the appopriate *_log function" alt="" coords="797,31,875,57"/>
+<area shape="rect" id="node3" href="$d1/d8c/logger_8h.html#ad4ca0f60df17abc4a0cfcbd71049aef9" title="like log_func but for formatted logs" alt="" coords="667,5,749,32"/>
+<area shape="rect" id="node4" href="$d1/d8c/logger_8h.html#aba435ba2ea5433b4dc792c5d8038a0d1" title="returns a new thread safe logger if with_debug is false, then all debug_log calls will be ignored" alt="" coords="472,31,619,57"/>
+<area shape="rect" id="node5" href="$d1/d8c/logger_8h.html#a346f22d0e57a25484ee39115185ef609" title="returns a new file_logger Calls new_thread_logger internally" alt="" coords="300,5,424,32"/>
+<area shape="rect" id="node8" href="$dd/d84/logger__test_8c.html#a86ac10a2cc429b20c21f538668f63525" title=" " alt="" coords="108,56,252,83"/>
+<area shape="rect" id="node6" href="$dd/d84/logger__test_8c.html#ab8bf27e38eacb86c3dc2a0b9a2e776d4" title=" " alt="" coords="119,5,241,32"/>
+<area shape="rect" id="node7" href="$dd/d84/logger__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,31,60,57"/>
 </map>

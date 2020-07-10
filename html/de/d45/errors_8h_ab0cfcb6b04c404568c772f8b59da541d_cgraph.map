@@ -1,0 +1,4 @@
+<map id="new_cg_error" name="new_cg_error">
+<area shape="rect" id="node1" title="returns a cg_error struct containing message" alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node2" href="$d0/d15/errors_8c.html#a4a6a0f2fe1ad0cd6a20f2e54c0336526" title="creates a new variable and moves memory of message into that variable returning it this appears to be..." alt="" coords="163,5,281,32"/>
+</map>

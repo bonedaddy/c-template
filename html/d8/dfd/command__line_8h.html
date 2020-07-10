@@ -112,9 +112,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="../../d6/dd5/command__line_8h__dep__incl.png" border="0" usemap="#_2media_2solidity_2_d_a_t_a_2_code_2bonedaddy_2c-template_2include_2utils_2command__line_8hdep" alt=""/></div>
 <map name="_2media_2solidity_2_d_a_t_a_2_code_2bonedaddy_2c-template_2include_2utils_2command__line_8hdep" id="_2media_2solidity_2_d_a_t_a_2_code_2bonedaddy_2c-template_2include_2utils_2command__line_8hdep">
 <area shape="rect" title="provides a basic CLI building tool attribution note: modified version of commander see deps/commander..." alt="" coords="119,5,337,61"/>
-<area shape="rect" href="../../dd/def/cli_8c_source.html" title=" " alt="" coords="5,109,216,165"/>
-<area shape="rect" href="../../d8/dcd/command__line_8c_source.html" title=" " alt="" coords="240,109,451,165"/>
-<area shape="rect" href="../../d2/d6e/command__line__test_8c_source.html" title=" " alt="" coords="235,213,455,269"/>
+<area shape="rect" href="../../dd/def/cli_8c.html" title=" " alt="" coords="5,109,216,165"/>
+<area shape="rect" href="../../d8/dcd/command__line_8c.html" title=" " alt="" coords="240,109,451,165"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html" title=" " alt="" coords="235,213,455,269"/>
 </map>
 </div>
 </div>
@@ -129,82 +129,182 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a4b2b20c68bee625b7dc737c4d05699fd"><td class="memItemLeft" align="right" valign="top"><a id="a4b2b20c68bee625b7dc737c4d05699fd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_COMMANDS</b>&#160;&#160;&#160;32</td></tr>
+<tr class="memitem:a4b2b20c68bee625b7dc737c4d05699fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a4b2b20c68bee625b7dc737c4d05699fd">MAX_COMMANDS</a>&#160;&#160;&#160;32</td></tr>
 <tr class="separator:a4b2b20c68bee625b7dc737c4d05699fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ad0666a1726541270e5b2a3594f242c"><td class="memItemLeft" align="right" valign="top"><a id="a0ad0666a1726541270e5b2a3594f242c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_COMMAND_ARGS</b>&#160;&#160;&#160;32</td></tr>
+<tr class="memitem:a0ad0666a1726541270e5b2a3594f242c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a0ad0666a1726541270e5b2a3594f242c">MAX_COMMAND_ARGS</a>&#160;&#160;&#160;32</td></tr>
 <tr class="separator:a0ad0666a1726541270e5b2a3594f242c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:acdbee9f9f3797a587c6469da26b6fcc2"><td class="memItemLeft" align="right" valign="top"><a id="acdbee9f9f3797a587c6469da26b6fcc2"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>command_handler_callback</b>) (int argc, char *argv[])</td></tr>
+<tr class="memitem:acdbee9f9f3797a587c6469da26b6fcc2"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#acdbee9f9f3797a587c6469da26b6fcc2">command_handler_callback</a>) (int argc, char *argv[])</td></tr>
 <tr class="separator:acdbee9f9f3797a587c6469da26b6fcc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3300d81559da83aba22a58f7bcc46131"><td class="memItemLeft" align="right" valign="top"><a id="a3300d81559da83aba22a58f7bcc46131"></a>
-typedef struct <a class="el" href="../../dc/d76/structcommand.html">command</a>&#160;</td><td class="memItemRight" valign="bottom"><b>command_object</b></td></tr>
+<tr class="memitem:a3300d81559da83aba22a58f7bcc46131"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../dc/d76/structcommand.html">command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a></td></tr>
 <tr class="separator:a3300d81559da83aba22a58f7bcc46131"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a26d7be59688d3377ec48268f082f8b9c"><td class="memItemLeft" align="right" valign="top"><a id="a26d7be59688d3377ec48268f082f8b9c"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a26d7be59688d3377ec48268f082f8b9c">get_run_command</a> ()</td></tr>
-<tr class="memdesc:a26d7be59688d3377ec48268f082f8b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the value of command_to_run <br /></td></tr>
+<tr class="memitem:a26d7be59688d3377ec48268f082f8b9c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a26d7be59688d3377ec48268f082f8b9c">get_run_command</a> ()</td></tr>
+<tr class="memdesc:a26d7be59688d3377ec48268f082f8b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the value of command_to_run  <a href="../../d8/dfd/command__line_8h.html#a26d7be59688d3377ec48268f082f8b9c">More...</a><br /></td></tr>
 <tr class="separator:a26d7be59688d3377ec48268f082f8b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21c778456b1d4eb367adc80972d6d7e"><td class="memItemLeft" align="right" valign="top"><a id="aa21c778456b1d4eb367adc80972d6d7e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#aa21c778456b1d4eb367adc80972d6d7e">setup_args</a> (const char *version_string)</td></tr>
-<tr class="memdesc:aa21c778456b1d4eb367adc80972d6d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">setups the default argtable arguments <br /></td></tr>
+<tr class="memitem:aa21c778456b1d4eb367adc80972d6d7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#aa21c778456b1d4eb367adc80972d6d7e">setup_args</a> (const char *version_string)</td></tr>
+<tr class="memdesc:aa21c778456b1d4eb367adc80972d6d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">setups the default argtable arguments  <a href="../../d8/dfd/command__line_8h.html#aa21c778456b1d4eb367adc80972d6d7e">More...</a><br /></td></tr>
 <tr class="separator:aa21c778456b1d4eb367adc80972d6d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af50e076c2a7c248e02cb88d9c7e68737"><td class="memItemLeft" align="right" valign="top"><a id="af50e076c2a7c248e02cb88d9c7e68737"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#af50e076c2a7c248e02cb88d9c7e68737">print_help</a> (char *program_name, void *argtable[])</td></tr>
-<tr class="memdesc:af50e076c2a7c248e02cb88d9c7e68737"><td class="mdescLeft">&#160;</td><td class="mdescRight">formats output <br /></td></tr>
+<tr class="memitem:af50e076c2a7c248e02cb88d9c7e68737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#af50e076c2a7c248e02cb88d9c7e68737">print_help</a> (char *program_name, void *argtable[])</td></tr>
+<tr class="memdesc:af50e076c2a7c248e02cb88d9c7e68737"><td class="mdescLeft">&#160;</td><td class="mdescRight">formats output  <a href="../../d8/dfd/command__line_8h.html#af50e076c2a7c248e02cb88d9c7e68737">More...</a><br /></td></tr>
 <tr class="separator:af50e076c2a7c248e02cb88d9c7e68737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50267eeb40ac706adf05b3bb1ce640a8"><td class="memItemLeft" align="right" valign="top"><a id="a50267eeb40ac706adf05b3bb1ce640a8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8">parse_args</a> (int argc, char *argv[], void *argtable[])</td></tr>
-<tr class="memdesc:a50267eeb40ac706adf05b3bb1ce640a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">parses arguments, and checks for any errors <br /></td></tr>
+<tr class="memitem:a50267eeb40ac706adf05b3bb1ce640a8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8">parse_args</a> (int argc, char *argv[], void *argtable[])</td></tr>
+<tr class="memdesc:a50267eeb40ac706adf05b3bb1ce640a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">parses arguments, and checks for any errors  <a href="../../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8">More...</a><br /></td></tr>
 <tr class="separator:a50267eeb40ac706adf05b3bb1ce640a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256f96fa435f4cdcc69b740476e50cd6"><td class="memItemLeft" align="right" valign="top"><a id="a256f96fa435f4cdcc69b740476e50cd6"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a256f96fa435f4cdcc69b740476e50cd6">execute</a> (<a class="el" href="../../dc/d76/structcommand.html">command_object</a> *self, char *command_to_run)</td></tr>
-<tr class="memdesc:a256f96fa435f4cdcc69b740476e50cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks to see if we have a command named according to run and executes it <br /></td></tr>
+<tr class="memitem:a256f96fa435f4cdcc69b740476e50cd6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a256f96fa435f4cdcc69b740476e50cd6">execute</a> (<a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *self, char *<a class="el" href="../../d8/dfd/command__line_8h.html#a28b357fc889ede176e04ffea1f6205e7">command_to_run</a>)</td></tr>
+<tr class="memdesc:a256f96fa435f4cdcc69b740476e50cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks to see if we have a command named according to run and executes it  <a href="../../d8/dfd/command__line_8h.html#a256f96fa435f4cdcc69b740476e50cd6">More...</a><br /></td></tr>
 <tr class="separator:a256f96fa435f4cdcc69b740476e50cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f23afcf3ea74099025cbe7fa62243a7"><td class="memItemLeft" align="right" valign="top"><a id="a5f23afcf3ea74099025cbe7fa62243a7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a5f23afcf3ea74099025cbe7fa62243a7">load_command</a> (<a class="el" href="../../dc/d76/structcommand.html">command_object</a> *self, <a class="el" href="../../da/d6d/structcommand__handler.html">command_handler</a> *<a class="el" href="../../dc/d76/structcommand.html">command</a>)</td></tr>
-<tr class="memdesc:a5f23afcf3ea74099025cbe7fa62243a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads command handler and makes it executable <br /></td></tr>
+<tr class="memitem:a5f23afcf3ea74099025cbe7fa62243a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a5f23afcf3ea74099025cbe7fa62243a7">load_command</a> (<a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *self, <a class="el" href="../../da/d6d/structcommand__handler.html">command_handler</a> *<a class="el" href="../../dc/d76/structcommand.html">command</a>)</td></tr>
+<tr class="memdesc:a5f23afcf3ea74099025cbe7fa62243a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads command handler and makes it executable  <a href="../../d8/dfd/command__line_8h.html#a5f23afcf3ea74099025cbe7fa62243a7">More...</a><br /></td></tr>
 <tr class="separator:a5f23afcf3ea74099025cbe7fa62243a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae859dbe92615fada71bc1e3230c0941d"><td class="memItemLeft" align="right" valign="top"><a id="ae859dbe92615fada71bc1e3230c0941d"></a>
-<a class="el" href="../../dc/d76/structcommand.html">command_object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#ae859dbe92615fada71bc1e3230c0941d">new_command_object</a> (int argc, char *argv[])</td></tr>
-<tr class="memdesc:ae859dbe92615fada71bc1e3230c0941d"><td class="mdescLeft">&#160;</td><td class="mdescRight">intializes a new command_object to have commands loaded into <br /></td></tr>
+<tr class="memitem:ae859dbe92615fada71bc1e3230c0941d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#ae859dbe92615fada71bc1e3230c0941d">new_command_object</a> (int argc, char *argv[])</td></tr>
+<tr class="memdesc:ae859dbe92615fada71bc1e3230c0941d"><td class="mdescLeft">&#160;</td><td class="mdescRight">intializes a new command_object to have commands loaded into  <a href="../../d8/dfd/command__line_8h.html#ae859dbe92615fada71bc1e3230c0941d">More...</a><br /></td></tr>
 <tr class="separator:ae859dbe92615fada71bc1e3230c0941d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad60c0b714bf0a87a2a176383b38cb39c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#ad60c0b714bf0a87a2a176383b38cb39c">free_command_object</a> (<a class="el" href="../../dc/d76/structcommand.html">command_object</a> *self)</td></tr>
+<tr class="memitem:ad60c0b714bf0a87a2a176383b38cb39c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#ad60c0b714bf0a87a2a176383b38cb39c">free_command_object</a> (<a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *self)</td></tr>
 <tr class="memdesc:ad60c0b714bf0a87a2a176383b38cb39c"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees memory allocated for the command_object and sets pointer to null  <a href="../../d8/dfd/command__line_8h.html#ad60c0b714bf0a87a2a176383b38cb39c">More...</a><br /></td></tr>
 <tr class="separator:ad60c0b714bf0a87a2a176383b38cb39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a9e3e27ee266c0b8e4dc0bb0dfa00c46b"><td class="memItemLeft" align="right" valign="top"><a id="a9e3e27ee266c0b8e4dc0bb0dfa00c46b"></a>
-struct arg_lit *&#160;</td><td class="memItemRight" valign="bottom"><b>help</b></td></tr>
+<tr class="memitem:a9e3e27ee266c0b8e4dc0bb0dfa00c46b"><td class="memItemLeft" align="right" valign="top">struct arg_lit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a9e3e27ee266c0b8e4dc0bb0dfa00c46b">help</a></td></tr>
 <tr class="separator:a9e3e27ee266c0b8e4dc0bb0dfa00c46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acedf697ae39909e338d4073afa7926c1"><td class="memItemLeft" align="right" valign="top"><a id="acedf697ae39909e338d4073afa7926c1"></a>
-struct arg_lit *&#160;</td><td class="memItemRight" valign="bottom"><b>version</b></td></tr>
+<tr class="memitem:acedf697ae39909e338d4073afa7926c1"><td class="memItemLeft" align="right" valign="top">struct arg_lit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#acedf697ae39909e338d4073afa7926c1">version</a></td></tr>
 <tr class="separator:acedf697ae39909e338d4073afa7926c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28b357fc889ede176e04ffea1f6205e7"><td class="memItemLeft" align="right" valign="top"><a id="a28b357fc889ede176e04ffea1f6205e7"></a>
-struct arg_str *&#160;</td><td class="memItemRight" valign="bottom"><b>command_to_run</b></td></tr>
+<tr class="memitem:a28b357fc889ede176e04ffea1f6205e7"><td class="memItemLeft" align="right" valign="top">struct arg_str *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a28b357fc889ede176e04ffea1f6205e7">command_to_run</a></td></tr>
 <tr class="separator:a28b357fc889ede176e04ffea1f6205e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7a791adcdf1369207438191eff7dc11"><td class="memItemLeft" align="right" valign="top"><a id="aa7a791adcdf1369207438191eff7dc11"></a>
-struct arg_file *&#160;</td><td class="memItemRight" valign="bottom"><b>file</b></td></tr>
+<tr class="memitem:aa7a791adcdf1369207438191eff7dc11"><td class="memItemLeft" align="right" valign="top">struct arg_file *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#aa7a791adcdf1369207438191eff7dc11">file</a></td></tr>
 <tr class="separator:aa7a791adcdf1369207438191eff7dc11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1da89e54ad92f9a339024d1529b716"><td class="memItemLeft" align="right" valign="top"><a id="a3c1da89e54ad92f9a339024d1529b716"></a>
-struct arg_file *&#160;</td><td class="memItemRight" valign="bottom"><b>output</b></td></tr>
+<tr class="memitem:a3c1da89e54ad92f9a339024d1529b716"><td class="memItemLeft" align="right" valign="top">struct arg_file *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a3c1da89e54ad92f9a339024d1529b716">output</a></td></tr>
 <tr class="separator:a3c1da89e54ad92f9a339024d1529b716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088ac7ffa534015d5b07ddcc7aef9fd4"><td class="memItemLeft" align="right" valign="top"><a id="a088ac7ffa534015d5b07ddcc7aef9fd4"></a>
-struct arg_end *&#160;</td><td class="memItemRight" valign="bottom"><b>end</b></td></tr>
+<tr class="memitem:a088ac7ffa534015d5b07ddcc7aef9fd4"><td class="memItemLeft" align="right" valign="top">struct arg_end *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfd/command__line_8h.html#a088ac7ffa534015d5b07ddcc7aef9fd4">end</a></td></tr>
 <tr class="separator:a088ac7ffa534015d5b07ddcc7aef9fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>provides a basic CLI building tool attribution note: modified version of commander see <code>deps/commander</code> for the license for that package uses argtable3 for command line configuration and allows loading a list of commands to execute using the <code>--conmmand</code> or <code>-c</code> CLI flag you can specify the command out of the list of commands that have been loaded before calling execute you'll want to load the appropriate <code>argc</code> and <code>argv</code> values for the callback of the command you want to make </p>
 
 <p class="definition">Definition in file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0ad0666a1726541270e5b2a3594f242c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ad0666a1726541270e5b2a3594f242c">&#9670;&nbsp;</a></span>MAX_COMMAND_ARGS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_COMMAND_ARGS&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00022">22</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="a4b2b20c68bee625b7dc737c4d05699fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b2b20c68bee625b7dc737c4d05699fd">&#9670;&nbsp;</a></span>MAX_COMMANDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_COMMANDS&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00018">18</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="acdbee9f9f3797a587c6469da26b6fcc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdbee9f9f3797a587c6469da26b6fcc2">&#9670;&nbsp;</a></span>command_handler_callback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* command_handler_callback) (int argc, char *argv[])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00035">35</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="a3300d81559da83aba22a58f7bcc46131"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3300d81559da83aba22a58f7bcc46131">&#9670;&nbsp;</a></span>command_object</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="../../dc/d76/structcommand.html">command</a> <a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a256f96fa435f4cdcc69b740476e50cd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a256f96fa435f4cdcc69b740476e50cd6">&#9670;&nbsp;</a></span>execute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int execute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>command_to_run</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>checks to see if we have a command named according to run and executes it </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00059">59</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_cgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_cgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_cgraph" id="d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_cgraph">
+<area shape="rect" title="checks to see if we have a command named according to run and executes it" alt="" coords="5,5,79,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="127,5,233,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="281,5,456,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_icgraph" id="d8/dfd/command__line_8h_a256f96fa435f4cdcc69b740476e50cd6_icgraph">
+<area shape="rect" title="checks to see if we have a command named according to run and executes it" alt="" coords="261,31,335,57"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="133,5,188,32"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a8a493ce08b70a4477f8295e1c993ebb3" title=" " alt="" coords="108,56,213,83"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,56,60,83"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="ad60c0b714bf0a87a2a176383b38cb39c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad60c0b714bf0a87a2a176383b38cb39c">&#9670;&nbsp;</a></span>free_command_object()</h2>
 
@@ -214,7 +314,7 @@ struct arg_end *&#160;</td><td class="memItemRight" valign="bottom"><b>end</b></
         <tr>
           <td class="memname">void free_command_object </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d76/structcommand.html">command_object</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>
@@ -225,6 +325,374 @@ struct arg_end *&#160;</td><td class="memItemRight" valign="bottom"><b>end</b></
 <p>frees memory allocated for the command_object and sets pointer to null </p>
 
 <p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00074">74</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_ad60c0b714bf0a87a2a176383b38cb39c_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_ad60c0b714bf0a87a2a176383b38cb39c_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_ad60c0b714bf0a87a2a176383b38cb39c_icgraph" id="d8/dfd/command__line_8h_ad60c0b714bf0a87a2a176383b38cb39c_icgraph">
+<area shape="rect" title="frees memory allocated for the command_object and sets pointer to null" alt="" coords="356,81,523,108"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="181,5,235,32"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a8a493ce08b70a4477f8295e1c993ebb3" title=" " alt="" coords="155,56,261,83"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a6846c357d656582143a94949aa5b63c8" title=" " alt="" coords="131,107,285,133"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#ae6144147a99f90e85ab0514533ba64a9" title=" " alt="" coords="108,157,308,184"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,107,60,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a26d7be59688d3377ec48268f082f8b9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26d7be59688d3377ec48268f082f8b9c">&#9670;&nbsp;</a></span>get_run_command()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* get_run_command </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns the value of command_to_run </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00115">115</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+
+</div>
+</div>
+<a id="a5f23afcf3ea74099025cbe7fa62243a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f23afcf3ea74099025cbe7fa62243a7">&#9670;&nbsp;</a></span>load_command()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int load_command </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a> *&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/d6d/structcommand__handler.html">command_handler</a> *&#160;</td>
+          <td class="paramname"><em>command</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>loads command handler and makes it executable </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00047">47</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_cgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_cgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_cgraph" id="d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_cgraph">
+<area shape="rect" title="loads command handler and makes it executable" alt="" coords="5,5,128,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="176,5,283,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="331,5,505,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_icgraph" id="d8/dfd/command__line_8h_a5f23afcf3ea74099025cbe7fa62243a7_icgraph">
+<area shape="rect" title="loads command handler and makes it executable" alt="" coords="311,31,433,57"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a8a493ce08b70a4477f8295e1c993ebb3" title=" " alt="" coords="133,5,238,32"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a6846c357d656582143a94949aa5b63c8" title=" " alt="" coords="108,56,263,83"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,31,60,57"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae859dbe92615fada71bc1e3230c0941d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae859dbe92615fada71bc1e3230c0941d">&#9670;&nbsp;</a></span>new_command_object()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/dfd/command__line_8h.html#a3300d81559da83aba22a58f7bcc46131">command_object</a>* new_command_object </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>intializes a new command_object to have commands loaded into </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00014">14</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_cgraph.png" border="0" usemap="#d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_cgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_cgraph" id="d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_cgraph">
+<area shape="rect" title="intializes a new command_object to have commands loaded into" alt="" coords="5,5,173,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="221,5,328,32"/>
+<area shape="rect" href="../../d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="376,5,551,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_icgraph" id="d8/dfd/command__line_8h_ae859dbe92615fada71bc1e3230c0941d_icgraph">
+<area shape="rect" title="intializes a new command_object to have commands loaded into" alt="" coords="356,81,524,108"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="181,5,235,32"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a8a493ce08b70a4477f8295e1c993ebb3" title=" " alt="" coords="155,56,261,83"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a6846c357d656582143a94949aa5b63c8" title=" " alt="" coords="131,107,285,133"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#ae6144147a99f90e85ab0514533ba64a9" title=" " alt="" coords="108,157,308,184"/>
+<area shape="rect" href="../../d2/d6e/command__line__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,107,60,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a50267eeb40ac706adf05b3bb1ce640a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50267eeb40ac706adf05b3bb1ce640a8">&#9670;&nbsp;</a></span>parse_args()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int parse_args </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>argtable</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>parses arguments, and checks for any errors </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00082">82</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_cgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_cgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_cgraph" id="d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_cgraph">
+<area shape="rect" title="parses arguments, and checks for any errors" alt="" coords="5,5,99,32"/>
+<area shape="rect" href="../../d8/dcd/command__line_8c.html#af50e076c2a7c248e02cb88d9c7e68737" title="formats output" alt="" coords="147,5,233,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_icgraph" id="d8/dfd/command__line_8h_a50267eeb40ac706adf05b3bb1ce640a8_icgraph">
+<area shape="rect" title="parses arguments, and checks for any errors" alt="" coords="108,5,201,32"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,60,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af50e076c2a7c248e02cb88d9c7e68737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50e076c2a7c248e02cb88d9c7e68737">&#9670;&nbsp;</a></span>print_help()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_help </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>program_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>argtable</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>formats output </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00099">99</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_af50e076c2a7c248e02cb88d9c7e68737_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_af50e076c2a7c248e02cb88d9c7e68737_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_af50e076c2a7c248e02cb88d9c7e68737_icgraph" id="d8/dfd/command__line_8h_af50e076c2a7c248e02cb88d9c7e68737_icgraph">
+<area shape="rect" title="formats output" alt="" coords="249,5,336,32"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,60,32"/>
+<area shape="rect" href="../../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8" title="parses arguments, and checks for any errors" alt="" coords="108,31,201,57"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa21c778456b1d4eb367adc80972d6d7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa21c778456b1d4eb367adc80972d6d7e">&#9670;&nbsp;</a></span>setup_args()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setup_args </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>version_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>setups the default argtable arguments </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dcd/command__line_8c_source.html#l00106">106</a> of file <a class="el" href="../../d8/dcd/command__line_8c_source.html">command_line.c</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d8/dfd/command__line_8h_aa21c778456b1d4eb367adc80972d6d7e_icgraph.png" border="0" usemap="#d8/dfd/command__line_8h_aa21c778456b1d4eb367adc80972d6d7e_icgraph" alt=""/></div>
+<map name="d8/dfd/command__line_8h_aa21c778456b1d4eb367adc80972d6d7e_icgraph" id="d8/dfd/command__line_8h_aa21c778456b1d4eb367adc80972d6d7e_icgraph">
+<area shape="rect" title="setups the default argtable arguments" alt="" coords="108,5,201,32"/>
+<area shape="rect" href="../../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,60,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a28b357fc889ede176e04ffea1f6205e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28b357fc889ede176e04ffea1f6205e7">&#9670;&nbsp;</a></span>command_to_run</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_str* command_to_run</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00027">27</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="a088ac7ffa534015d5b07ddcc7aef9fd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a088ac7ffa534015d5b07ddcc7aef9fd4">&#9670;&nbsp;</a></span>end</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_end* end</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00029">29</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="aa7a791adcdf1369207438191eff7dc11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7a791adcdf1369207438191eff7dc11">&#9670;&nbsp;</a></span>file</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_file* file</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00028">28</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="a9e3e27ee266c0b8e4dc0bb0dfa00c46b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e3e27ee266c0b8e4dc0bb0dfa00c46b">&#9670;&nbsp;</a></span>help</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_lit* help</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00026">26</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="a3c1da89e54ad92f9a339024d1529b716"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c1da89e54ad92f9a339024d1529b716">&#9670;&nbsp;</a></span>output</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_file * output</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00028">28</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
+
+</div>
+</div>
+<a id="acedf697ae39909e338d4073afa7926c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acedf697ae39909e338d4073afa7926c1">&#9670;&nbsp;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct arg_lit * version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d8/dfd/command__line_8h_source.html#l00026">26</a> of file <a class="el" href="../../d8/dfd/command__line_8h_source.html">command_line.h</a>.</p>
 
 </div>
 </div>

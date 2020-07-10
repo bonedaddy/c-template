@@ -85,38 +85,42 @@ $(document).ready(function(){initNavTree('dc/de5/random_8c_source.html','../../'
 <div class="title">random.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<a href="../../dc/de5/random_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;assert.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;../../include/utils/random.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../include/utils/errors.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../../include/utils/returns.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *get_random_string(<span class="keywordtype">int</span> stringLength) {</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="../../d1/d79/random_8h.html#a2c36cad71b0a749fcd7dc966a02a7ac6">    7</a></span>&#160;<a class="code" href="../../d0/dcb/structcg__return.html">cg_return</a> *<a class="code" href="../../dc/de5/random_8c.html#a2c36cad71b0a749fcd7dc966a02a7ac6">get_random_string</a>(<span class="keywordtype">int</span> stringLength) {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="comment">// allocate a chunk of memory sized to stringLength</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="comment">// not sure why its showing an error in vscode???</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="comment">// https://stackoverflow.com/questions/50557000/complie-error-in-c-program-visual-studio-regarding-malloc-a-value-of-type-vo?rq=1</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">char</span> *retWord = malloc(stringLength);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordflow">if</span> (retWord == NULL) {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordflow">return</span> new_cg_return(NULL, <a class="code" href="../../de/d45/errors_8h.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a>(<span class="stringliteral">&quot;failed to malloc memory&quot;</span>));</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a>(NULL, <a class="code" href="../../d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a>(<span class="stringliteral">&quot;failed to malloc memory&quot;</span>));</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    }</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="comment">// assign each char from word to its corresponding vlaue in retWord</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; stringLength; i++) {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        retWord[i] = letters[get_random_number(0, 25)];</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        retWord[i] = <a class="code" href="../../d1/d79/random_8h.html#a0e33356960f5fb00372d606e58a2824b">letters</a>[<a class="code" href="../../dc/de5/random_8c.html#a35ebc7a382beda9e7196e9e8923fd943">get_random_number</a>(0, 25)];</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> new_cg_return(retWord, NULL);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a>(retWord, NULL);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">int</span> get_random_number(<span class="keywordtype">int</span> lower, <span class="keywordtype">int</span> upper) {</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../d1/d79/random_8h.html#a35ebc7a382beda9e7196e9e8923fd943">   22</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../dc/de5/random_8c.html#a35ebc7a382beda9e7196e9e8923fd943">get_random_number</a>(<span class="keywordtype">int</span> lower, <span class="keywordtype">int</span> upper) {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordflow">return</span> (rand() % (upper - lower + 1)) + lower;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aerrors_8h_html_ab0cfcb6b04c404568c772f8b59da541d"><div class="ttname"><a href="../../de/d45/errors_8h.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a></div><div class="ttdeci">cg_error * new_cg_error(char *message)</div><div class="ttdoc">returns a cg_error struct containing message</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d15/errors_8c_source.html#l00007">errors.c:7</a></div></div>
+<div class="ttc" id="arandom_8h_html_a0e33356960f5fb00372d606e58a2824b"><div class="ttname"><a href="../../d1/d79/random_8h.html#a0e33356960f5fb00372d606e58a2824b">letters</a></div><div class="ttdeci">const char letters[26]</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d79/random_8h_source.html#l00008">random.h:8</a></div></div>
+<div class="ttc" id="aerrors_8c_html_ab0cfcb6b04c404568c772f8b59da541d"><div class="ttname"><a href="../../d0/d15/errors_8c.html#ab0cfcb6b04c404568c772f8b59da541d">new_cg_error</a></div><div class="ttdeci">cg_error * new_cg_error(char *message)</div><div class="ttdoc">returns a cg_error struct containing message</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d15/errors_8c_source.html#l00007">errors.c:7</a></div></div>
+<div class="ttc" id="areturns_8c_html_adf75c93702ebc7986ab03452580adfff"><div class="ttname"><a href="../../d1/dd4/returns_8c.html#adf75c93702ebc7986ab03452580adfff">new_cg_return</a></div><div class="ttdeci">cg_return * new_cg_return(void *value, cg_error *err)</div><div class="ttdoc">creates a new cg_return struct</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dd4/returns_8c_source.html#l00005">returns.c:5</a></div></div>
+<div class="ttc" id="arandom_8c_html_a35ebc7a382beda9e7196e9e8923fd943"><div class="ttname"><a href="../../dc/de5/random_8c.html#a35ebc7a382beda9e7196e9e8923fd943">get_random_number</a></div><div class="ttdeci">int get_random_number(int lower, int upper)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de5/random_8c_source.html#l00022">random.c:22</a></div></div>
 <div class="ttc" id="astructcg__return_html"><div class="ttname"><a href="../../d0/dcb/structcg__return.html">cg_return</a></div><div class="ttdoc">allows returning both a value and error message from a function call useful as it makes it easier to ...</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d73/returns_8h_source.html#l00014">returns.h:14</a></div></div>
+<div class="ttc" id="arandom_8c_html_a2c36cad71b0a749fcd7dc966a02a7ac6"><div class="ttname"><a href="../../dc/de5/random_8c.html#a2c36cad71b0a749fcd7dc966a02a7ac6">get_random_string</a></div><div class="ttdeci">cg_return * get_random_string(int stringLength)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de5/random_8c_source.html#l00007">random.c:7</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><b>random.c</b></li>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><a class="el" href="../../dc/de5/random_8c.html">random.c</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

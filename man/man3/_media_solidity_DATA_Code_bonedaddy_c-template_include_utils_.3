@@ -1,0 +1,43 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/include/utils Directory Reference" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/include/utils Directory Reference
+.SH SYNOPSIS
+.br
+.PP
+.SS "Files"
+
+.in +1c
+.ti -1c
+.RI "file \fBarray_len\&.h\fP"
+.br
+.ti -1c
+.RI "file \fBcolors\&.h\fP"
+.br
+.RI "macros and utilities for printing color to stdout from https://www.quora.com/How-do-I-print-a-colored-output-in-C Pass a \fCCOLORS_x\fP enum value into \fCprint_colored\fP and the color will be printed on stdout Note that if you want to disable printing of that color you'll have to send the \fCCOLORS_RESET\fP enum value through to make non-bold change 0->1 (0;31m red) vs (1;31m bold red) "
+.ti -1c
+.RI "file \fBcommand_line\&.h\fP"
+.br
+.RI "provides a basic CLI building tool attribution note: modified version of commander see \fCdeps/commander\fP for the license for that package uses argtable3 for command line configuration and allows loading a list of commands to execute using the \fC--conmmand\fP or \fC-c\fP CLI flag you can specify the command out of the list of commands that have been loaded before calling execute you'll want to load the appropriate \fCargc\fP and \fCargv\fP values for the callback of the command you want to make "
+.ti -1c
+.RI "file \fBerrors\&.h\fP"
+.br
+.RI "golang like error handling "
+.ti -1c
+.RI "file \fBlogger\&.h\fP"
+.br
+.RI "a thread safe logger with optional printf style logging "
+.ti -1c
+.RI "file \fBrandom\&.h\fP"
+.br
+.ti -1c
+.RI "file \fBreturns\&.h\fP"
+.br
+.ti -1c
+.RI "file \fBsafe_math\&.h\fP"
+.br
+.ti -1c
+.RI "file \fBsafe_mem\&.h\fP"
+.br
+.in -1c

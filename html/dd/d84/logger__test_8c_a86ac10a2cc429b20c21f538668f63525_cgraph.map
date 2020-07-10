@@ -1,0 +1,16 @@
+<map id="test_thread_logger" name="test_thread_logger">
+<area shape="rect" id="node1" title=" " alt="" coords="5,107,149,133"/>
+<area shape="rect" id="node2" href="$d1/d22/logger_8c.html#a8cf74430151bf53ab52b8b94788186af" title="free resources for the threaded logger" alt="" coords="197,56,348,83"/>
+<area shape="rect" id="node3" href="$d1/d22/logger_8c.html#aba435ba2ea5433b4dc792c5d8038a0d1" title="returns a new thread safe logger if with_debug is false, then all debug_log calls will be ignored" alt="" coords="199,107,346,133"/>
+<area shape="rect" id="node14" href="$dd/d84/logger__test_8c.html#a13fda84e581cf38b8706b1e656d6e977" title=" " alt="" coords="211,157,334,184"/>
+<area shape="rect" id="node4" href="$d1/d22/logger_8c.html#a01cf0356db3e561c2ec43fa766ef56af" title="main function you should call, which will delegate to the appopriate *_log function" alt="" coords="527,107,604,133"/>
+<area shape="rect" id="node13" href="$d1/d22/logger_8c.html#ad4ca0f60df17abc4a0cfcbd71049aef9" title="like log_func but for formatted logs" alt="" coords="396,132,479,159"/>
+<area shape="rect" id="node5" href="$d1/d22/logger_8c.html#adbd079d224c0a17760bd34be2b94d4d4" title="logs a debug styled message &#45; called by log_fn" alt="" coords="669,56,759,83"/>
+<area shape="rect" id="node9" href="$d1/d22/logger_8c.html#a86974eb20c3c2a9b8528cca2bfd1526b" title="logs an error styled message &#45; called by log_fn" alt="" coords="674,107,754,133"/>
+<area shape="rect" id="node10" href="$d1/d22/logger_8c.html#a26fa286bf91c5bdead18c3e06ba8b5de" title="private function that returns a timestamp of format Jul 06 10:12:20 PM" alt="" coords="652,208,776,235"/>
+<area shape="rect" id="node11" href="$d1/d22/logger_8c.html#acb4bc62c4f5124145fdd7813a8eff213" title="logs an info styled message &#45; called by log_fn" alt="" coords="677,157,751,184"/>
+<area shape="rect" id="node12" href="$d1/d22/logger_8c.html#a1979109bb7f9b3fccd5d35ab62af76b0" title="logs a warned styled message &#45; called by log_fn" alt="" coords="673,5,755,32"/>
+<area shape="rect" id="node6" href="$d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="825,56,932,83"/>
+<area shape="rect" id="node8" href="$d1/d22/logger_8c.html#a6362ea8a304cd179fbd42e2971ed71f3" title="used to write a log message to file" alt="" coords="824,107,933,133"/>
+<area shape="rect" id="node7" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="981,56,1156,83"/>
+</map>

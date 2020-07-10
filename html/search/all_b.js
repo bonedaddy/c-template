@@ -1,6 +1,11 @@
 var searchData=
 [
-  ['parse_5fargs_41',['parse_args',['../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8',1,'command_line.c']]],
-  ['print_5fcolored_42',['print_colored',['../da/dd8/colors_8h.html#a9b86c057290aefcc15b20231f9cabe9e',1,'colors.c']]],
-  ['print_5fhelp_43',['print_help',['../d8/dfd/command__line_8h.html#af50e076c2a7c248e02cb88d9c7e68737',1,'command_line.c']]]
+  ['main_112',['main',['../dd/def/cli_8c.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;cli.c'],['../d9/d78/array__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;array_test.c'],['../df/dbf/colors__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;colors_test.c'],['../d2/d6e/command__line__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;command_line_test.c'],['../d8/d06/errors__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;errors_test.c'],['../dd/d84/logger__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;logger_test.c'],['../dd/d90/random__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;random_test.c'],['../d3/d5f/returns__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;returns_test.c'],['../dc/dfd/safe__math__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;safe_math_test.c'],['../db/dc9/safe__mem__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;safe_mem_test.c'],['../db/df8/wait__group__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main(void):&#160;wait_group_test.c']]],
+  ['main_5fpage_2ec_113',['main_page.c',['../d6/dd6/main__page_8c.html',1,'']]],
+  ['max_5fcommand_5fargs_114',['MAX_COMMAND_ARGS',['../d8/dfd/command__line_8h.html#a0ad0666a1726541270e5b2a3594f242c',1,'command_line.h']]],
+  ['max_5fcommands_115',['MAX_COMMANDS',['../d8/dfd/command__line_8h.html#a4b2b20c68bee625b7dc737c4d05699fd',1,'command_line.h']]],
+  ['memory_5fobject_116',['memory_object',['../da/da3/structmemory__object.html',1,'memory_object'],['../d0/de4/safe__mem_8h.html#a505d03727317adbe45b487c6586af657',1,'memory_object():&#160;safe_mem.h']]],
+  ['message_117',['message',['../d4/dae/structcg__error.html#a9d5facab25dff1e2d56b7e8945c7791a',1,'cg_error']]],
+  ['mutex_118',['mutex',['../da/da5/structthread__logger.html#a0971895d3b7373e19c6ea497e89db84f',1,'thread_logger::mutex()'],['../da/dae/structwait__group__t.html#af084c197ad844d4230859c36cbed3b82',1,'wait_group_t::mutex()']]],
+  ['mutex_5ffn_119',['mutex_fn',['../d1/d8c/logger_8h.html#ac8dc34c8e7f433a3b80d5bfa0aa59032',1,'logger.h']]]
 ];

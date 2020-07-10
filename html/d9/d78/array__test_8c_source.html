@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('d9/d78/array__test_8c_source.html','..
 <div class="title">array_test.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<a href="../../d9/d78/array__test_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdarg.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;setjmp.h&gt;</span></div>
@@ -96,36 +96,41 @@ $(document).ready(function(){initNavTree('d9/d78/array__test_8c_source.html','..
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-parameter&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-variable&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wpedantic&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">void</span> test_array_len(<span class="keywordtype">void</span> **state) {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="../../d9/d78/array__test_8c.html#a7e25f682651d56c8a07b9e9056bf1c19">   12</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d9/d78/array__test_8c.html#a7e25f682651d56c8a07b9e9056bf1c19">test_array_len</a>(<span class="keywordtype">void</span> **state) {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">int</span> one[1] = {0};</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> two[2] = {0, 1};</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    assert(array_len(one) == 1);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    assert(array_len(two) == 2);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    assert(<a class="code" href="../../d8/d90/array__len_8h.html#a81230f7ca31023a3b6ccae0093a1ae46">array_len</a>(one) == 1);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    assert(<a class="code" href="../../d8/d90/array__len_8h.html#a81230f7ca31023a3b6ccae0093a1ae46">array_len</a>(two) == 2);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-parameter&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wunused-variable&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wpedantic&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> test_array_size(<span class="keywordtype">void</span> **state) {</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../d9/d78/array__test_8c.html#a5aeb8aea54c2c86673e833820a59d6a2">   22</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d9/d78/array__test_8c.html#a5aeb8aea54c2c86673e833820a59d6a2">test_array_size</a>(<span class="keywordtype">void</span> **state) {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">int</span> one[1] = {0};</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">int</span> two[2] = {0, 1};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    assert(array_size(one) == <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    assert(array_size(two) == <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*2);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    assert(<a class="code" href="../../d8/d90/array__len_8h.html#a8bb1dc63b6cd0d39305c563ba49152eb">array_size</a>(one) == <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    assert(<a class="code" href="../../d8/d90/array__len_8h.html#a8bb1dc63b6cd0d39305c563ba49152eb">array_size</a>(two) == <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*2);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d9/d78/array__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">   29</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d9/d78/array__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keywordtype">void</span>) {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span>CMUnitTest tests[] = {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        cmocka_unit_test(test_array_len),</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        cmocka_unit_test(test_array_size),</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        cmocka_unit_test(<a class="code" href="../../d9/d78/array__test_8c.html#a7e25f682651d56c8a07b9e9056bf1c19">test_array_len</a>),</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        cmocka_unit_test(<a class="code" href="../../d9/d78/array__test_8c.html#a5aeb8aea54c2c86673e833820a59d6a2">test_array_size</a>),</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    };</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">return</span> cmocka_run_group_tests(tests, NULL, NULL);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aarray__test_8c_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="../../d9/d78/array__test_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d78/array__test_8c_source.html#l00029">array_test.c:29</a></div></div>
+<div class="ttc" id="aarray__test_8c_html_a7e25f682651d56c8a07b9e9056bf1c19"><div class="ttname"><a href="../../d9/d78/array__test_8c.html#a7e25f682651d56c8a07b9e9056bf1c19">test_array_len</a></div><div class="ttdeci">void test_array_len(void **state)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d78/array__test_8c_source.html#l00012">array_test.c:12</a></div></div>
+<div class="ttc" id="aarray__len_8h_html_a8bb1dc63b6cd0d39305c563ba49152eb"><div class="ttname"><a href="../../d8/d90/array__len_8h.html#a8bb1dc63b6cd0d39305c563ba49152eb">array_size</a></div><div class="ttdeci">#define array_size(x)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/array__len_8h_source.html#l00004">array_len.h:4</a></div></div>
+<div class="ttc" id="aarray__test_8c_html_a5aeb8aea54c2c86673e833820a59d6a2"><div class="ttname"><a href="../../d9/d78/array__test_8c.html#a5aeb8aea54c2c86673e833820a59d6a2">test_array_size</a></div><div class="ttdeci">void test_array_size(void **state)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d78/array__test_8c_source.html#l00022">array_test.c:22</a></div></div>
+<div class="ttc" id="aarray__len_8h_html_a81230f7ca31023a3b6ccae0093a1ae46"><div class="ttname"><a href="../../d8/d90/array__len_8h.html#a81230f7ca31023a3b6ccae0093a1ae46">array_len</a></div><div class="ttdeci">#define array_len(x)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/array__len_8h_source.html#l00002">array_len.h:2</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><b>array_test.c</b></li>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_313caf1132e152dd9b58bea13a4052ca.html">utils</a></li><li class="navelem"><a class="el" href="../../d9/d78/array__test_8c.html">array_test.c</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

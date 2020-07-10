@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['test_64',['test',['../d8/d89/structtest.html',1,'']]],
-  ['test_5fdata_65',['test_data',['../dc/d9a/structtest__data.html',1,'']]],
-  ['the_66',['the',['../d5/db5/structthe.html',1,'']]],
-  ['thread_5flogger_67',['thread_logger',['../da/da5/structthread__logger.html',1,'']]]
+  ['sockaddr_238',['sockaddr',['../d5/dad/structsockaddr.html',1,'']]],
+  ['sockaddr_5fstorage_239',['sockaddr_storage',['../d0/d6d/structsockaddr__storage.html',1,'']]],
+  ['socket_5fclient_240',['socket_client',['../d9/d8c/structsocket__client.html',1,'']]],
+  ['socket_5fserver_241',['socket_server',['../d7/d8d/structsocket__server.html',1,'']]]
 ];

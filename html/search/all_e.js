@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['warn_5flog_50',['warn_log',['../d1/d22/logger_8c.html#a1979109bb7f9b3fccd5d35ab62af76b0',1,'warn_log(thread_logger *thl, int file_descriptor, char *message):&#160;logger.c'],['../d1/d8c/logger_8h.html#a1979109bb7f9b3fccd5d35ab62af76b0',1,'warn_log(thread_logger *thl, int file_descriptor, char *message):&#160;logger.c']]],
-  ['wrap_5fcg_5ferror_51',['wrap_cg_error',['../de/d45/errors_8h.html#a6e4b2ecbea4331a865b86f766c90ebbe',1,'errors.c']]],
-  ['wraps_52',['wraps',['../df/dff/structwraps.html',1,'']]],
-  ['write_5fcolored_53',['write_colored',['../da/dd8/colors_8h.html#aa1fa3472b5bc15e07fe0d5ce481617a1',1,'colors.c']]],
-  ['write_5ffile_5flog_54',['write_file_log',['../d1/d22/logger_8c.html#a6362ea8a304cd179fbd42e2971ed71f3',1,'write_file_log(int file_descriptor, char *message):&#160;logger.c'],['../d1/d8c/logger_8h.html#a6362ea8a304cd179fbd42e2971ed71f3',1,'write_file_log(int file_descriptor, char *message):&#160;logger.c']]]
+  ['parse_5fargs_133',['parse_args',['../d8/dcd/command__line_8c.html#a50267eeb40ac706adf05b3bb1ce640a8',1,'parse_args(int argc, char *argv[], void *argtable[]):&#160;command_line.c'],['../d8/dfd/command__line_8h.html#a50267eeb40ac706adf05b3bb1ce640a8',1,'parse_args(int argc, char *argv[], void *argtable[]):&#160;command_line.c']]],
+  ['print_5fcolored_134',['print_colored',['../d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e',1,'print_colored(COLORS color, char *message):&#160;colors.c'],['../da/dd8/colors_8h.html#a9b86c057290aefcc15b20231f9cabe9e',1,'print_colored(COLORS color, char *message):&#160;colors.c']]],
+  ['print_5fhello_5fworld_135',['print_hello_world',['../d2/d6e/command__line__test_8c.html#ad1d09ba570dc319e8e872ac6ced10b2c',1,'command_line_test.c']]],
+  ['print_5fhelp_136',['print_help',['../d8/dcd/command__line_8c.html#af50e076c2a7c248e02cb88d9c7e68737',1,'print_help(char *program_name, void *argtable[]):&#160;command_line.c'],['../d8/dfd/command__line_8h.html#af50e076c2a7c248e02cb88d9c7e68737',1,'print_help(char *program_name, void *argtable[]):&#160;command_line.c']]]
 ];

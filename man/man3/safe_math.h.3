@@ -1,0 +1,98 @@
+.TH "/media/solidity/DATA/Code/bonedaddy/c-template/include/utils/safe_math.h" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/media/solidity/DATA/Code/bonedaddy/c-template/include/utils/safe_math.h
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <limits\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBAbs\fP(i,  flag)   ((i) >= 0 ? (i): ((i) == (flag) ? (flag) : \-(i)))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBsafe_add_int\fP (int x, int y, bool *passed)"
+.br
+.ti -1c
+.RI "int \fBsafe_sub_int\fP (int x, int y, bool *passed)"
+.br
+.ti -1c
+.RI "int \fBsafe_div_int\fP (int x, int y, bool *passed)"
+.br
+.ti -1c
+.RI "int \fBsafe_mod_int\fP (int x, int y, bool *passed)"
+.br
+.ti -1c
+.RI "unsigned int \fBsafe_sub_uint\fP (unsigned int x, unsigned int y, bool *passed)"
+.br
+.ti -1c
+.RI "unsigned int \fBsafe_add_uint\fP (unsigned int x, unsigned int y, bool *passed)"
+.br
+.ti -1c
+.RI "unsigned int \fBsafe_div_uint\fP (unsigned int x, unsigned int y, bool *passed)"
+.br
+.ti -1c
+.RI "unsigned int \fBsafe_mod_uint\fP (unsigned int x, unsigned int y, bool *passed)"
+.br
+.ti -1c
+.RI "unsigned int \fBsafe_mul_uint\fP (unsigned int x, unsigned int y, bool *passed)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define Abs(i, flag)   ((i) >= 0 ? (i): ((i) == (flag) ? (flag) : \-(i)))"
+
+.PP
+Definition at line 5 of file safe_math\&.h\&.
+.SH "Function Documentation"
+.PP 
+.SS "int safe_add_int (int x, int y, bool * passed)"
+
+.PP
+Definition at line 5 of file safe_math\&.c\&.
+.SS "unsigned int safe_add_uint (unsigned int x, unsigned int y, bool * passed)"
+
+.PP
+Definition at line 54 of file safe_math\&.c\&.
+.SS "int safe_div_int (int x, int y, bool * passed)"
+
+.PP
+Definition at line 25 of file safe_math\&.c\&.
+.SS "unsigned int safe_div_uint (unsigned int x, unsigned int y, bool * passed)"
+
+.PP
+Definition at line 64 of file safe_math\&.c\&.
+.SS "int safe_mod_int (int x, int y, bool * passed)"
+
+.PP
+Definition at line 35 of file safe_math\&.c\&.
+.SS "unsigned int safe_mod_uint (unsigned int x, unsigned int y, bool * passed)"
+
+.PP
+Definition at line 74 of file safe_math\&.c\&.
+.SS "unsigned int safe_mul_uint (unsigned int x, unsigned int y, bool * passed)"
+
+.PP
+Definition at line 84 of file safe_math\&.c\&.
+.SS "int safe_sub_int (int x, int y, bool * passed)"
+
+.PP
+Definition at line 15 of file safe_math\&.c\&.
+.SS "unsigned int safe_sub_uint (unsigned int x, unsigned int y, bool * passed)"
+
+.PP
+Definition at line 44 of file safe_math\&.c\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

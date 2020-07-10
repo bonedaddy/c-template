@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['an_0',['an',['../df/ddb/structan.html',1,'']]],
-  ['args_1',['args',['../d8/d08/structargs.html',1,'']]]
+  ['_5fdo_5fexit_0',['_do_exit',['../da/ddd/socket_8h.html#ace01fe6e2a19a084bc0ea5a03f3e7d71',1,'socket.h']]],
+  ['_5fsignal_5fmutex_1',['_signal_mutex',['../da/ddd/socket_8h.html#a4e626ea44739d11f720e6fa913aa5fb5',1,'socket.h']]]
 ];

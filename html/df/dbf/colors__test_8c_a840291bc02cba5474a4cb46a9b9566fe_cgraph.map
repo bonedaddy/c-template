@@ -1,0 +1,6 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,13,60,39"/>
+<area shape="rect" id="node2" href="$df/dbf/colors__test_8c.html#aec6111269a2160ad025e3b5b0d5d56e0" title=" " alt="" coords="108,5,256,47"/>
+<area shape="rect" id="node3" href="$df/dbf/colors__test_8c.html#a757a1f3366a090dee340d796afa83e63" title=" " alt="" coords="304,13,447,39"/>
+<area shape="rect" id="node4" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="495,13,669,39"/>
+</map>

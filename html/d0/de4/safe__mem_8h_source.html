@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('d0/de4/safe__mem_8h_source.html','../.
 <div class="title">safe_mem.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<a href="../../d0/de4/safe__mem_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">/*</span></div>
@@ -94,22 +94,27 @@ $(document).ready(function(){initNavTree('d0/de4/safe__mem_8h_source.html','../.
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="../../da/da3/structmemory__object.html">    9</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="../../da/da3/structmemory__object.html">memory_object</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keywordtype">void</span> *data;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">bool</span> freed;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;} <a class="code" href="../../da/da3/structmemory__object.html">memory_object</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="../../da/da3/structmemory__object.html#a6a8f1f54237e4f3fd3efe264c6970567">   10</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="../../da/da3/structmemory__object.html#a6a8f1f54237e4f3fd3efe264c6970567">data</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="../../da/da3/structmemory__object.html#a74daa566a5a101064ee3b22788c95fdb">   11</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="../../da/da3/structmemory__object.html#a74daa566a5a101064ee3b22788c95fdb">freed</a>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;} <a class="code" href="../../d0/de4/safe__mem_8h.html#a505d03727317adbe45b487c6586af657">memory_object</a>;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// frees the data field of memory_object but does not free memory allocated for the memory_object itself</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">int</span> free_memory_object_data(<a class="code" href="../../da/da3/structmemory__object.html">memory_object</a> *obj);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d0/de4/safe__mem_8h.html#a67387f7a85dc258a2090338cbedb587d">free_memory_object_data</a>(<a class="code" href="../../da/da3/structmemory__object.html">memory_object</a> *obj);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// returns a new memory_object with data field set to input</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="../../da/da3/structmemory__object.html">memory_object</a> new_memory_object(<span class="keywordtype">void</span> *input);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="../../da/da3/structmemory__object.html">memory_object</a> <a class="code" href="../../d0/de4/safe__mem_8h.html#a9b1d5de7734e394a5ded6beff77b8f89">new_memory_object</a>(<span class="keywordtype">void</span> *input);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="asafe__mem_8h_html_a67387f7a85dc258a2090338cbedb587d"><div class="ttname"><a href="../../d0/de4/safe__mem_8h.html#a67387f7a85dc258a2090338cbedb587d">free_memory_object_data</a></div><div class="ttdeci">int free_memory_object_data(memory_object *obj)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d35/safe__mem_8c_source.html#l00011">safe_mem.c:11</a></div></div>
+<div class="ttc" id="asafe__mem_8h_html_a9b1d5de7734e394a5ded6beff77b8f89"><div class="ttname"><a href="../../d0/de4/safe__mem_8h.html#a9b1d5de7734e394a5ded6beff77b8f89">new_memory_object</a></div><div class="ttdeci">memory_object new_memory_object(void *input)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d35/safe__mem_8c_source.html#l00030">safe_mem.c:30</a></div></div>
 <div class="ttc" id="astructmemory__object_html"><div class="ttname"><a href="../../da/da3/structmemory__object.html">memory_object</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/de4/safe__mem_8h_source.html#l00009">safe_mem.h:9</a></div></div>
+<div class="ttc" id="astructmemory__object_html_a74daa566a5a101064ee3b22788c95fdb"><div class="ttname"><a href="../../da/da3/structmemory__object.html#a74daa566a5a101064ee3b22788c95fdb">memory_object::freed</a></div><div class="ttdeci">bool freed</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/de4/safe__mem_8h_source.html#l00011">safe_mem.h:11</a></div></div>
+<div class="ttc" id="astructmemory__object_html_a6a8f1f54237e4f3fd3efe264c6970567"><div class="ttname"><a href="../../da/da3/structmemory__object.html#a6a8f1f54237e4f3fd3efe264c6970567">memory_object::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/de4/safe__mem_8h_source.html#l00010">safe_mem.h:10</a></div></div>
+<div class="ttc" id="asafe__mem_8h_html_a505d03727317adbe45b487c6586af657"><div class="ttname"><a href="../../d0/de4/safe__mem_8h.html#a505d03727317adbe45b487c6586af657">memory_object</a></div><div class="ttdeci">struct memory_object memory_object</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><b>safe_mem.h</b></li>
+    <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="../../d0/de4/safe__mem_8h.html">safe_mem.h</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

@@ -1,0 +1,10 @@
+<map id="test_load_command" name="test_load_command">
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,160,108"/>
+<area shape="rect" id="node2" href="$d8/dcd/command__line_8c.html#ad60c0b714bf0a87a2a176383b38cb39c" title="frees memory allocated for the command_object and sets pointer to null for some reason this is causin..." alt="" coords="209,5,375,32"/>
+<area shape="rect" id="node3" href="$d8/dcd/command__line_8c.html#a5f23afcf3ea74099025cbe7fa62243a7" title="loads command handler and makes it executable" alt="" coords="231,56,353,83"/>
+<area shape="rect" id="node6" href="$d8/dcd/command__line_8c.html#ae859dbe92615fada71bc1e3230c0941d" title="intializes a new command_object to have commands loaded into" alt="" coords="208,107,376,133"/>
+<area shape="rect" id="node7" href="$d2/d6e/command__line__test_8c.html#a8ea20d65c96b7c44d96ebcac25d982ac" title=" " alt="" coords="215,157,369,184"/>
+<area shape="rect" id="node4" href="$d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="438,81,545,108"/>
+<area shape="rect" id="node5" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="607,81,781,108"/>
+<area shape="rect" id="node8" href="$d2/d6e/command__line__test_8c.html#ad1d09ba570dc319e8e872ac6ced10b2c" title=" " alt="" coords="424,157,559,184"/>
+</map>

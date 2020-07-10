@@ -1,0 +1,51 @@
+.TH "wait_group_t" 3 "Thu Jul 9 2020" "c-template" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+wait_group_t
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <wait_group\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBactive_processes\fP"
+.br
+.ti -1c
+.RI "pthread_mutex_t \fBmutex\fP"
+.br
+.ti -1c
+.RI "pthread_mutex_t \fBcond_mutex\fP"
+.br
+.ti -1c
+.RI "pthread_cond_t \fBcond_var\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 21 of file wait_group\&.h\&.
+.SH "Field Documentation"
+.PP 
+.SS "int wait_group_t::active_processes"
+
+.PP
+Definition at line 22 of file wait_group\&.h\&.
+.SS "pthread_mutex_t wait_group_t::cond_mutex"
+
+.PP
+Definition at line 24 of file wait_group\&.h\&.
+.SS "pthread_cond_t wait_group_t::cond_var"
+
+.PP
+Definition at line 25 of file wait_group\&.h\&.
+.SS "pthread_mutex_t wait_group_t::mutex"
+
+.PP
+Definition at line 23 of file wait_group\&.h\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for c-template from the source code\&.

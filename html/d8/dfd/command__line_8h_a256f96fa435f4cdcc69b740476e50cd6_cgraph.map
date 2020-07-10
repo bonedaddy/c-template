@@ -1,0 +1,5 @@
+<map id="execute" name="execute">
+<area shape="rect" id="node1" title="checks to see if we have a command named according to run and executes it" alt="" coords="5,5,79,32"/>
+<area shape="rect" id="node2" href="$d3/d13/colors_8c.html#a9b86c057290aefcc15b20231f9cabe9e" title="prints message to stdout with the given color" alt="" coords="127,5,233,32"/>
+<area shape="rect" id="node3" href="$d3/d13/colors_8c.html#ad8d5f1e1278b0284c4edf5cd254a39c6" title="returns an ansi color string to be used with printf" alt="" coords="281,5,456,32"/>
+</map>
