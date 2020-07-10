@@ -1,7 +1,21 @@
-// this is needed otherwise compilation errors occur
-// https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
-// https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+/*! @file socket.c
+  * @author Bonedaddy
+  * @brief a generic multi-threaded tcp socket server
+  * @details uses wait_group.h to provide lightweight synchronization between pthreads
+  * @warning before use you must call setup_signal_handling() so that all threads get properly cleaned up on exit
+  * @note you will want to adjust `async_handle_conn_func` to suit your needs as right now it is just an echo client
+  * it is likely you will need to have `#define _POSIX_C_SOURCE 201112L` 
+  * see the following for more information
+  *    - https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+  *    - https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+*/
+
+/*! @def _POSIX_C_SOURCE 201112L
+  * @brief fixes GCC not compiling correctly
+  * @note https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+*/
 #define _POSIX_C_SOURCE 201112L
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -23,14 +37,15 @@
 #include "../../include/sync/wait_group.h"
 #include "../../include/network/socket.h"
 
-/*
-    * the following two variables are not set
-    * in the header file to prevent accidental use
-    * while accessible from within the source file
-    * if you are just importing the header, they will not be available
+/*! @brief used to lock writes for _do_exit
+  * @warning should not be called libraries using socket.c
 */
 pthread_mutex_t _signal_mutex;
-// indicates we should begin cleanup processes
+/*! @brief used to indicate when threads need to cleanup
+  * @warning should not be called libraries using socket.c
+  * polled at the beginning of every async_listen_func loop and async_handle_conn_func
+  * when set to true causes active pthreads to exit after successfully cleaning up
+*/
 bool _do_exit;
 
 /*! @brief returns a new socket server bound to the port number and ready to accept connections
@@ -150,8 +165,12 @@ int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock
     return listen_socket_num;
 }
 
-/*! @brief runs in a pthread, listening and accepting new connections
-  * runs in a pthread attempting to accept connections. if an attempt fails sleep for 500 seconds spawns a detached pthread running async_handle_conn_func on the new connection
+/*! @brief listens for new connections and spawns a thread to process the connection
+  * thread that is created to process the connection runs as a detached thread
+  * will poll for new connections to accept every 500 miliseconds
+  * @param data void pointer to a socket_server struct
+  * @note detached thread created calling async_handle_conn_func
+  * @warning may change the 500 milisecond sleep
 */
 void *async_listen_func(void *data) {
     socket_server *srv = (socket_server *)data;
@@ -184,11 +203,13 @@ void *async_listen_func(void *data) {
     pthread_exit(NULL);
 }
 
-/*! @brief handles a new connection in a dedicated pthread
+/*! @brief handles connections in a dedicated pthread   
   * is laucnched in a pthread by async_listen_func when any new connection is received
   * @param data `void *` to a conn_handle_data object
-  * @warning currently is a generic echo client which reads data and sends it back to cient
-  * @warning you will want to adapt to your uses
+  * @note uses `select` to determine if we can read data from the connection
+  * @note select runs for 3 seconds before timing out and releasing resources with the connection
+  * @warning currently implements an example echo client
+  * @warning you will want to adapt to your specific use case
 */
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
@@ -319,6 +340,9 @@ bool set_socket_blocking_status(int fd, bool blocking) {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+/*! @brief callback function used to handle OS signals
+  * shouldn't be called directly and instead used as the func in `signal(SIGTERM, handler_fn)`
+*/
 void signal_handler_fn(int signal_number) {
     printf("\n"); // print new line so terminal doesn't display ^c on a line with a log message
     pthread_mutex_lock(&_signal_mutex);
@@ -326,11 +350,8 @@ void signal_handler_fn(int signal_number) {
     pthread_mutex_unlock(&_signal_mutex);
 }
 
-void print_and_exit(int error_number) {
-    printf("failure detected: %s\n", strerror(error_number));
-    exit(-1);
-}
-
+/*! @brief returns the address the client is connecting from
+*/
 char  *get_name_info(sock_addr *client_address) {
     char address_info[256]; // destroy when function returns
     getnameinfo(
@@ -350,6 +371,9 @@ char  *get_name_info(sock_addr *client_address) {
     return addr;
 }
 
+/*! @brief generates an addr_info struct with defaults
+  * defaults is IPv4, TCP, and AI_PASSIVE flags
+*/
 addr_info default_hints() {
     addr_info hints;
     memset(&hints, 0, sizeof(hints));
@@ -363,6 +387,8 @@ addr_info default_hints() {
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+/*! @brief returns a new socket client connected to `addr:port`
+*/
 socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr, char *port) {
     addr_info *peer_address;
     int rc = getaddrinfo(addr, port, NULL, &peer_address);
