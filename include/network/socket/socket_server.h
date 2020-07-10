@@ -34,6 +34,7 @@
 #include "socket.h"
 #include "../../utils/logger.h"
 #include "../../sync/wait_group.h"
+#include "../../utils/arrays.h"
 
 /*! @typedef socket_server
   * @struct socket_server
@@ -50,6 +51,8 @@ typedef struct socket_server {
     pthread_t thread;
     // pthread_attr_t taddr;
     wait_group_t *wg;
+    // array of active sockets
+    int_array *client_socket_numbers;
 } socket_server;
 
 /*! @typedef client_conn

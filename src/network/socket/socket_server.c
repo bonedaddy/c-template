@@ -32,6 +32,7 @@
 #include "../../../include/sync/wait_group.h"
 #include "../../../include/network/socket/socket.h"
 #include "../../../include/network/socket/socket_server.h"
+#include "../../../include/utils/arrays.h"
 
 /*! @brief returns a new socket server bound to the port number and ready to accept connections
 */
@@ -73,6 +74,8 @@ socket_server *new_socket_server(addr_info hints, thread_logger *thl, int max_co
         srv->log(thl, 0, "failed to initialize wait_group_t", LOG_LEVELS_ERROR);
         return NULL;
     }
+    int_array *arr = new_int_array(max_conns);
+    srv->client_socket_numbers = arr;
     srv->wg = wg;
     srv->socket_number = listen_socket_num;
     srv->thl = thl;
@@ -220,6 +223,21 @@ client_conn *accept_client_conn(socket_server *srv) {
     connection->socket_number = client_socket_num;
     char *addr_info = get_name_info((sock_addr *)connection->address);
     srv->logf(srv->thl, 0, LOG_LEVELS_INFO, "accepted new connection: %s", addr_info);
+    append_int_array(srv->client_socket_numbers, client_socket_num);
     free(addr_info);
     return connection;
+}
+
+void multi_select_func(socket_server *srv);
+void select_iter_func(void *p);
+
+void multi_select_func(socket_server *srv) {
+    int count = 0;
+    for (;;) {
+        int size = length_int_array(srv->client_socket_numbers);
+        if (size > count) {
+            count = size;
+        }
+
+    }
 }

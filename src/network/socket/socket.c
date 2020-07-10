@@ -31,6 +31,7 @@
 #include "../../../include/sync/wait_group.h"
 #include "../../../include/network/socket/socket.h"
 #include "../../../include/network/socket/socket_server.h"
+#include "../../../include/utils/arrays.h"
 
 /*! @brief  gets an available socket attached to bind_address
   * @return Success: file descriptor socket number greater than 0

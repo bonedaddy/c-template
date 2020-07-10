@@ -39,7 +39,6 @@
 #include <sys/time.h>
 #include "../../utils/logger.h"
 
-
 /*! @brief used to lock writes for _do_exit
   * @warning should not be called libraries using socket.c
 */
