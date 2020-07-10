@@ -17,6 +17,9 @@ if(NOT CMAKE_BUILD_TYPE)
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
 endif()
 
+# needed for building socket stuff
+list(APPEND flags -D_POSIX_C_SOURCE=201112L)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 ###################
@@ -31,6 +34,12 @@ include(cmake/FindSphinx.cmake)
 include(cmake/UseSphinxDoc.cmake)
 
 include(cmake/doxygen.cmake)
+
+include(cmake/wait_group_lib.cmake)
+include(cmake/wait_group_test.cmake)
+
+include(cmake/socket_test.cmake)
+include(cmake/socket_lib.cmake)
 
 include(cmake/glib.cmake)
 
@@ -76,6 +85,12 @@ message(STATUS "Build flags: ${flags}")
 ###############################
 
 # to disable test builds comment out `*_test()` lines
+
+define_wait_group_lib()
+define_wait_group_test()
+
+define_socket_test()
+define_socket_lib()
 
 define_returns_test()
 define_returns_lib()

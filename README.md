@@ -50,12 +50,16 @@ $> make sphinx-docs
 
 # dependencies
 
+* linux/unix (OS)
+* sphinx (docs)
+* doxygen (docs)
 * cmocka (testing)
 * valgrind (testing)
 * argtable3 (command_line & cli)
 * pthreads (logger)
 * gcc (compilation)
-  * compiled with C17
+  * must support C17 standard
+* all other dependencies are the libraries in this repo
 
 # examples
 
