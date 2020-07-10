@@ -1,6 +1,13 @@
 /*! @file socket.h
   * @author Bonedaddy
-  * @brief definitions, and helper functions related to socket usage in general
+  * @brief TCP socket servers, clients, and tooling for working with sockets
+  * @details uses wait_group.h to provide lightweight synchronization between pthreads
+  * @warning before use you must call setup_signal_handling() so that all threads get properly cleaned up on exit
+  * @note you will want to adjust `async_handle_conn_func` to suit your needs as right now it is just an echo client
+  * it is likely you will need to have `#define _POSIX_C_SOURCE 201112L` 
+  * see the following for more information
+  *    - https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
+  *    - https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
 */
 
 #pragma once
@@ -13,7 +20,6 @@
 */
 
 #include <pthread.h>
-#include "../utils/logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -24,13 +30,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-// sys/time.h is needed for the timeval
-//  #include <time.h>
 #include <stdbool.h>
 #include <pthread.h>
 #include <signal.h>
 #include <fcntl.h>
+// sys/time.h is needed for the timeval
+//  #include <time.h>
 #include <sys/time.h>
+#include "../../utils/logger.h"
 
 
 /*! @brief used to lock writes for _do_exit

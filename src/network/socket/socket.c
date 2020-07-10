@@ -1,6 +1,6 @@
-/*! @file socket_server.c
+/*! @file socket.c
   * @author Bonedaddy
-  * @brief a generic multi-threaded tcp socket server
+  * @brief TCP socket servers, clients, and tooling for working with sockets
   * @details uses wait_group.h to provide lightweight synchronization between pthreads
   * @warning before use you must call setup_signal_handling() so that all threads get properly cleaned up on exit
   * @note you will want to adjust `async_handle_conn_func` to suit your needs as right now it is just an echo client
@@ -8,11 +8,6 @@
   * see the following for more information
   *    - https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
   *    - https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
-*/
-
-/*! @def _POSIX_C_SOURCE 201112L
-  * @brief fixes GCC not compiling correctly
-  * @note https://stackoverflow.com/questions/39409846/why-does-gcc-not-complain-about-htons-but-complains-about-getaddrinfo-when-c/39410095#39410095
 */
 
 #include <sys/types.h>
@@ -32,10 +27,10 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/time.h>
-#include "../../include/utils/logger.h"
-#include "../../include/sync/wait_group.h"
-#include "../../include/network/socket.h"
-#include "../../include/network/socket_server.h"
+#include "../../../include/utils/logger.h"
+#include "../../../include/sync/wait_group.h"
+#include "../../../include/network/socket/socket.h"
+#include "../../../include/network/socket/socket_server.h"
 
 /*! @brief  gets an available socket attached to bind_address
   * @return Success: file descriptor socket number greater than 0

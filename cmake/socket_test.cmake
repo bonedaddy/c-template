@@ -1,5 +1,5 @@
 macro(define_socket_test)
-    add_executable(socket-test ./src/network/socket_server_test.c)
+    add_executable(socket-test ./src/network/socket/socket_server_test.c)
     target_compile_options(socket-test PRIVATE ${flags})
     target_link_libraries(socket-test socketlib)
 endmacro()

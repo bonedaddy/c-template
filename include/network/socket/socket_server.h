@@ -1,6 +1,6 @@
 /*! @file socket_server.h
   * @author Bonedaddy
-  * @brief definitions related to socket server based services
+  * @brief TCP socket servers, clients, and tooling for working with sockets
   * @details uses wait_group.h to provide lightweight synchronization between pthreads
   * @warning before use you must call setup_signal_handling() so that all threads get properly cleaned up on exit
   * @note you will want to adjust `async_handle_conn_func` to suit your needs as right now it is just an echo client
@@ -13,11 +13,7 @@
 #pragma once
 
 #include <pthread.h>
-#include "../utils/logger.h"
-#include "../sync/wait_group.h"
-#include "socket.h"
 #include <pthread.h>
-#include "../utils/logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -35,7 +31,9 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/time.h>
-
+#include "socket.h"
+#include "../../utils/logger.h"
+#include "../../sync/wait_group.h"
 
 /*! @typedef socket_server
   * @struct socket_server
