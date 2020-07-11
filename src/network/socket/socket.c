@@ -212,21 +212,23 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
     int client_socket_num = get_new_socket(thl, peer_address, opts, 1);
     if (client_socket_num == -1) {
         thl->log(thl, 0, "failed to get_new_socket", LOG_LEVELS_ERROR);
+        freeaddrinfo(peer_address);
         return NULL;
     }
     socket_client *sock_client = malloc(sizeof(sock_client));
     if (sock_client == NULL) {
-         thl->log(thl, 0, "failed malloc space for socket_client", LOG_LEVELS_ERROR);
+        thl->log(thl, 0, "failed malloc space for socket_client", LOG_LEVELS_ERROR);
+        freeaddrinfo(peer_address);
         return NULL;
     }
     sock_client->socket_number = client_socket_num;
     rc = connect(sock_client->socket_number, peer_address->ai_addr, peer_address->ai_addrlen);
+    freeaddrinfo(peer_address);
     if(rc == -1) {
         free(sock_client);
         thl->log(thl, 0, "failed to connect to remote socket", LOG_LEVELS_ERROR);
         return NULL;
     }
-    free(peer_address);
     return sock_client;
 }
 
@@ -256,6 +258,9 @@ char *socket_recv(thread_logger *thl, int fd) {
         return NULL;
     }
     char *buffer = malloc(sizeof(char) * 4096);
+    if (buffer == NULL) {
+        return NULL;
+    }
     int rc = recv(
         fd,
         buffer,
@@ -264,6 +269,7 @@ char *socket_recv(thread_logger *thl, int fd) {
     );
     if (rc == -1) {
         thl->log(thl, 0, "failed to recv msg", LOG_LEVELS_ERROR);
+        free(buffer);
         return NULL;
     }
     return buffer;

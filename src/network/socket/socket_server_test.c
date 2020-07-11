@@ -40,11 +40,15 @@ int main(int argc, char **argv) {
             if (rc == -1) {
                 thl->log(thl, 0, "failed to send message", LOG_LEVELS_ERROR);
                 close(sock_client->socket_number);
+                free(sock_client);
                 return -1;
             }
             char *msg = socket_recv(thl, sock_client->socket_number);
             thl->logf(thl, 0, LOG_LEVELS_INFO, "received message: %s\n", msg);
             close(sock_client->socket_number);
+            free(msg);
+            free(sock_client);
+            clear_thread_logger(thl);
             return 0;
         }
     }
