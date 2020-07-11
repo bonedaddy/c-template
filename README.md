@@ -58,6 +58,7 @@ $> make sphinx-docs
 * argtable3 (command_line & cli)
 * pthreads (logger)
 * gcc (compilation)
+   * gcc10
   * must support C17 standard
 * all other dependencies are the libraries in this repo
 
@@ -66,6 +67,9 @@ $> make sphinx-docs
 Eventually some examples will be included, however your best bet is to look at the `*_test.c` files for now.
 
 # build
+
+
+* Make sure you have gcc-10 installed
 
 ## release
 

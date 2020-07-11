@@ -7,14 +7,17 @@ cmake_minimum_required(VERSION 3.0)
 
 project(c-template-REPLACEME LANGUAGES C)
 
+# override gcc compiler to v10 for static analysis
+set(CMAKE_C_COMPILER /usr/bin/gcc-10)
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # -g indicates to include debug symbols
-    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g)
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g -fanalyzer)
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -fanalyzer)
 endif()
 
 # needed for building socket stuff
