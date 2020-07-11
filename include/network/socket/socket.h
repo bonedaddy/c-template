@@ -51,8 +51,6 @@ pthread_mutex_t _signal_mutex;
 */
 bool _do_exit;
 
-
-
 /*! @typedef addr_info
   * @struct addrinfo
   * @brief alias for `struct addrinfo`
@@ -70,6 +68,12 @@ typedef struct sockaddr sock_addr;
   * @brief alias for `struct sockaddr_storage`
 */
 typedef struct sockaddr_storage sock_addr_storage;
+
+/*! @typedef process_fd_fn
+  * @struct process_fd_fn
+  * @brief function to invoke when iterating over an fd_set
+*/
+typedef void (*process_fd_fn)(int fd_num);
 
 /*! @enum SOCKET_OPTS
   * @brief used to configure new sockets
@@ -132,3 +136,9 @@ char  *get_name_info(sock_addr *client_address);
 addr_info default_hints();
 
 
+/*! @brief iterates over an fd_set and applies a function to found ones
+  * iterates over 0 -> max_socket checking and checks in FD_IS_SET.
+  * if set then we run `fn(fd_num)`
+  * 
+*/
+void process_fd_set(fd_set fds, int max_socket, process_fd_fn fn);

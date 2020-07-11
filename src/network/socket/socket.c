@@ -210,5 +210,23 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
     printf("socket num: %i\n", client_socket_num);
     socket_client *sock_client = malloc(sizeof(sock_client));
     sock_client->socket_number = client_socket_num;
+    rc = connect(sock_client->socket_number, peer_address->ai_addr, peer_address->ai_addrlen);
+    if(rc == -1) {
+        thl->log(thl, 0, "failed to connect to remote socket", LOG_LEVELS_ERROR);
+        return NULL;
+    }
     return sock_client;
+}
+
+/*! @brief iterates over an fd_set and applies a function to found ones
+  * iterates over 0 -> max_socket checking and checks in FD_IS_SET.
+  * if set then we run `fn(fd_num)`
+  * 
+*/
+void process_fd_set(fd_set fds, int max_socket, process_fd_fn fn) {
+    for (int i = 0; i < max_socket; i++) {
+        if (FD_ISSET(i, &fds)) {
+            fn(i);
+        }
+    }
 }
