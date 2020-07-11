@@ -46,7 +46,13 @@ void print_colored(COLORS color, char *message) {
 
 int write_colored(COLORS color, int file_descriptor, char *message) {
     char *pcolor = get_ansi_color_scheme(color);
+    if (pcolor == NULL) {
+        return -1;
+    }
     char *reset = get_ansi_color_scheme(COLORS_RESET);
+    if (reset == NULL) {
+        return -1;
+    }
     // 2 for \n
     char *write_message = calloc(sizeof(char), strlen(pcolor) + strlen(reset) + strlen(message) + 2);
     if (write_message == NULL) {

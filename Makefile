@@ -1,4 +1,4 @@
-CC=/usr/bin/gcc-10
+CC=
 
 .PHONY: build-all
 build-all:
@@ -8,6 +8,11 @@ build-all:
 .PHONY: build-all-debug
 build-all-debug:
 	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -build  . ; make )
+
+.PHONY: build-all-analyze
+build-all-analyze:
+	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Analyze .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Analyze -build  . ; make )
+
 
 .PHONY: doxygen-docs
 doxygen-docs:

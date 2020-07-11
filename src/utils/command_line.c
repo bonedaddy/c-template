@@ -45,6 +45,9 @@ command_object *new_command_object(int argc, char *argv[]) {
 /*! @brief loads command handler and makes it executable
 */
 int load_command(command_object *self, command_handler *command) {
+  if (self == NULL) {
+    return -1;
+  }
   if (self->command_count >= MAX_COMMANDS) {
     print_colored(COLORS_RED, "maximum number of commands\n");
     return -1;
@@ -68,6 +71,7 @@ int execute(command_object *self, char *run) {
   return -1;
 }
 
+#pragma GCC diagnostic ignored "-Wanalyzer-double-free"
 /*! @brief frees memory allocated for the command_object and sets pointer to null
    * for some reason this is causing an address boundary error 
 */

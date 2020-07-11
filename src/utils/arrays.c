@@ -19,6 +19,7 @@ int_array *new_int_array(int max) {
     }
     int_array *arr = malloc(sizeof(int_array) + sizeof(int) * max);
     if (arr == NULL) {
+        free(values);
         return NULL;
     }
     arr->values = values;

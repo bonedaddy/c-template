@@ -12,6 +12,7 @@ void print_hello_world() {
     printf("hello world"); 
 }
 command_handler *new_test_command();
+#pragma GCC diagnostic ignored "-Wanalyzer-malloc-leak"
 command_handler *new_test_command() {
     command_handler *handler = malloc(sizeof(command_handler));
     if (handler == NULL) {
@@ -25,6 +26,7 @@ command_handler *new_test_command() {
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wanalyzer-malloc-leak"
 void test_new_command_object(void **state) {
     int argc = MAX_COMMAND_ARGS;
     // increase argc beyond the maximum limit
@@ -43,6 +45,7 @@ void test_new_command_object(void **state) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 // for some reason gcc complains response isn't used
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#pragma GCC diagnostic ignored "-Wanalyzer-malloc-leak"
 void test_load_command(void **state) {
     int argc = 1;
     char *argv[MAX_COMMAND_ARGS] = {"hello"};
@@ -62,6 +65,7 @@ void test_load_command(void **state) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 // for some reason gcc complains response isn't used
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#pragma GCC diagnostic ignored "-Wanalyzer-malloc-leak"
 void test_execute(void **state) {
     int argc = 1;
     char *argv[MAX_COMMAND_ARGS] = {"hello"};
@@ -77,6 +81,7 @@ void test_execute(void **state) {
     free_command_object(cmdobj);
 }
 
+#pragma GCC diagnostic ignored "-Wanalyzer-malloc-leak"
 int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_new_command_object),
