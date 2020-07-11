@@ -209,6 +209,9 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
     }
     printf("socket num: %i\n", client_socket_num);
     socket_client *sock_client = malloc(sizeof(sock_client));
+    if (sock_client == NULL) {
+        return NULL;
+    }
     sock_client->socket_number = client_socket_num;
     return sock_client;
 }
