@@ -233,11 +233,31 @@ void select_iter_func(void *p);
 
 void multi_select_func(socket_server *srv) {
     int count = 0;
+    int max_socket;
+    fd_set main_socket_set;
+    fd_set working_set;
+    FD_ZERO(&main_socket_set);
     for (;;) {
         int size = length_int_array(srv->client_socket_numbers);
         if (size > count) {
             count = size;
+            count++;
+            int new_sock_num = peek_int_array(srv->client_socket_numbers);
+            if (new_sock_num > max_socket) {
+                max_socket = new_sock_num + 1;
+            }
+            FD_SET(new_sock_num, &main_socket_set);
         }
-
+        working_set = main_socket_set;
+        struct timeval timeout;
+        timeout.tv_sec = 3;
+        timeout.tv_usec = 0;
+        int rc = select(
+            max_socket,
+            &working_set,
+            0,
+            0,
+            &timeout
+        );
     }
 }
