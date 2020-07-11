@@ -13,8 +13,15 @@ int_array *new_int_array(int max) {
     if (max == 0) {
         max = 10;
     }
+    int *values = calloc(sizeof(int), max);
+    if (values == NULL) {
+        return NULL;
+    }
     int_array *arr = malloc(sizeof(int_array) + sizeof(int) * max);
-    arr->values = calloc(sizeof(int), max);
+    if (arr == NULL) {
+        return NULL;
+    }
+    arr->values = values;
     arr->count = 0;
     arr->max = max;
     pthread_mutex_init(&arr->mutex, NULL);
