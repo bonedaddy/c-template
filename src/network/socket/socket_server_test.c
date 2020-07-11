@@ -35,8 +35,7 @@ int main(int argc, char **argv) {
             int rc = socket_send(
                 thl, 
                 sock_client->socket_number, 
-                "hello world", 
-                strlen("hello world")
+                "hello world"
             );
             if (rc == -1) {
                 thl->log(thl, 0, "failed to send message", LOG_LEVELS_ERROR);

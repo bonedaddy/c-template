@@ -231,11 +231,12 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
 }
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-int socket_send(thread_logger *thl, int fd, char *data, int data_size) {
-    if (strlen(data) != (size_t)data_size) {
-        thl->logf(thl, 0, LOG_LEVELS_ERROR, "mismatched data_size. got %i want %i", strlen(data), data_size);
-        return -1;
-    }
+/*! @brief a helper function for `send` logging the failure message
+  * @note caller is responsible for freeing up memory allocated for `data` if needed
+  * @returns Failure: -1
+  * @returns Success: 0
+*/
+int socket_send(thread_logger *thl, int fd, char *data) {
     int rc = send(fd, data, strlen(data), 0);
     if (rc == -1) { 
         return rc;
@@ -243,6 +244,12 @@ int socket_send(thread_logger *thl, int fd, char *data, int data_size) {
     return 0;
 }
 
+/*! @brief a helper function for `recv` logging the failure message
+  * @note caller must free up the returned memory when no longer needed
+  * @note can receive up to `sizeof(char) * 4096` per message
+  * @returns Failure; NULL ptr
+  * @returns Success: char* of received data
+*/
 char *socket_recv(thread_logger *thl, int fd) {
     if (!can_recv(fd, 3)) {
         thl->log(thl, 0, "conn not ready to receive message", LOG_LEVELS_ERROR);

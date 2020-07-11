@@ -111,10 +111,11 @@ int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock
   * @returns Failure: -1
   * @returns Success: 0
 */
-int socket_send(thread_logger *thl, int fd, char *data, int data_size);
+int socket_send(thread_logger *thl, int fd, char *data);
 
 /*! @brief a helper function for `recv` logging the failure message
   * @note caller must free up the returned memory when no longer needed
+  * @note can receive up to `sizeof(char) * 4096` per message
   * @returns Failure; NULL ptr
   * @returns Success: char* of received data
 */
