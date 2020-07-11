@@ -5,7 +5,7 @@
 #include <argtable3.h>
 #include "../../include/utils/colors.h"
 #include "../../include/utils/command_line.h"
-#include "../../include/utils/array_len.h"
+#include "../../include/utils/arrays.h"
 #include "../../include/utils/logger.h"
 #include "../../include/utils/safe_mem.h"
 
