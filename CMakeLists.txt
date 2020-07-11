@@ -21,58 +21,19 @@ endif()
 list(APPEND flags -D_POSIX_C_SOURCE=201112L)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/libraries")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/misc")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/pkgs")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/tests")
 
 ###################
 # END CMAKE SETUP #
 ###################
 
-########################
-# BEGIN MACRO INCLUDES #
-########################
+include(cmake/misc/include.cmake)
+include_cmake_files()
 
-include(cmake/FindSphinx.cmake)
-include(cmake/UseSphinxDoc.cmake)
 
-include(cmake/doxygen.cmake)
-
-include(cmake/wait_group_lib.cmake)
-include(cmake/wait_group_test.cmake)
-
-include(cmake/socket_test.cmake)
-include(cmake/socket_lib.cmake)
-
-include(cmake/glib.cmake)
-
-include(cmake/returns_test.cmake)
-include(cmake/returns_lib.cmake)
-
-include(cmake/errors_lib.cmake)
-include(cmake/errors_test.cmake)
-
-include(cmake/colors_lib.cmake)
-include(cmake/colors_test.cmake)
-
-include(cmake/setup_valgrind.cmake)
-
-include(cmake/safe_mem_lib.cmake)
-include(cmake/safe_mem_test.cmake)
-
-include(cmake/safe_math_lib.cmake)
-include(cmake/safe_math_test.cmake)
-
-include(cmake/command_line_lib.cmake)
-include(cmake/command_line_test.cmake)
-
-include(cmake/cli.cmake)
-
-include(cmake/random_lib.cmake)
-include(cmake/random_test.cmake)
-
-include(cmake/logger_lib.cmake)
-include(cmake/logger_test.cmake)
-
-include(cmake/arrays_lib.cmake)
-include(cmake/array_len_test.cmake)
 
 ######################
 # END MACRO INCLUDES #
