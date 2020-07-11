@@ -134,6 +134,10 @@ void setup_signal_handling();
 */
 bool set_socket_blocking_status(int fd, bool blocking);
 
+/*! @brief indicates whether we can receive data from the file descriptor
+  * @note we will wait timeout_secs before stopping
+*/
+bool can_recv(int fd, int timeout_secs);
 
 /*! @brief callback function used to handle OS signals
   * shouldn't be called directly and instead used as the func in `signal(SIGTERM, handler_fn)`

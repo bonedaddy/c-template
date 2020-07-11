@@ -132,28 +132,7 @@ void *async_listen_func(void *data) {
 */
 void *async_handle_conn_func(void *data) {
     conn_handle_data *chdata = (conn_handle_data *)data;
-    fd_set socket_set;
-    FD_ZERO(&socket_set); // always zero out before use
-    FD_SET(chdata->conn->socket_number, &socket_set);
-    // FD_CLR() // used to remove from set
-    // must provide a number larger than last socket descriptor
-    int max_socket = chdata->conn->socket_number + 1;
-    // copy since select() modifies stuff
-    // not needed in our case since this is for a dedicated conn
-    // fd_set socket_set_copy;
-    // socket_set_copy = socket_set;
-    // set a timeout of 3 seconds
-    struct timeval timeout;
-    timeout.tv_sec = 3;
-    timeout.tv_usec = 0;
-    int rc = select(
-        max_socket, 
-        &socket_set, 
-        0, 
-        0, 
-        &timeout
-    );
-    if (rc == 0 || rc == -1) {
+    if (!can_recv(chdata->conn->socket_number, 3)) {
         chdata->srv->log(chdata->srv->thl, 0, "connection not ready before timeout", LOG_LEVELS_WARN);
     } else {
         for (;;) {
@@ -161,22 +140,19 @@ void *async_handle_conn_func(void *data) {
                 // break out of loop trigger closure
                 break;
             }
-            // once select returns the copy contains the sockets which are ready to be read from
-            if (FD_ISSET(chdata->conn->socket_number, &socket_set)) {
-                char request[1024];
-                rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
-                if (rc == -1 || rc == 0) {
-                    break;
-                }
-                rc = send(
-                    chdata->conn->socket_number,
-                    request,
-                    strlen(request),
-                    0
-                );
-                if ((size_t)rc < strlen(request)) {
-                    chdata->srv->log(chdata->srv->thl, 0, "failed to send enough bytes", LOG_LEVELS_WARN);
-                }
+            char request[1024];
+            int rc = recv(chdata->conn->socket_number, request, sizeof(request), 0);
+            if (rc == -1 || rc == 0) {
+                break;
+            }
+            rc = send(
+                chdata->conn->socket_number,
+                request,
+                strlen(request),
+                0
+            );
+            if ((size_t)rc < strlen(request)) {
+                chdata->srv->log(chdata->srv->thl, 0, "failed to send enough bytes", LOG_LEVELS_WARN);
             }
         }
     }

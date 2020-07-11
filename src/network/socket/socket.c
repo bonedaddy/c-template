@@ -244,14 +244,7 @@ int socket_send(thread_logger *thl, int fd, char *data, int data_size) {
 }
 
 char *socket_recv(thread_logger *thl, int fd) {
-    struct timeval timeout;
-    timeout.tv_sec = 3;
-    timeout.tv_usec = 0;
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(fd, &fds);
-    select(fd+1, &fds, NULL, NULL, &timeout);
-    if (!FD_ISSET(fd, &fds)) {
+    if (!can_recv(fd, 3)) {
         thl->log(thl, 0, "conn not ready to receive message", LOG_LEVELS_ERROR);
         return NULL;
     }
@@ -267,7 +260,24 @@ char *socket_recv(thread_logger *thl, int fd) {
         return NULL;
     }
     return buffer;
-} 
+}
+
+/*! @brief indicates whether we can receive data from the file descriptor
+  * @note we will wait timeout_secs before stopping
+*/
+bool can_recv(int fd, int timeout_secs) {
+    struct timeval timeout;
+    timeout.tv_sec = timeout_secs;
+    timeout.tv_usec = 0;
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(fd, &fds);
+    select(fd+1, &fds, NULL, NULL, &timeout);
+    if (!FD_ISSET(fd, &fds)) {
+        return false;
+    }
+    return true;
+}
 
 /*! @brief iterates over an fd_set and applies a function to found ones
   * iterates over 0 -> max_socket checking and checks in FD_IS_SET.
