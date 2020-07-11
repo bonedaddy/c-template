@@ -106,6 +106,20 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
 */
 int get_new_socket(thread_logger *thl, addr_info *bind_address, SOCKET_OPTS sock_opts[], int num_opts);
 
+/*! @brief a helper function for `send` logging the failure message
+  * @note caller is responsible for freeing up memory allocated for `data` if needed
+  * @returns Failure: -1
+  * @returns Success: 0
+*/
+int socket_send(thread_logger *thl, int fd, char *data, int data_size);
+
+/*! @brief a helper function for `recv` logging the failure message
+  * @note caller must free up the returned memory when no longer needed
+  * @returns Failure; NULL ptr
+  * @returns Success: char* of received data
+*/
+char *socket_recv(thread_logger *thl, int fd);
+
 /*! @brief prepares library for usage
   * @warning must be called before using the library
   * sets up internal mutex, and system signal handling for terminating the server

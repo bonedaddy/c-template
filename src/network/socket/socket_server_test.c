@@ -32,7 +32,20 @@ int main(int argc, char **argv) {
         if (strcmp(argv[1], "client") == 0) {
             addr_info client_hints = default_hints();
             socket_client *sock_client = new_socket_client(thl, client_hints, "localhost", "8081");
-            printf("%i\n", sock_client->socket_number);
+            int rc = socket_send(
+                thl, 
+                sock_client->socket_number, 
+                "hello world", 
+                strlen("hello world")
+            );
+            if (rc == -1) {
+                thl->log(thl, 0, "failed to send message", LOG_LEVELS_ERROR);
+                close(sock_client->socket_number);
+                return -1;
+            }
+            char *msg = socket_recv(thl, sock_client->socket_number);
+            thl->logf(thl, 0, LOG_LEVELS_INFO, "received message: %s\n", msg);
+            close(sock_client->socket_number);
             return 0;
         }
     }

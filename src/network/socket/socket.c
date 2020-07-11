@@ -200,23 +200,74 @@ socket_client *new_socket_client(thread_logger *thl, addr_info hints, char *addr
         sizeof(service_buffer),
         0
     );
-    printf("address buff: %s\n", address_buffer);
-    printf("service buffer: %s\n", service_buffer);
-    int client_socket_num = get_new_socket(thl, peer_address, NULL, 0);
+    thl->logf(
+        thl,
+        0,
+        LOG_LEVELS_INFO,
+        "found name info. address: %s\tservice: %s",
+        address_buffer,
+        service_buffer
+    );
+    SOCKET_OPTS opts[1/*2*/] = {REUSEADDR/*, NOBLOCK*/};
+    int client_socket_num = get_new_socket(thl, peer_address, opts, 1);
     if (client_socket_num == -1) {
         thl->log(thl, 0, "failed to get_new_socket", LOG_LEVELS_ERROR);
         return NULL;
     }
-    printf("socket num: %i\n", client_socket_num);
     socket_client *sock_client = malloc(sizeof(sock_client));
+    if (sock_client == NULL) {
+         thl->log(thl, 0, "failed malloc space for socket_client", LOG_LEVELS_ERROR);
+        return NULL;
+    }
     sock_client->socket_number = client_socket_num;
     rc = connect(sock_client->socket_number, peer_address->ai_addr, peer_address->ai_addrlen);
     if(rc == -1) {
+        free(sock_client);
         thl->log(thl, 0, "failed to connect to remote socket", LOG_LEVELS_ERROR);
         return NULL;
     }
+    free(peer_address);
     return sock_client;
 }
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+int socket_send(thread_logger *thl, int fd, char *data, int data_size) {
+    if (strlen(data) != (size_t)data_size) {
+        thl->logf(thl, 0, LOG_LEVELS_ERROR, "mismatched data_size. got %i want %i", strlen(data), data_size);
+        return -1;
+    }
+    int rc = send(fd, data, strlen(data), 0);
+    if (rc == -1) { 
+        return rc;
+    }
+    return 0;
+}
+
+char *socket_recv(thread_logger *thl, int fd) {
+    struct timeval timeout;
+    timeout.tv_sec = 3;
+    timeout.tv_usec = 0;
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(fd, &fds);
+    select(fd+1, &fds, NULL, NULL, &timeout);
+    if (!FD_ISSET(fd, &fds)) {
+        thl->log(thl, 0, "conn not ready to receive message", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    char *buffer = malloc(sizeof(char) * 4096);
+    int rc = recv(
+        fd,
+        buffer,
+        sizeof(char) * 4096,
+        0
+    );
+    if (rc == -1) {
+        thl->log(thl, 0, "failed to recv msg", LOG_LEVELS_ERROR);
+        return NULL;
+    }
+    return buffer;
+} 
 
 /*! @brief iterates over an fd_set and applies a function to found ones
   * iterates over 0 -> max_socket checking and checks in FD_IS_SET.
