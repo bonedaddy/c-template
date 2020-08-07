@@ -1,28 +1,30 @@
 /*! @file logger.c
-  * @brief a thread safe logger with optional printf style logging
-  * @details allows writing color coded logs to stdout, with optional file output as well. timestamps all logs, and provides optional printf style logging
-  * @note logf_func has a bug where some format is respected and others are not, consider the following from a `%s%s` format:
-  *   - [error - Jul 06 10:01:07 PM] one<insert-tab-here>two
-  *   - [warn - Jul 06 10:01:07 PM] one	two
-  * @note warn, and info appear to not respect format, while debug and error do
-  * @todo
-  *  - buffer logs and use a dedicated thread for writing (avoid blocking locks)
-  *  - handling system signals (exit, kill, etc...)
-*/
+ * @brief a thread safe logger with optional printf style logging
+ * @details allows writing color coded logs to stdout, with optional file output as
+ * well. timestamps all logs, and provides optional printf style logging
+ * @note logf_func has a bug where some format is respected and others are not,
+ * consider the following from a `%s%s` format:
+ *   - [error - Jul 06 10:01:07 PM] one<insert-tab-here>two
+ *   - [warn - Jul 06 10:01:07 PM] one	two
+ * @note warn, and info appear to not respect format, while debug and error do
+ * @todo
+ *  - buffer logs and use a dedicated thread for writing (avoid blocking locks)
+ *  - handling system signals (exit, kill, etc...)
+ */
 
+#include "utils/logger.h"
+#include <fcntl.h>
+#include <pthread.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <pthread.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <sys/types.h>
 #include <unistd.h>
-#include "../../include/utils/logger.h"
 
 /*! @brief private function that returns a timestamp of format `Jul 06 10:12:20 PM`
-*/
+ */
 char *get_time_string();
 
 thread_logger *new_thread_logger(bool with_debug) {
@@ -55,8 +57,10 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
     }
     // append to file, create if not exist, sync write files
     // TODO(bonedaddy): try to use O_DSYNC for data integrity sync
-    int file_descriptor = open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND, 0640);
-    // TODO(bonedaddy): should this just be `< 0` ? `open` shouldn't return 0 but im unsure about removing the check for it
+    int file_descriptor =
+        open(output_file, O_WRONLY | O_CREAT | O_SYNC | O_APPEND, 0640);
+    // TODO(bonedaddy): should this just be `< 0` ? `open` shouldn't return 0 but im
+    // unsure about removing the check for it
     if (file_descriptor <= 0) {
         // free thl as it is not null
         free(thl);
@@ -72,7 +76,7 @@ file_logger *new_file_logger(char *output_file, bool with_debug) {
 
 int write_file_log(int file_descriptor, char *message) {
     // 2 for \n
-    char *msg = calloc(sizeof(char), strlen(message) + 2);
+    char *msg = calloc(1, strlen(message) + 2);
     if (msg == NULL) {
         printf("failed to calloc msg\n");
         return -1;
@@ -85,43 +89,44 @@ int write_file_log(int file_descriptor, char *message) {
     } else {
         // this branch will be triggered if write doesnt fail
         // so overwrite the response to 0 as we want to return 0 to indicate
-        // no error was received, and returning response directly would return the number of bytes written
+        // no error was received, and returning response directly would return the
+        // number of bytes written
         response = 0;
     }
     free(msg);
     return response;
 }
 
-void logf_func(thread_logger *thl,  int file_descriptor, LOG_LEVELS level, char *message, ...) {
+void logf_func(thread_logger *thl, int file_descriptor, LOG_LEVELS level,
+               char *message, ...) {
     va_list args;
     va_start(args, message);
-    char *msg = malloc(sizeof(args) + strlen(message) + 1);
-    if (msg == NULL) {
-        return;
-    }
-    int response = vsprintf(msg, message, args);
+    char msg[sizeof(args) + (strlen(message) * 2)];
+    memset(msg, 0, sizeof(msg));
+
+    int response = vsnprintf(msg, sizeof(msg), message, args);
     if (response < 0) {
         free(msg);
         printf("failed to vsprintf\n");
         return;
     }
     log_func(thl, file_descriptor, msg, level);
-    free(msg);
 }
 
-void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS level) {
+void log_func(thread_logger *thl, int file_descriptor, char *message,
+              LOG_LEVELS level) {
     char *time_str = get_time_string();
     if (time_str == NULL) {
         // dont printf log as get_time_str does that
         return;
     }
-    char *date_msg = calloc(sizeof(char), strlen(time_str) + strlen(message) + 2);
-    if (date_msg == NULL) {
-        printf("failed to calloc date_msg\n");
-        return;
-    }
+
+    char date_msg[strlen(time_str) + strlen(message) + 2];
+    memset(date_msg, 0, sizeof(date_msg));
+
     strcat(date_msg, time_str);
     strcat(date_msg, message);
+
     switch (level) {
         case LOG_LEVELS_INFO:
             info_log(thl, file_descriptor, date_msg);
@@ -136,14 +141,14 @@ void log_func(thread_logger *thl, int file_descriptor, char *message, LOG_LEVELS
             debug_log(thl, file_descriptor, date_msg);
             break;
     }
-    free(date_msg);
+
     free(time_str);
 }
 
-void info_log(thread_logger *thl,  int file_descriptor, char *message) {
+void info_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = calloc(sizeof(char), strlen(message) + strlen("[info - ") + (size_t)2);
+    char *msg = calloc(1, strlen(message) + strlen("[info - ") + (size_t)2);
     if (msg == NULL) {
         printf("failed to calloc info_log msg");
         return;
@@ -161,7 +166,7 @@ void info_log(thread_logger *thl,  int file_descriptor, char *message) {
 void warn_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = calloc(sizeof(char), strlen(message) + strlen("[warn - ") + (size_t) 2);
+    char *msg = calloc(1, strlen(message) + strlen("[warn - ") + (size_t)2);
     if (msg == NULL) {
         printf("failed to calloc warn_log msg");
         return;
@@ -183,7 +188,7 @@ void warn_log(thread_logger *thl, int file_descriptor, char *message) {
 void error_log(thread_logger *thl, int file_descriptor, char *message) {
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = calloc(sizeof(char), strlen(message) + strlen("[error - ") + (size_t)2);
+    char *msg = calloc(1, strlen(message) + strlen("[error - ") + (size_t)2);
     if (msg == NULL) {
         printf("failed to calloc error_log msg");
         return;
@@ -206,7 +211,7 @@ void debug_log(thread_logger *thl, int file_descriptor, char *message) {
 
     thl->lock(&thl->mutex);
     // 2 = 1 for null terminator, 1 for space after ]
-    char *msg = calloc(sizeof(char), strlen(message) + strlen("[debug - ") + (size_t) 2);
+    char *msg = calloc(1, strlen(message) + strlen("[debug - ") + (size_t)2);
     if (msg == NULL) {
         printf("failed to calloc debug_log msg");
         return;
@@ -235,7 +240,7 @@ char *get_time_string() {
     char date[75];
     strftime(date, sizeof date, "%b %d %r", localtime(&(time_t){time(NULL)}));
     // 4 for [ ] and 1 for \0
-    char *msg = calloc(sizeof(char), sizeof(date) + 2);
+    char *msg = calloc(1, sizeof(date) + 2);
     if (msg == NULL) {
         printf("failed to calloc get_time_string\n");
         return NULL;
