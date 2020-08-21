@@ -1,49 +1,45 @@
-.PHONY: build-all
-build-all:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc .. ; cmake -D CMAKE_C_COMPILER=gcc -build  . ; make )
+.PHONY: build
+build:
+	(./.scripts/build.sh)
 
+.PHONY: build-ci
+build-ci:
+	(./.scripts/build.sh ci)
 
-.PHONY: build-all-debug
-build-all-debug:
-	( rm -rf build ; mkdir build ; cd build ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug .. ; cmake -D CMAKE_C_COMPILER=gcc -D CMAKE_BUILD_TYPE=Debug -build  . ; make )
+.PHONY: build-debug
+build-debug:
+	(./.scripts/build.sh debug)
 
-.PHONY: doxygen-docs
-doxygen-docs:
-	(cd build ; cmake --build . --target doxygen-docs)
+.PHONY: build-analysis
+build-analysis:
+	(./.scripts/build.sh analyze)
 
-.PHONY: sphinx-docs
-sphinx-docs:
-	(cd build ; cmake --build . --target sphinx-docs)
+.PHONY: docs
+docs:
+	(cd build; cmake --build . --target doxygen-docs ; cd .. ; rm -rf html man ; cp -r docs-build/* .)
 
-.PHONY: valgrind-all-debug
-valgrind-all-debug: build-all-debug
-	bash ./scripts/valgrind.sh
+.PHONY: install-cmocka
+install-cmocka:
+	(./.scripts/install_cmocka.sh)
 
-.PHONY: valgrind-all
-valgrind-all: build-all
-	bash ./scripts/valgrind.sh
+.PHONY: install-deps-ubuntu
+install-deps-ubuntu: deps-ubuntu install-mbedtls
 
-PHONY: clean
+.PHONY: deps-ubuntu
+deps-ubuntu:
+	sudo apt install doxygen -y
+	sudo apt install libcmocka0 libcmocka-dev -y
+
+.PHONY: run-valgrind
+run-valgrind:
+	(./.scripts/valgrind.sh)
+
+.PHONY: clean
 clean:
-	rm -rf _doctrees build _build source html
-	
-# Minimal makefile for Sphinx documentation
-#
+	(./.scripts/clean.sh)
 
-# You can set these variables from the command line, and also
-# from the environment for the first two.
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = .
-BUILDDIR      = docs-sphinx
+.PHONY: format
+format:
+	find . -type f -name "*.c" -not -name "*_test.c" -exec clang-format -i {} \;
+	find . -type f -name "*.h" -exec clang-format -i {} \;
 
-# Put it first so that "make" without argument is like "make help".
-help:
-	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-.PHONY: help Makefile
-
-# Catch-all target: route all unknown targets to Sphinx using the new
-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
