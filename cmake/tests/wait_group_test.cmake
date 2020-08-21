@@ -1,7 +1,0 @@
-macro(define_wait_group_test)
-    add_executable(wait-group-test ./src/sync/wait_group_test.c)
-    target_link_libraries(wait-group-test waitgrouplib)
-    target_link_libraries(wait-group-test cmocka)
-    target_link_libraries(wait-group-test pthread)
-    add_test(NAME WaitGroupTest COMMAND wait-group-test)
-endmacro()

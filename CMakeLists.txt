@@ -1,90 +1,51 @@
 #####################
-# BEGIN CMAKE SETUP #
+# START CMAKE SETUP #
 #####################
 
-# sets minimum version
+# NOTE: you may want to customize the following to suit your environment
+# it is intended for C and C++ projects using C17 and C++20
+
 cmake_minimum_required(VERSION 3.0)
+project(c-template LANGUAGES C CXX)
+set(CMAKE_C_COMPILER /usr/bin/gcc)
 
-project(c-template-REPLACEME LANGUAGES C)
 
+# handle debug build type
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # -g indicates to include debug symbols
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g)
+    list(APPEND cxx-flags -std=c++2a -Wall -Wextra -Werror -pedantic -g)
 endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Analyze")
+    # override gcc compiler to v10 for static analysis
+    set(CMAKE_C_COMPILER /usr/bin/gcc-10)
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -g -fanalyzer)
+    list(APPEND cxx-flags -std=c++2a -Wall -Wextra -Werror -pedantic -g -fanalyzer)
+    message(STATUS "enabling static analysis")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "CI")
+    set(CMAKE_BUILD_TYPE "Release")
+    list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic -I/usr/local/lib)
+    list(APPEND cxx-flags -std=c++2a -Wall -Wextra -Werror -pedantic -I/usr/local/lib)
+    # override the previous C compiler choice
+    set(CMAKE_C_COMPILER /usr/bin/gcc-9)
+endif()
+
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
     list(APPEND flags -std=c17 -Wall -Wextra -Werror -pedantic)
+    list(APPEND cxx-flags -std=c++2a -Wall -Wextra -Werror -pedantic)
 endif()
 
-# needed for building socket stuff
-list(APPEND flags -D_POSIX_C_SOURCE=201112L)
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/libraries")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/misc")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/pkgs")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/tests")
-
-###################
-# END CMAKE SETUP #
-###################
-
-include(cmake/misc/include.cmake)
-include_cmake_files()
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include(${PROJECT_SOURCE_DIR}/cmake/pkgs/doxygen.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/pkgs/valgrind.cmake)
 
 
-
-######################
-# END MACRO INCLUDES #
-######################
-
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "Build flags: ${flags}")
-
-###############################
-# BEGIN MACRO FUNCTION INVOKE #
-###############################
-
-# to disable test builds comment out `*_test()` lines
-
-define_wait_group_lib()
-define_wait_group_test()
-
-define_socket_test()
-define_socket_lib()
-
-define_returns_test()
-define_returns_lib()
-
-define_errors_lib()
-define_errors_test()
-
-define_colors_lib()
-define_colors_test()
-
-define_setup_valgrind()
-
-define_cli()
-
-define_safe_mem_lib()
-define_safe_mem_test()
-
-define_safe_math_lib()
-define_safe_math_test()
-
-define_command_line_lib()
-define_command_line_test()
-
-define_random_lib()
-define_random_test()
-
-define_logger_lib()
-define_logger_test()
- 
-define_arrays_lib()
-define_array_len_test()
-
+# build documentation
 add_doxygen_doc(
     BUILD_DIR
         ${PROJECT_SOURCE_DIR}/build
@@ -96,31 +57,7 @@ add_doxygen_doc(
         "HTML documentation"
 )
 
-add_sphinx_doc(
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs
-  BUILD_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_build
-  CACHE_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_doctrees
-  HTML_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/sphinx_html
-  CONF_FILE
-    ${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py
-  TARGET_NAME
-    sphinx-docs
-  COMMENT
-    "HTML documentation"
-)
-
-#############################
-# END MACRO FUNCTION INVOKE #
-#############################
-
-################
-# ENABLE CTEST #
-################
-
+# enable valgrind 
+define_setup_valgrind()
+# enable testing
 enable_testing()
-
-
