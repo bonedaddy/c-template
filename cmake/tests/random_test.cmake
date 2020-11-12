@@ -1,7 +1,0 @@
-macro(define_random_test)
-    add_executable(random-test ./src/utils/random_test.c)
-    target_link_libraries(random-test cmocka)
-    target_link_libraries(random-test randomlib)
-    target_compile_options(random-test PRIVATE ${flags})
-    add_test(NAME RandomTest COMMAND random-test)
-endmacro()

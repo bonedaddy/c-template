@@ -1,7 +1,0 @@
-macro(define_errors_test)
-    add_executable(errors-test ./src/utils/errors_test.c)
-    target_compile_options(errors-test PRIVATE ${flags})
-    target_link_libraries(errors-test errorslib)
-    target_linK_libraries(errors-test cmocka)
-    add_test(NAME ErrorsTest COMMAND errors-test)
-endmacro()

@@ -1,8 +1,0 @@
-macro(define_returns_test)
-    add_executable(returns-test ./src/utils/returns_test.c)
-    target_compile_options(returns-test PRIVATE ${flags})
-    target_link_libraries(returns-test errorslib)
-    target_link_libraries(returns-test cmocka)
-    target_link_libraries(returns-test returnslib)
-    add_test(NAME ReturnsTest COMMAND returns-test)
-endmacro()

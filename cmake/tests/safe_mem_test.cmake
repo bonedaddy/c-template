@@ -1,7 +1,0 @@
-macro(define_safe_mem_test)
-    add_executable(safe-mem-test ./src/utils/safe_mem_test.c)
-    target_link_libraries(safe-mem-test cmocka)
-    target_link_libraries(safe-mem-test safememlib)
-    target_compile_options(safe-mem-test PRIVATE ${flags})
-    add_test(NAME SafeMemTest COMMAND safe-mem-test)
-endmacro()

@@ -1,7 +1,0 @@
-macro(define_cli)
-    add_executable(c-template-cli-REPLACEME ./src/cli.c)
-    target_link_libraries(c-template-cli-REPLACEME commandlinelib)
-    target_link_libraries(c-template-cli-REPLACEME safememlib)
-    target_link_libraries(c-template-cli-REPLACEME loggerlib)
-    target_compile_options(c-template-cli-REPLACEME PRIVATE ${flags})
-endmacro()
