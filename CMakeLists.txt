@@ -36,5 +36,16 @@ endif()
 
 list(APPEND flags -D_POSIX_C_SOURCE=201112L)
 
+add_library(libexample
+    SHARED
+        ./example.c
+)
+
+target_compile_options(libexample PRIVATE ${flags})
+
+add_executable(libexample-test ./example_test.c)
+target_link_libraries(libexample-test cmocka)
+target_link_libraries(libexample-test libexample)
+
 add_executable(cli ./main.c)
-target_link_libraries(cli pthread)
+target_link_libraries(cli libexample)
