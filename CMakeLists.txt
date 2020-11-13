@@ -49,3 +49,6 @@ target_link_libraries(libexample-test libexample)
 
 add_executable(cli ./main.c)
 target_link_libraries(cli libexample)
+
+add_test(NAME LibExampleTest COMMAND libexample-test)
+enable_testing()
